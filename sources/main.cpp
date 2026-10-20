@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/20 12:56:32 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/10/20 15:14:53 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ int main(int argc, char **argv)
     }
     catch(std::exception& e)
     {
-        std::cerr << e.what() << std::endl; 
+        std::cerr << e.what() << std::endl;
+        return (1);
     }
-    
-
-    
     return (0) ; 
 }
