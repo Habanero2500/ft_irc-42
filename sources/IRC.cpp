@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 14:50:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/20 16:44:39 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/10/20 17:06:17 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ irc &irc::operator=( const irc& copy )
 irc::~irc( void ){}
 
 // **** PARSING ****
-int irc::parsingPort(std::string str) const
+int irc::parsingPort(const std::string str) 
 {
     for(int i(0) ; str[i] ; i++)
     {
@@ -49,14 +49,15 @@ int irc::parsingPort(std::string str) const
     
 }
 
-int parsingPwd(std::string str) const
+int irc::parsingPwd(const std::string str) 
 {
     if(str.size() == 0)
         return 1;
+    return 0;
 }
     
 
-irc::irc( std::string port, std::string pwd)
+irc::irc( const char* port, const char* pwd)
 {
     
     int val = parsingPort(port);
@@ -69,6 +70,10 @@ irc::irc( std::string port, std::string pwd)
     }
     if(parsingPwd(pwd) == 1)
         throw pwdEmptyException();
-    exec(val, pwd);    
+    
+    _port = val;
+    _pwd = pwd;
+    std::cout << "OK" << std::endl; 
+    // exec(val, pwd);   
 }
 

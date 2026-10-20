@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/20 15:14:53 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/10/20 17:05:11 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     }
     try
     {
-        irc serv(argv[1], argv[2]);    
+        irc serv(argv[1], argv[2]);
     }
     catch(std::exception& e)
     {

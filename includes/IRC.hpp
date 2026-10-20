@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:52:43 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/20 16:44:52 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/10/20 17:05:34 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 #include <iostream>
 #include <stdexcept> 
-#include <string> 
+#include <string>
+#include <cstdlib>
 
 class irc {
 
@@ -28,11 +29,11 @@ class irc {
     ~irc(void);
 
     // **** USEFUL CONSTRUCTOR ****
-    irc( std::string port, std::string pwd);
+   irc(const char* port, const char* pwd);
 
     // **** PARSING ****
-    int parsingPort(std::string str) const;
-    int parsingPwd(std::string str) const;
+    int parsingPort(const std::string str) ;
+    int parsingPwd(const std::string str) ;
 
     //**** EXEC ****
     void exec(int val, std::string pwd);
@@ -70,12 +71,9 @@ class irc {
 
     private : 
     
-    uint _port;
+    int _port;
     std::string _pwd; 
     
 };
-
-
-
 
 #endif
