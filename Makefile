@@ -10,31 +10,33 @@
 #                                                                              #
 # **************************************************************************** #
 
-
-NAME = ircserv
-SRCS = ./sources/main.cpp ./sources/IRC.cpp
+OBJ_DIR = objects
 
 CC = c++ 
-FLAGS = -Wall -Werror -Wextra -std=c++98
+FLAGS = -Wall -Werror -Wextra -std=c++98 -Iincludes
+RM = rm -rf
 
-RM = rm -f
-OBJS = $(SRCS:.cpp=.o)
+SRCS = ./sources/main.cpp ./sources/IRC.cpp
+OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
-%.o: %.cpp
-	@$(CC) $(FLAGS) -c $< -o $@
+NAME = ircserv
 
 all : $(NAME)
 
-$(NAME)	: $(OBJS)
-	@$(CC) $(FLAGS) $^ -o $(NAME)
+$(NAME)	: $(OBJ)
+	$(CC) $(FLAGS) $^ -o $(NAME)
 	@echo '$(NAME) compiled!'
+
+$(OBJ_DIR)/%.o : sources/%.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(FLAGS) -c $< -o $@
+
+clean :
+	@$(RM) $(OBJ_DIR)
 
 fclean : clean
 	@$(RM) $(NAME)
 
-clean :
-	@$(RM) $(OBJS)
-
-re			: fclean all
+re : fclean all
 
 .PHONY : all clean fclean re
