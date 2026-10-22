@@ -13,14 +13,11 @@
 #ifndef IRC_HPP
 #define IRC_HPP
 
-#include <iostream>
-#include <stdexcept> 
 #include <string>
-#include <cstdlib>
 
 class irc {
 
-    public : 
+    public	: 
 
     // **** ORTHODOX CANONICAL FORM ****
     irc(void);
@@ -38,38 +35,22 @@ class irc {
     //**** EXEC ****
     void exec(int val, std::string pwd);
     
-    //****EXCEPTION ****
-    class pwdEmptyException : public std::exception{
-    
-    public : 
-    virtual const char *what() const throw()
-    {
-        return "The password passed as an argument cannot be empty";
-    }
-    
+    //****EXCEPTIONS ****
+    class	pwdEmptyException : public std::exception { 
+		public	: 
+			virtual const char *what() const throw();
     };
-    
-    class valueException : public std::exception{
-    
-    public : 
-    virtual const char *what() const throw()
-    {
-        return "The port value has to be in the range 1024 to 65535";
-    }
-    
+    class	valueException : public std::exception {
+		public : 
+			virtual const char *what() const throw();
     };
 
-    class notANumberException : public std::exception{
-    
-    public : 
-    virtual const char *what() const throw()
-    {
-        return "Only digits are admitted to choose the port number";
-    }
-    
+    class	notANumberException : public std::exception {
+		public : 
+			virtual const char *what() const throw();
     };
 
-    private : 
+    private	: 
     
     int _port;
     std::string _pwd; 
