@@ -6,12 +6,13 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/26 14:44:03 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 16:44:57 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/IRC.hpp"
 #include "../includes/Server.hpp"
+#include "../includes/Client.hpp"
 
 int main(int argc, char **argv)
 {

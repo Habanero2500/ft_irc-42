@@ -6,20 +6,17 @@
 #    By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/10/26 16:29:40 by malaimo          ###   ########.fr        #
+#    Updated: 2026/10/26 16:46:53 by malaimo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 OBJ_DIR = objects
 
-NAME = ircserv
-SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp
-
 CC = c++ 
 FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
 RM = rm -rf
 
-SRCS = ./sources/main.cpp ./sources/IRC.cpp
+SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp
 OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 DEPS = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.d))
 

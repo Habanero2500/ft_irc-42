@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 15:55:00 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:09:45 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ void	Server::initServerAdress(int port)
 
 	bind(_fd, (const sockaddr *)&_adress, sizeof(_adress));
 	listen(_fd, 128);
+	
+	struct pollfd	serverPollFd;
+
+	
 }
 
 void	Server::receiveData()
@@ -55,4 +59,9 @@ void	Server::receiveData()
     char buffer[1024] = { 0 };
     recv(clientSocket, buffer, sizeof(buffer), 0);
     std::cout << "Message from client: " << buffer << std::endl;
+}
+
+void	Server::pollLoop()
+{
+	
 }
