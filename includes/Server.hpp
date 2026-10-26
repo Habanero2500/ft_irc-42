@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:57:04 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class	Server
 	private:
 	int						_fd;
 	struct sockaddr_in 		_adress;
-	map<string, Client>		_clients;
+	map<size_t, Client>		_clients;
 	vector<struct pollfd>	_listFd;
 	
 	public:

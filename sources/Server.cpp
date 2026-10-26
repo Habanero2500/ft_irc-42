@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 18:00:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,18 @@ void	Server::receiveData()
 
 void	Server::pollLoop()
 {
-	
+	poll(&_listFd[0], _listFd.size(), -1);
+	for(size_t	i = 0; i < _listFd.size(); i++)
+	{
+		if (_listFd[i].revents & POLLIN)
+		{
+			if (_listFd[i].fd == _fd)
+			{
+				// Client	*newClient = new Client();
+				// _clients[i + 1] = *newClient;
+				accept(_fd, 0, 0);
+				
+			}
+		}
+	}
 }

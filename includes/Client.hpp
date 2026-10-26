@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:59:25 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class Client{
     std::string 			_ID;
     int 					_fd;
 	struct sockaddr_in 		_adress;
+	struct pollfd			_PollFd;
     //std::vector<std::string> _channels;
     
      
