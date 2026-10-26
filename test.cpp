@@ -2,6 +2,7 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 
 int main()
@@ -19,5 +20,6 @@ int main()
     const char* message = "Salutatouslesamis";
     send(clientSocket, message, strlen(message), 0);
 
+	close(clientSocket);
     return 0;
 }
