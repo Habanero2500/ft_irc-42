@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+         #
+#    By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/10/20 16:55:41 by jmetayer         ###   ########.fr        #
+#    Updated: 2026/10/26 14:26:46 by malaimo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = ircserv
-SRCS = ./sources/main.cpp ./sources/IRC.cpp
+SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp
 
 CC = c++ 
 FLAGS = -Wall -Werror -Wextra -std=c++98
