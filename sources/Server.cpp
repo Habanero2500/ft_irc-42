@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 17:09:45 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,11 @@ void	Server::initServerAdress(int port)
 	listen(_fd, 128);
 	
 	struct pollfd	serverPollFd;
-
+	serverPollFd.fd = _fd;
+	serverPollFd.events = POLLIN;
+	serverPollFd.revents = 0;
 	
+	_listFd.push_back(serverPollFd);
 }
 
 void	Server::receiveData()

@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/26 17:10:41 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	Client::initClientAdress(int port)
 }
 
 
-//**** SETTERS AND GETTERS ****
+// **** SETTERS AND GETTERS ****
 // void Client::setName(std::string name) : _name(name) {}
 
 // void Client::setID(std::string ID) : _ID(ID) {}

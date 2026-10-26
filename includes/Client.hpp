@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/26 17:01:08 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 #define CLIENT_HPP
 
 
-#include <string>
-#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <poll.h>
 
 using namespace std;
 class Client{
@@ -54,9 +56,6 @@ class Client{
     //std::vector<std::string> _channels;
     
      
-    
-
-    
 };
 
 

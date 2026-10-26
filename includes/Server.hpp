@@ -6,21 +6,13 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 17:05:53 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/26 17:18:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-#include <cstring>
-#include <iostream>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <map>
-#include <vector>
-#include <algorithm>
 #include "Client.hpp"
 
 using namespace std;
