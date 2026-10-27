@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/26 16:44:57 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/27 14:26:27 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	Server	server;
 	
 	server.initServerAdress(6667);
-	server.receiveData();
+	server.pollLoop();
 	
     return (0) ; 
 }

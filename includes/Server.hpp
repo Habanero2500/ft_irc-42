@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 17:57:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/27 16:12:56 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class	Server
 	private:
 	int						_fd;
 	struct sockaddr_in 		_adress;
-	map<size_t, Client>		_clients;
+	map<int, Client>		_clients;
 	vector<struct pollfd>	_listFd;
 	
 	public:
@@ -31,8 +31,11 @@ class	Server
 	~Server();
 
 	void	initServerAdress(int port);
-	void	receiveData();
 	void	pollLoop();
+	void	checkEvents(size_t *i);
+	void	setNewClient();
+	void	receiveCommunication(size_t *i);
+	void	deleteClient(size_t *i);
 	
 };
 #endif
