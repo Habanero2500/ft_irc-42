@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/27 16:17:46 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/28 13:54:12 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ Server	&Server::operator=(const Server &copy)
 
 Server::~Server()
 {
+	std::cout << "destructor called" << std::endl;
 	close(_fd);
 }
 
@@ -85,7 +86,7 @@ void	Server::checkEvents(size_t *i)
 {
 	if (_listFd[*i].revents & (POLLERR | POLLHUP | POLLNVAL))
 	{
-		deleteClient(i);
+		deleteClient(i, _listFd[*i].fd);
 		return ;
 	}
 	if (_listFd[*i].revents & POLLIN)
@@ -93,7 +94,7 @@ void	Server::checkEvents(size_t *i)
 		if (_listFd[*i].fd == _fd)
 			setNewClient();
 		else
-			receiveCommunication(i);
+			receiveCommunication(i, _listFd[*i].fd);
 	}
 }
 
@@ -121,24 +122,29 @@ void	Server::setNewClient()
 	_clients[newClient.getFd()] = newClient;
 }
 
-void	Server::receiveCommunication(size_t *i)
+void	Server::receiveCommunication(size_t *i, int fd)
 {
 	int		bits;
 	char	buffer[1024] = { 0 };
     
-	bits = recv(_listFd[*i].fd, buffer, sizeof(buffer) - 1, 0);
+	bits = recv(fd, buffer, sizeof(buffer) - 1, 0);
 	if (bits > 0)
 	{
-		_clients[_listFd[*i].fd].addBuffer(buffer);
-		cout << "Message from client: " << _listFd[*i].fd  << " " << buffer;
+		_clients[fd].addBuffer(buffer);
+		cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
+		if (_clients[fd].getBuffer() == "EXIT\n")
+		{
+			deleteClient(i, fd);
+			close(_fd);
+			exit (1);
+		}
 	}
-	else if (bits == 0 || (bits == -1 && (errno != EAGAIN && errno != EWOULDBLOCK)))
-		deleteClient(i);
+	else if (bits == 0 || bits == -1)
+		deleteClient(i, fd);
 }
 
-void	Server::deleteClient(size_t *i)
+void	Server::deleteClient(size_t *i, int fd)
 {
-	int	fd = _listFd[*i].fd;
 	close(fd);
 	_clients.erase(fd);
 	_listFd.erase(_listFd.begin() + *i);

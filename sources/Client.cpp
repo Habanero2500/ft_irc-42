@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/27 16:18:44 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/28 13:25:24 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ int Client::getFd(void)
 struct pollfd Client::getPollFd(void)
 {
     return _pollFd;
+}
+
+std::string	Client::getBuffer(void)
+{
+    return (_buffer);
 }
 
 

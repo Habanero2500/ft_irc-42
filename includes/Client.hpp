@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/27 15:02:21 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/28 13:26:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ class Client{
 	void	initClientAdress(int port);
 
     //**** SETTERS AND GETTERS ****
-    void setName(std::string name);
-    void setID(std::string ID);
-    void setFd(int i);
-	void setPollFd();
-	void addBuffer(char buffer[1024]);
-    std::string getName(void);
-    std::string getID(void);
-    int getFd(void);
-	struct pollfd getPollFd(void); 
+    void 			setName(std::string name);
+    void 			setID(std::string ID);
+    void 			setFd(int i);
+	void 			setPollFd();
+	void 			addBuffer(char buffer[1024]);
+    std::string 	getName(void);
+    std::string 	getID(void);
+    int 			getFd(void);
+	struct pollfd 	getPollFd(void); 
+	std::string		getBuffer(void);
 
     private :
 
