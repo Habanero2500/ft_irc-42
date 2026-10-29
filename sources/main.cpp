@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/28 14:26:52 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/29 17:12:39 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "../includes/Server.hpp"
 #include "../includes/Client.hpp"
 #include <stdlib.h>
+
+#ifdef DEBUG_MODE
+    bool DEBUG = true;
+#else
+    bool DEBUG = false;
+#endif
 
 int main(int argc, char **argv)
 {

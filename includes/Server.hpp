@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/28 13:22:40 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/29 17:12:41 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 
 #include "Client.hpp"
 
-using namespace std;
+extern bool DEBUG;
+
 class	Server
 {
 	private:
-	int						_fd;
-	struct sockaddr_in 		_adress;
-	map<int, Client>		_clients;
-	vector<struct pollfd>	_listFd;
+	int							_fd;
+	struct sockaddr_in 			_adress;
+	std::map<int, Client>		_clients;
+	std::vector<struct pollfd>	_listFd;
 	
 	public:
 	Server();

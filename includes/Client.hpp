@@ -6,14 +6,12 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/28 13:26:07 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/29 17:12:48 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
-
 
 #include <cstring>
 #include <iostream>
@@ -34,8 +32,8 @@
 # define CYAN "\e[0;36m"
 # define PURPLE "\e[0;35m"
 
+extern bool DEBUG;
 
-using namespace std;
 class Client{
   
     public :

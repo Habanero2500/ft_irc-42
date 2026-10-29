@@ -6,7 +6,7 @@
 #    By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/10/26 16:46:53 by malaimo          ###   ########.fr        #
+#    Updated: 2026/10/29 17:12:44 by malaimo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,5 +39,8 @@ fclean : clean
 	@$(RM) $(NAME)
 
 re : fclean all
+
+debug : FLAGS += -D DEBUG_MODE=1
+debug : re
 
 .PHONY : all clean fclean re
