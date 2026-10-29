@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/29 17:57:47 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/29 18:15:54 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,13 +131,17 @@ void	Server::receiveCommunication(size_t *i, int fd)
 	if (bits > 0)
 	{
 		_clients[fd].addBuffer(buffer);
+		if (_clients[fd].getBuffer().find_first_not_of("\r\n") != std::string::npos)
+			parsingBuffer(fd);
 		if (DEBUG)
-			std::cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
-		if (_clients[fd].getBuffer() == "EXIT\n")
 		{
-			deleteClient(i, fd);
-			close(_fd);
-			exit (1);
+			std::cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
+			if (_clients[fd].getBuffer() == "EXIT\n")
+			{
+				deleteClient(i, fd);
+				close(_fd);
+				exit (1);
+			}
 		}
 	}
 	else if (bits == 0 || bits == -1)
@@ -150,4 +154,10 @@ void	Server::deleteClient(size_t *i, int fd)
 	_clients.erase(fd);
 	_listFd.erase(_listFd.begin() + *i);
 	(*i)--;
+}
+
+void	Server::parsingBuffer(int fd)
+{
+	if (DEBUG)
+		std::cout << _clients[fd].getBuffer() << std::endl;
 }

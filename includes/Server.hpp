@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/29 17:12:41 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/29 18:15:32 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class	Server
 	void	setNewClient();
 	void	receiveCommunication(size_t *i ,int fd);
 	void	deleteClient(size_t *i, int fd);
+	void	parsingBuffer(int fd);
 	
 };
 #endif
