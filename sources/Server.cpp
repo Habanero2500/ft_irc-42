@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/28 13:54:12 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/28 16:35:10 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ void	Server::receiveCommunication(size_t *i, int fd)
 		cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
 		if (_clients[fd].getBuffer() == "EXIT\n")
 		{
+			// for (size_t	y = 1; y <_clients.size(); y++)
+			// 	deleteClient(&y, _clients[_listFd[y].fd].getFd());
 			deleteClient(i, fd);
 			close(_fd);
 			exit (1);
