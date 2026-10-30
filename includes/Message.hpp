@@ -40,12 +40,14 @@ class	Message {
 
 		//Helper Functions
 		void		clearParser(void);
+		void		deleteSpaces(std::string& input) const;
 		//Parsing Functions
 		void		parsing(std::string& input);
 		void		stripCRLF(std::string& input) const;
 		void		extractTrailing(std::string& input);
 		void		parsePrefix(std::string& input);
 		void		parseCommand(std::string& input);
+		void		parseParams(std::string& input);
 		//Dispatch Functions
 	private	:
 		Parser	_parser;

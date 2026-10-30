@@ -14,7 +14,7 @@
 
 //Orthodox Canonical Form
 Message::Message(void) {
-	clearParser();
+	return ;
 }
 
 Message::Message(const Message& other) {
@@ -46,17 +46,22 @@ void	Message::clearParser(void) {
 	_parser.trailing.clear();
 }
 
+void	Message::deleteSpaces(std::string& input) const {
+	while (!input.empty() && input[START] == ' ')
+		input.erase(START, 1);
+}
+
 //CRLF (Carriage return Line Feed) = \r\n
 //1)Strip trailing CRLF  ok
 //2)Extract trailing first ok
 //3)Parse Prefix ok
-//4)Parse Command
-//5)Parse Middle Parameters
-//6)Append Trailing
+//4)Parse Command ok
+//5)Parse Middle Parameters ok
+//6)Append Trailing ok
 //Parsing Functions
 //PRIVMSG bajuju :Yo yo -> command = PRIVMSG params = 'bajuju' 'yo yo'
 void	Message::stripCRLF(std::string& input) const {
-	while (!input.empty() && input[input.size() - 1] == '\r' || input[input.size() - 1 == '\n'])
+	while (!input.empty() && (input[input.size() - 1] == '\r' || input[input.size() - 1] == '\n'))
 			input.erase(input.size() - 1);
 }
 
@@ -87,19 +92,38 @@ void	Message::parsePrefix(std::string& input) {
 void	Message::parseCommand(std::string& input) {
 	if (input.empty())
 		return ;
-
-	while (!input.empty() && input[START] == ' ')
-		input.erase(START);
+	deleteSpaces(input);
 	size_t	pos = input.find(' ');
 	if (pos != std::string::npos) {
 		_parser.command = input.substr(START, pos);
+		input.erase(START, pos + 1);
 	}
 	else {
 		_parser.command = input.substr(START);
 		input.clear();
 	}
-	while (size_t i = 0 < _parser.command.size()) //Case Insensivity
-		_parser.command[i] = std::toupper(_parser.command[i]);
+	for (size_t i = 0; i < _parser.command.size(); ++i) //Case Insensivity
+		_parser.command[i] = static_cast<char>(std::toupper(_parser.command[i]));
+}
+
+void	Message::parseParams(std::string& input) {
+	while (!input.empty()) {
+		deleteSpaces(input);
+		if (input.empty())
+			break ;
+
+		size_t	pos = input.find(' ');
+		if (pos != std::string::npos) {
+			_parser.params.push_back(input.substr(START, pos));
+			input.erase(START, pos + 1);
+		}
+		else {
+			_parser.params.push_back(input.substr(START));
+			input.clear();
+		}
+	}
+	if (!_parser.trailing.empty()) //We now add the trailing element
+		_parser.params.push_back(_parser.trailing);
 }
 
 void	Message::parsing(std::string& input) {
@@ -113,4 +137,5 @@ void	Message::parsing(std::string& input) {
 	extractTrailing(input);
 	parsePrefix(input);
 	parseCommand(input);
+	parseParams(input);
 }
