@@ -6,31 +6,14 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/29 17:12:48 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/30 13:49:03 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include <cstring>
-#include <iostream>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <map>
-#include <vector>
-#include <algorithm>
-#include <poll.h>
-#include <fcntl.h>
-
-
-# define RESET "\e[0m"
-# define RED "\e[31m"
-# define GREEN "\e[32m"
-# define BLUE "\e[1;36m"
-# define CYAN "\e[0;36m"
-# define PURPLE "\e[0;35m"
+#include "Headers.hpp"
 
 extern bool DEBUG;
 
