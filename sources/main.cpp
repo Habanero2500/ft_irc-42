@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/29 17:12:39 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/30 15:13:00 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,22 @@
 
 int main(int argc, char **argv)
 {
-    // if(argc != 3)
-    // {
-    //     std::cerr << "This program has to take two arguments such as : './ircserv <port> <password>'" << std::endl;
-    //     return(1);
-    // }
-    // try
-    // {
-    //     irc serv(argv[1], argv[2]);
-    // }
-    // catch(std::exception& e)
-    // {
-    //     std::cerr << e.what() << std::endl;
-    //     return (1);
-    // }
-
-	(void)argc;
-	(void)argv;
-	
-	Server	server;
-	
-	server.initServerAdress(6667);
-	server.pollLoop();
-	
+    if(argc != 3)
+    {
+        std::cerr << "This program has to take two arguments such as : './ircserv <port> <password>'" << std::endl;
+        return(1);
+    }
+    try
+    {
+        irc irc(argv[1], argv[2]);
+        Server	server;
+	    server.initServerAdress(irc.getPort());
+	    server.pollLoop();
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return (1);
+    }
     return (0) ; 
 }
