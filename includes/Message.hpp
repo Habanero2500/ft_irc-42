@@ -38,12 +38,14 @@ class	Message {
 
 		//Exception Classes
 
+		//Helper Functions
+		void		clearParser(void);
 		//Parsing Functions
 		void		parsing(std::string& input);
-		bool		stripCRLF(const std::string& input) const;
-		std::string	extractTrailing(std::string& input);
-		void		parsePrefix(std::string& str);
-		void		parseCommand(std::string& str);
+		void		stripCRLF(std::string& input) const;
+		void		extractTrailing(std::string& input);
+		void		parsePrefix(std::string& input);
+		void		parseCommand(std::string& input);
 		//Dispatch Functions
 	private	:
 		Parser	_parser;
