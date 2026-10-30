@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 13:44:34 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/30 13:49:16 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/30 15:31:43 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@
 #include <cstring>
 #include <cstdlib>
 #include <unistd.h>
+#include <iomanip>
 
 /*** AUCUNE IDEE ***/
 #include <netinet/in.h>
+#include <sstream>
+#include <cctype>
 
 /*** CONTAINERS ***/
 #include <map>
@@ -35,6 +38,7 @@
 
 /*** PERSO ***/
 #include "Colors.hpp"
+#include "Replies.hpp"
 
 
 

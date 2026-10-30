@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/29 17:12:39 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/30 15:30:44 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ int main(int argc, char **argv)
 	(void)argv;
 	
 	Server	server;
+	std::string message;
 	
+	message = ERR_NOORIGIN();
 	server.initServerAdress(6667);
 	server.pollLoop();
 	

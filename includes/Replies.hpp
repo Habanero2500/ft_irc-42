@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/30 15:08:47 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/10/30 15:49:39 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 # include "Headers.hpp"
 
+/******* WELCOME MESSAGE ********/
+#define	WELCOME_MESSAGE GREEN <<  "================================================" << std::endl << std::endl \
+							<< "================== WELCOME TO ==================" << std::endl << std::endl \
+						   << "================= THE WORLD OF =================" << std::endl << std::endl \
+					  << PINK "===================== IRC ======================" << std::endl << std::endl \
+					  <<  "================================================" RESET << std::endl << std::endl 
+
+
+/******* ERRORS MESSAGES ********/
 // 401 ERR_NOSUCHNICK
 # define ERR_NOSUCHNICK(nickName) (":localhost 401 " + nickName + " :No such nick/channel\r\n")
 
@@ -58,7 +67,7 @@
 # define ERR_NOMOTD() (":localhost 422 :MOTD File is missing\r\n")
 
 // 423     ERR_NOADMININFO
-# define ERR_NOSUCHSERVER(server) (":localhost 423 " + server + " :No administrative info available\r\n")
+# define ERR_NOADMININFO(server) (":localhost 423 " + server + " :No administrative info available\r\n")
 
 // 424     ERR_FILEERROR
 # define ERR_FILEERROR(fileOp, file) (":localhost 424 :File error doing " + fileOp + " on " + file + "\r\n")
