@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 13:43:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/30 15:40:13 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/03 11:55:48 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define CYAN "\e[0;36m"
 # define PURPLE "\e[0;35m"
 # define PINK "\e[0;95m"
+# define YELLOW "\e[33m"
 
 
 #endif 
