@@ -48,7 +48,8 @@ class	Message {
 		void		parsePrefix(std::string& input);
 		void		parseCommand(std::string& input);
 		void		parseParams(std::string& input);
-		//Dispatch Functions
+		//Getter
+		Parser		getParser(void) const;
 	private	:
 		Parser	_parser;
 

@@ -139,3 +139,8 @@ void	Message::parsing(std::string& input) {
 	parseCommand(input);
 	parseParams(input);
 }
+
+//Getter
+Parser	Message::getParser(void) const {
+	return (_parser);
+}

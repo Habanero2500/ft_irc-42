@@ -20,9 +20,9 @@ Server::Server()
 		throw std::runtime_error("SERVER: Socket failure");
 }
 
-Server::Server(const Server &copy) : _fd(copy._fd){}
+Server::Server(const Server &copy) : _fd(copy._fd){}//A regler
 
-Server	&Server::operator=(const Server &copy)
+Server	&Server::operator=(const Server &copy)//A regler
 {
     if(this != &copy)
     {
@@ -77,9 +77,7 @@ void	Server::pollLoop()
 				throw std::runtime_error("SERVER: Poll failure");
 		}
 		for(size_t	i = 0; i < _listFd.size(); i++)
-		{
 			checkEvents(&i);
-		}
 	}
 }
 
@@ -161,4 +159,32 @@ void	Server::parsingBuffer(int fd)
 {
 	if (DEBUG)
 		std::cout << _clients[fd].getBuffer() << std::endl;
+}
+
+//Command Map Functions
+void	Server::initCommands(void) {
+	_commandMap["PASS"] = &Server::handlePass;
+	_commandMap["NICK"] = &Server::handleNick;
+	_commandMap["USER"] = &Server::handleUser;
+	_commandMap["PING"] = &Server::handlePing;
+	_commandMap["QUIT"] = &Server::handleQuit;
+	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
+}
+
+void	Server::executeCommand(Client& client, const std::string& rawline) {
+	Message msg;
+	std::string	input = rawline;
+	msg.parsing(input);
+
+	std::string	command = msg.getParser().command;
+	if (command.empty())
+		return ;
+
+	std::map<std::string, CommandHandler>::iterator it = _commandMap.find(command);
+	if (it != _commandMap.end())
+		(this->*(it->second))(client, msg);
+	else {
+		(void)ERR_UNKNOWNCOMMAND(command);//No match found
+		return ;
+	}
 }
