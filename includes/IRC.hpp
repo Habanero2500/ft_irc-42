@@ -3,20 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:52:43 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/30 15:14:10 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 15:28:33 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRC_HPP
 #define IRC_HPP
 
-#include <string>
-#include <cstring>
-#include <iostream>
-#include <cstdlib>
+#include "Headers.hpp"
 
 class irc {
 

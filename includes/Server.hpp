@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/29 18:15:32 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/02 16:49:02 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define SERVER_HPP
 
 #include "Client.hpp"
+#include "utils.hpp"
 
 extern bool DEBUG;
 
@@ -38,6 +39,8 @@ class	Server
 	void	receiveCommunication(size_t *i ,int fd);
 	void	deleteClient(size_t *i, int fd);
 	void	parsingBuffer(int fd);
+	void	executeCommand(int fd, const std::string &line);
+
 	
 };
 #endif

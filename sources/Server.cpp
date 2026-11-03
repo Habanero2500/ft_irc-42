@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/29 18:15:54 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/03 11:29:18 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	Server::initServerAdress(int port)
 {
 	int	opt = 1;
 
+	std::cout << WELCOME_MESSAGE << std::endl;
 	setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 	_adress.sin_family = AF_INET;
 	_adress.sin_addr.s_addr = INADDR_ANY;
