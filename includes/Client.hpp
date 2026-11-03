@@ -52,12 +52,12 @@ class Client{
     private :
 
     std::string 			_nickname;
-    std::string             _username;
-    std::string             _hostname;
-    std::string             _realname;
+    std::string				_username;
+    std::string				_hostname;
+    std::string				_realname;
     
-    std::string 			_ID;
-    int 					_fd;
+    std::string				_ID;
+    int 				_fd;
 	struct sockaddr_in 		_adress;
 	struct pollfd			_pollFd;
 	std::string				_buffer;
@@ -66,8 +66,6 @@ class Client{
     bool                    _nick;
     bool                    _user;
     
-    
-     
 };
 
 
