@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/03 11:29:18 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 18:06:15 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,15 @@ Server	&Server::operator=(const Server &copy)//A regler
     return *this;
 }
 
-
 Server::~Server()
 {
 	std::cout << "destructor called" << std::endl;
 	close(_fd);
 }
 
-
-
 //********** MAIN FUNCTIONS ************
 
-void	Server::initServerAdress(int port)
+void	Server::initServerAdress(int port, std::string pwd)
 {
 	int	opt = 1;
 
@@ -51,7 +48,9 @@ void	Server::initServerAdress(int port)
 	_adress.sin_family = AF_INET;
 	_adress.sin_addr.s_addr = INADDR_ANY;
 	_adress.sin_port = htons(port);
-
+	
+	_pwd = pwd;
+	
 	if (bind(_fd, (const sockaddr *)&_adress, sizeof(_adress)) == -1)
 		throw std::runtime_error("SERVER: Bind failure");
 	if (listen(_fd, 128) == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/02 15:27:48 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 17:42:03 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 // **** ORTHODOX CANONICAL FORM ****
 
-Client::Client(void) : _nickname(""), _username(""), _hostname(""), _realname(""), _ID(""), _fd(-1), _buffer(""), _pass(false), _nick(false), _user(false) {}
+Client::Client(void) : _nickname(""), _username(""), _hostname(""), _realname(""), _ID(""), _fd(-1), _buffer(""), _pass(false), _nick(false), _user(false), _attempt(0) {}
 
-Client::Client(const Client& copy) : _nickname(copy._nickname), _username(copy._username), _hostname(copy._hostname), _realname(copy._realname), _ID(copy._ID), _fd(copy._fd), _adress(copy._adress), _pollFd(copy._pollFd), _buffer(copy._buffer), _pass(false), _nick(false), _user(false) {}
+Client::Client(const Client& copy) : _nickname(copy._nickname), _username(copy._username), _hostname(copy._hostname), _realname(copy._realname), _ID(copy._ID), _fd(copy._fd), _adress(copy._adress), _pollFd(copy._pollFd), _buffer(copy._buffer), _pass(false), _nick(false), _user(false), _attempt(0) {}
 
 Client& Client::operator=(const Client& copy)
 {
@@ -36,6 +36,7 @@ Client& Client::operator=(const Client& copy)
         _pass = false;
         _nick = false;
         _user = false;
+        _attempt = 0;
     }
     return *this;
 }
@@ -66,6 +67,21 @@ void Client::setPollFd()
 	_pollFd.events = POLLIN;
 	_pollFd.revents = 0;
 }
+void    Client::setPass(void)
+{
+    if(_pass == false)
+        _pass = true;
+}
+void    Client::setNick(void)
+{
+    if(_nick == false)
+        _nick = true;
+}
+void    Client::setUser(void)
+{
+    if(_user == false)
+        _user = true;
+}
 
 void Client::addBuffer(char buffer[1024])
 {
@@ -94,6 +110,18 @@ std::string 	Client::getNickname(void){return _nickname;}
 std::string 	Client::getUsername(void){return _username;}
 std::string 	Client::getHostname(void){return _hostname;}
 std::string 	Client::getRealName(void){return _realname;}
+int             Client::getAttempt(void){return _attempt;}
+bool             Client::getPass(void){return _pass;}
+bool             Client::getNick(void){return _nick;}
+bool             Client::getUser(void){return _user;}
+
+// **** OTHERS ****
+
+void Client::increaseAttempt(void)
+{
+    _attempt++;
+}
+
 
 //**********INITIALISATION ************
 

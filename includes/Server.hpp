@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/02 16:49:02 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 18:05:53 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ extern bool DEBUG;
 
 class	Server
 {
+	private:
+	int							_fd;
+	struct sockaddr_in 			_adress;
+	std::map<int, Client>		_clients;
+	std::vector<struct pollfd>	_listFd;
+	std::string					_pwd;
+	int							_port;
 	
 	public:
 		//Orthodox Canonical Form

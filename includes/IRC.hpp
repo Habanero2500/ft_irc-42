@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:52:43 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/30 13:45:59 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/03 18:02:00 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ class irc {
     // **** USEFUL CONSTRUCTOR ****
    irc(const char* port, const char* pwd);
 
+    //**** GETTERS AND SETTERS ****
+    int getPort(void);
+    std::string getPwd();
+  
     // **** PARSING ****
     int parsingPort(const std::string str) ;
     int parsingPwd(const std::string str) ;
