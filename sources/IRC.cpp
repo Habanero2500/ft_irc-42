@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 14:50:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/30 15:17:24 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 18:03:04 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ int irc::parsingPort(const std::string str)
     
 }
 
-int irc::getPort(void)
-{
-    return _port;
-}
+int irc::getPort(void){return _port;}
+std::string irc::getPwd(){return _pwd;}
 
 int irc::parsingPwd(const std::string str) 
 {

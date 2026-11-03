@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/03 15:28:45 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/03 17:43:20 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     {
         irc irc(argv[1], argv[2]);
         Server	server;
-	    server.initServerAdress(irc.getPort());
+	    server.initServerAdress(irc.getPort(), irc.getPwd());
 	    server.pollLoop();
     }
     catch(std::exception& e)

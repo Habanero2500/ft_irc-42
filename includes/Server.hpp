@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/02 16:49:02 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 16:32:21 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ class	Server
 	struct sockaddr_in 			_adress;
 	std::map<int, Client>		_clients;
 	std::vector<struct pollfd>	_listFd;
+	std::string					_pwd;
+	int							_port;
 	
 	public:
 	Server();
@@ -32,7 +34,7 @@ class	Server
 	Server	&operator=(const Server &copy);
 	~Server();
 
-	void	initServerAdress(int port);
+	void	initServerAdress(int port, std::string pwd);
 	void	pollLoop();
 	void	checkEvents(size_t *i);
 	void	setNewClient();

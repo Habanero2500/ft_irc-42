@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:52:43 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/03 15:28:33 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/03 18:02:00 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class irc {
 
     //**** GETTERS AND SETTERS ****
     int getPort(void);
+    std::string getPwd();
   
     // **** PARSING ****
     int parsingPort(const std::string str) ;

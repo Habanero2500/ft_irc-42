@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/03 11:29:04 by user             ###   ########.fr       */
+/*   Updated: 2026/11/03 17:25:50 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ class Client{
     void 			setID(std::string ID);
     void 			setFd(int i);
 	void 			setPollFd();
+    void            setPass(void);
+    void            setNick(void);
+    void            setUser(void);
 	void 			addBuffer(char buffer[1024]);
     std::string 	getName(void);
     std::string 	getID(void);
@@ -48,6 +51,14 @@ class Client{
     std::string 	getUsername(void);
     std::string 	getHostname(void);
     std::string 	getRealName(void);
+    int             getAttempt(void);
+    bool            getPass(void);
+    bool            getNick(void);
+    bool            getUser(void);
+
+    //**** OTHERS ****
+    
+    void increaseAttempt(void);
     
     private :
 
@@ -65,12 +76,8 @@ class Client{
     bool                    _pass;
     bool                    _nick;
     bool                    _user;
-    
-    
-     
+    int                     _attempt;     
 };
-
-
 
 
 #endif
