@@ -17,7 +17,7 @@ int main()
     connect(clientSocket, (struct sockaddr*)&serverAddress,
             sizeof(serverAddress));
 
-    const char* message = "Salutatouslesamis";
+    const char* message = "EXIT\n";
     send(clientSocket, message, strlen(message), 0);
 
 	close(clientSocket);

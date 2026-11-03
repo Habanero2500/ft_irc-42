@@ -3,27 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 15:49:05 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/02 16:49:02 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-#include <cstring>
-#include <iostream>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
+#include "Client.hpp"
+#include "utils.hpp"
+
+extern bool DEBUG;
 
 class	Server
 {
 	private:
-	int						_fd;
-	struct sockaddr_in 		_adress;
+	int							_fd;
+	struct sockaddr_in 			_adress;
+	std::map<int, Client>		_clients;
+	std::vector<struct pollfd>	_listFd;
 	
 	public:
 	Server();
@@ -32,7 +33,14 @@ class	Server
 	~Server();
 
 	void	initServerAdress(int port);
-	void	receiveData();
+	void	pollLoop();
+	void	checkEvents(size_t *i);
+	void	setNewClient();
+	void	receiveCommunication(size_t *i ,int fd);
+	void	deleteClient(size_t *i, int fd);
+	void	parsingBuffer(int fd);
+	void	executeCommand(int fd, const std::string &line);
+
 	
 };
 #endif
