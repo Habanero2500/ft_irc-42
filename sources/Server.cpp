@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/03 18:06:15 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/03 18:18:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,9 @@ void	Server::initCommands(void) {
 	_commandMap["PASS"] = &Server::handlePass;
 	_commandMap["NICK"] = &Server::handleNick;
 	_commandMap["USER"] = &Server::handleUser;
-	_commandMap["PING"] = &Server::handlePing;
-	_commandMap["QUIT"] = &Server::handleQuit;
-	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
+	// _commandMap["PING"] = &Server::handlePing;
+	// _commandMap["QUIT"] = &Server::handleQuit;
+	// _commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 }
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
@@ -186,4 +186,22 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 		(void)ERR_UNKNOWNCOMMAND(command);//No match found
 		return ;
 	}
+}
+void	Server::handlePass(Client &client, const Message& msg)
+{
+	(void)client;
+	(void)msg;
+	std::cout << "Pass ok" << std::endl;
+}
+void	Server::handleNick(Client &client, const Message& msg)
+{
+	(void)client;
+	(void)msg;
+	std::cout << "Nick ok" << std::endl;
+}
+void	Server::handleUser(Client &client, const Message& msg)
+{
+	(void)client;
+	(void)msg;
+	std::cout << "User ok" << std::endl;
 }

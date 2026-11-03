@@ -6,7 +6,7 @@
 #    By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/11/03 15:43:06 by jmetayer         ###   ########.fr        #
+#    Updated: 2026/11/03 18:22:50 by jmetayer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = c++
 FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
 RM = rm -rf
 
-SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp ./sources/utils.cpp 
+SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp ./sources/utils.cpp ./sources/Message.cpp
 OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 DEPS = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.d))
 
