@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 14:40:12 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 15:54:03 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	Server::checkEvents(size_t *i)
 {
 	if (_listFd[*i].revents & (POLLERR | POLLHUP | POLLNVAL))
 	{
-		deleteClient(i, _listFd[*i].fd);
+		deleteClient(_listFd[*i].fd);
 		return ;
 	}
 	if (_listFd[*i].revents & POLLIN)
@@ -92,7 +92,7 @@ void	Server::checkEvents(size_t *i)
 		if (_listFd[*i].fd == _fd)
 			setNewClient();
 		else
-			receiveCommunication(i, _listFd[*i].fd);
+			receiveCommunication(_listFd[*i].fd);
 	}
 }
 
@@ -120,7 +120,7 @@ void	Server::setNewClient()
 	_clients[newClient.getFd()] = newClient;
 }
 
-void	Server::receiveCommunication(size_t *i, int fd)
+void	Server::receiveCommunication(int fd)
 {
 	int		bits;
 	char	buffer[1024] = { 0 };
@@ -136,22 +136,28 @@ void	Server::receiveCommunication(size_t *i, int fd)
 			std::cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
 			if (_clients[fd].getBuffer() == "EXIT\n")
 			{
-				deleteClient(i, fd);
+				deleteClient(fd);
 				close(_fd);
 				exit (1);
 			}
 		}
 	}
 	else if (bits == 0 || bits == -1)
-		deleteClient(i, fd);
+		deleteClient(fd);
 }
 
-void	Server::deleteClient(size_t *i, int fd)
+void	Server::deleteClient(int fd)
 {
 	close(fd);
 	_clients.erase(fd);
-	_listFd.erase(_listFd.begin() + *i);
-	(*i)--;
+	for (std::vector<struct pollfd>::iterator it = _listFd.begin(); it != _listFd.end(); it++)
+	{
+		if (it->fd == fd)
+		{
+			_listFd.erase(it);
+			return ;
+		}
+	}
 }
 
 

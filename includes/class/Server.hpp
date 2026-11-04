@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/03 18:09:55 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 15:50:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ class	Server
 		void	pollLoop();
 		void	checkEvents(size_t *i);
 		void	setNewClient();
-		void	receiveCommunication(size_t *i ,int fd);
-		void	deleteClient(size_t *i, int fd);
+		void	receiveCommunication(int fd);
+		void	deleteClient(int fd);
 		void	parsingBuffer(int fd);
 		void	executeCommand(int fd, const std::string &line);
 		//Command Map Functions
