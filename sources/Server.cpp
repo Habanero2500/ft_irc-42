@@ -6,11 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/30 15:34:39 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 14:40:12 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Server.hpp"
+#include "../includes/class/Server.hpp"
 
 // **** ORTHODOX CANONICAL FORM ****
 
@@ -20,9 +20,9 @@ Server::Server()
 		throw std::runtime_error("SERVER: Socket failure");
 }
 
-Server::Server(const Server &copy) : _fd(copy._fd){}
+Server::Server(const Server &copy) : _fd(copy._fd){}//A regler
 
-Server	&Server::operator=(const Server &copy)
+Server	&Server::operator=(const Server &copy)//A regler
 {
     if(this != &copy)
     {
@@ -31,18 +31,15 @@ Server	&Server::operator=(const Server &copy)
     return *this;
 }
 
-
 Server::~Server()
 {
 	std::cout << "destructor called" << std::endl;
 	close(_fd);
 }
 
+//********** SERVER INITIATION AND POLL LOOP ************
 
-
-//********** MAIN FUNCTIONS ************
-
-void	Server::initServerAdress(int port)
+void	Server::initServerAdress(int port, std::string pwd)
 {
 	int	opt = 1;
 
@@ -51,7 +48,9 @@ void	Server::initServerAdress(int port)
 	_adress.sin_family = AF_INET;
 	_adress.sin_addr.s_addr = INADDR_ANY;
 	_adress.sin_port = htons(port);
-
+	
+	_pwd = pwd;
+	
 	if (bind(_fd, (const sockaddr *)&_adress, sizeof(_adress)) == -1)
 		throw std::runtime_error("SERVER: Bind failure");
 	if (listen(_fd, 128) == -1)
@@ -77,9 +76,7 @@ void	Server::pollLoop()
 				throw std::runtime_error("SERVER: Poll failure");
 		}
 		for(size_t	i = 0; i < _listFd.size(); i++)
-		{
 			checkEvents(&i);
-		}
 	}
 }
 
@@ -157,8 +154,58 @@ void	Server::deleteClient(size_t *i, int fd)
 	(*i)--;
 }
 
+
+/******** COMMANDS PARSING AND GESTION  *******/
+
+
 void	Server::parsingBuffer(int fd)
 {
 	if (DEBUG)
 		std::cout << _clients[fd].getBuffer() << std::endl;
+}
+
+//Command Map Functions
+void	Server::initCommands(void) {
+	_commandMap["PASS"] = &Server::handlePass;
+	_commandMap["NICK"] = &Server::handleNick;
+	_commandMap["USER"] = &Server::handleUser;
+	// _commandMap["PING"] = &Server::handlePing;
+	// _commandMap["QUIT"] = &Server::handleQuit;
+	// _commandMap["PRIVMSG"] = &Server::handlePrivmsg;
+}
+
+void	Server::executeCommand(Client& client, const std::string& rawline) {
+	Message msg;
+	std::string	input = rawline;
+	msg.parsing(input);
+
+	std::string	command = msg.getParser().command;
+	if (command.empty())
+		return ;
+
+	std::map<std::string, CommandHandler>::iterator it = _commandMap.find(command);
+	if (it != _commandMap.end())
+		(this->*(it->second))(client, msg);
+	else {
+		(void)ERR_UNKNOWNCOMMAND(command);//No match found
+		return ;
+	}
+}
+void	Server::handlePass(Client &client, const Message& msg)
+{
+	(void)client;
+	(void)msg;
+	std::cout << "Pass ok" << std::endl;
+}
+void	Server::handleNick(Client &client, const Message& msg)
+{
+	(void)client;
+	(void)msg;
+	std::cout << "Nick ok" << std::endl;
+}
+void	Server::handleUser(Client &client, const Message& msg)
+{
+	(void)client;
+	(void)msg;
+	std::cout << "User ok" << std::endl;
 }

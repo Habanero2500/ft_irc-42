@@ -6,14 +6,13 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 14:50:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/26 16:31:07 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 14:23:13 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRC.hpp"
+#include "../includes/class/IRC.hpp"
 #include <iostream>
 
-//Test
 /**** ORTHODOX CANONICAL FORM AND CONSTRUCTORS ****/
 irc::irc(void){}
 
@@ -49,6 +48,9 @@ int irc::parsingPort(const std::string str)
     return (val);
     
 }
+
+int irc::getPort(void){return _port;}
+std::string irc::getPwd(){return _pwd;}
 
 int irc::parsingPwd(const std::string str) 
 {
