@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 16:00:54 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 17:35:56 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,24 +210,42 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 }
 void	Server::handlePass(Client &client, const Message& msg)
 {
-	(void)client;
-	(void)msg;
-	Parser test = msg.getParser();
-	
-	std::cout << "Pass ok" << std::endl;  
-	if(client.getAttempt() > 2)
+	Parser pars = msg.getParser();  
+	if(client.getAttempt() > 2) //Trop de tentatives
+	{
+		if(DEBUG)
+			std::cout << "Too much attempts" << std::endl;
 		deleteClient(client.getFd());
-	// if(client.getPass() == true)
-	// {
-	// 	(void)ERR_ALREADYREGISTRED(); // Est-ce que ca marche ??
-	// 	return;
-	// }
-	// else
-	// {
-	// 	if(msg.params == _pwd)
-		
-	// }
-		
+	}
+	if(client.getPass() == true) //pwd deja rentre
+  	{
+		if(DEBUG)
+			std::cout << "Already registered" << std::endl;
+        std::string message = ERR_ALREADYREGISTRED();
+        send(client.getFd(), message.c_str(), message.size(), 0);
+    	return;
+    }
+	if(pars.params.size() < 1) // pas d'arg
+	{
+		if(DEBUG)
+			std::cout << "Argument missing" << std::endl; 
+		std::string nick = "*";
+		std::string message = ERR_NEEDMOREPARAMS(nick, "PASS");
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return;
+	}
+	if(pars.params[0] != _pwd)
+	{
+		if(DEBUG)
+			std::cout << "Wrong password" << std::endl;
+		client.increaseAttempt();	
+	} 
+	else if(pars.params[0] == _pwd)
+	{
+		if(DEBUG)
+			std::cout << "PWD OK" << std::endl; 
+		client.setPass();	
+	}
 }
 void	Server::handleNick(Client &client, const Message& msg)
 {

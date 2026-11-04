@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 14:48:18 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 17:18:15 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@
 # define ERR_NOTREGISTERED() (":localhost 451 :You have not registered\r\n")
 
 // 461 ERR_NEEDMOREPARAMS
-# define ERR_NEEDMOREPARAMS(command) (":localhost 461 " + command + " :Not enough parameters\r\n")
+# define ERR_NEEDMOREPARAMS(nick, command) (std::string(":localhost 461 ") + nick + " " + command + " :Not enough parameters\r\n")
 
 // 462     ERR_ALREADYREGISTRED
-# define ERR_ALREADYREGISTRED() (":localhost 462 :You may not reregister\r\n")
+# define ERR_ALREADYREGISTRED(nick) (std::string(":localhost 462 ") + nick + " :You may not reregister\r\n")
 
 // 463     ERR_NOPERMFORHOST
 # define ERR_NOPERMFORHOST() (":localhost 463 :Your host isn't among the privileged\r\n")
