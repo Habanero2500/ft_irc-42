@@ -50,6 +50,10 @@ class Client{
 	std::string 	getUsername(void);
 	std::string 	getHostname(void);
 	std::string 	getRealName(void);
+	//Buffer Management
+	void			appendToSendBuffer(const std::string& data);
+	std::string		getSendBuffer(void) const;
+	bool			isSendBufferEmpty(void) const;
 
     private :
 
@@ -67,6 +71,8 @@ class Client{
 	bool                    _pass;
 	bool                    _nick;
 	bool                    _user;
+	//Buffer related fields
+	std::string	_sendBuffer;//Outgoing data that couldn't be send immediately
     
 };
 

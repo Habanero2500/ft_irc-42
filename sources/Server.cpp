@@ -20,8 +20,8 @@
 #include <unistd.h>
 #include <cstdlib>
 
-// **** ORTHODOX CANONICAL FORM ****
 
+// **** ORTHODOX CANONICAL FORM ****
 Server::Server()
 {
 	if ((_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
@@ -46,21 +46,18 @@ Server::~Server()
 	close(_fd);
 }
 
-
-
 //********** MAIN FUNCTIONS ************
-
 void	Server::initServerAdress(int port)
 {
 	int	opt = 1;
 
 	std::cout << WELCOME_MESSAGE << std::endl;
 	setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-	_adress.sin_family = AF_INET;
-	_adress.sin_addr.s_addr = INADDR_ANY;
-	_adress.sin_port = htons(port);
+	_address.sin_family = AF_INET;
+	_address.sin_addr.s_addr = INADDR_ANY;
+	_address.sin_port = htons(port);
 
-	if (bind(_fd, (const sockaddr *)&_adress, sizeof(_adress)) == -1)
+	if (bind(_fd, (const sockaddr *)&_address, sizeof(_address)) == -1)
 		throw std::runtime_error("SERVER: Bind failure");
 	if (listen(_fd, 128) == -1)
 		throw std::runtime_error("SERVER: Listen failure");
@@ -84,24 +81,22 @@ void	Server::pollLoop()
 			else
 				throw std::runtime_error("SERVER: Poll failure");
 		}
-		for(size_t	i = 0; i < _listFd.size(); i++)
-			checkEvents(&i);
+		checkEvents();
 	}
 }
 
-void	Server::checkEvents(size_t *i)
+void	Server::checkEvents(void)
 {
-	if (_listFd[*i].revents & (POLLERR | POLLHUP | POLLNVAL))
-	{
-		deleteClient(i, _listFd[*i].fd);
-		return ;
-	}
-	if (_listFd[*i].revents & POLLIN)
-	{
-		if (_listFd[*i].fd == _fd)
-			setNewClient();
-		else
-			receiveCommunication(i, _listFd[*i].fd);
+	for(size_t i = 0; i < _listFd.size(); i++) {
+		if (_listFd[i].revents & (POLLERR | POLLHUP | POLLNVAL))
+			return (deleteClient(i, _listFd[i].fd));
+		if (_listFd[i].revents & POLLIN)
+		{
+			if (_listFd[i].fd == _fd)
+				setNewClient();
+			else
+				receiveCommunication(i, _listFd[i].fd);
+		}
 	}
 }
 
@@ -129,7 +124,7 @@ void	Server::setNewClient()
 	_clients[newClient.getFd()] = newClient;
 }
 
-void	Server::receiveCommunication(size_t *i, int fd)
+void	Server::receiveCommunication(size_t i, int fd)
 {
 	int		bits;
 	char	buffer[1024] = { 0 };
@@ -147,7 +142,7 @@ void	Server::receiveCommunication(size_t *i, int fd)
 			{
 				deleteClient(i, fd);
 				close(_fd);
-				exit (1);
+				exit (1);//A voir pour le leaks etc
 			}
 		}
 	}
@@ -155,12 +150,12 @@ void	Server::receiveCommunication(size_t *i, int fd)
 		deleteClient(i, fd);
 }
 
-void	Server::deleteClient(size_t *i, int fd)
+void	Server::deleteClient(size_t i, int fd)
 {
 	close(fd);
 	_clients.erase(fd);
-	_listFd.erase(_listFd.begin() + *i);
-	(*i)--;
+	_listFd.erase(_listFd.begin() + i);
+	--i;//Necessaire?
 }
 
 void	Server::parsingBuffer(int fd)
@@ -194,5 +189,40 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	else {
 		(void)ERR_UNKNOWNCOMMAND(command);//No match found
 		return ;
+	}
+}
+
+//Message Transmission
+void	Server::saveOrSend(Client& client, const std::string& data) {
+	if (!client.isSendBufferEmpty()) {//when _sendBuffer not empty
+		client.appendToSendBuffer(data);
+		enablePollout(client.getFd());
+		return ;
+	}
+	size_t bytesSent = send(client.getFd(), data.c_str(), data.size(), 0);
+	if (bytesSent >= 0 && bytesSent == data.size())
+		return ;//Everything was sent
+	if (bytesSent > 0)
+		client.appendToSendBuffer(data.substr(bytesSent));//Partial sent
+	else
+		client.appendToSendBuffer(data);//Nothing was sent
+	enablePollout(client.getFd());
+}
+
+void	Server::enablePollout(int clientFd) {
+	for (size_t i = 0; i < _listFd.size(); ++i) {
+		if (clientFd == _listFd[i].fd) {
+			_listFd[i].events |= POLLOUT;
+			return ;
+		}
+	}
+}
+
+void	Server::disablePollout(int clientFd) {
+	for (size_t i = 0; i < _listFd.size(); ++i) {
+		if (clientFd == _listFd[i].fd) {
+			_listFd[i].events |= POLLIN;
+			return ;
+		}
 	}
 }

@@ -38,19 +38,23 @@ class	Server
 
 		void	initServerAdress(int port);
 		void	pollLoop();
-		void	checkEvents(size_t *i);
+		void	checkEvents(void);//Modifie
 		void	setNewClient();
-		void	receiveCommunication(size_t *i ,int fd);
-		void	deleteClient(size_t *i, int fd);
+		void	receiveCommunication(size_t i ,int fd);//Modifie
+		void	deleteClient(size_t i, int fd);//Modifie
 		void	parsingBuffer(int fd);
 		void	executeCommand(int fd, const std::string &line);
 		//Command Map Functions
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);
+		//Message transmission
+		void	saveOrSend(Client& client, const std::string& data);
+		void	enablePollout(int clientFd);
+		void	disablePollout(int clientFd);
 
 	private:
 		int					_fd;
-		struct sockaddr_in 			_adress;
+		struct sockaddr_in 			_address;
 		std::map<int, Client>			_clients;
 		std::map<std::string, CommandHandler> 	_commandMap;
 		std::vector<struct pollfd>		_listFd;

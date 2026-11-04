@@ -103,3 +103,16 @@ void	Client::initClientAdress(int port)
 	_adress.sin_addr.s_addr = INADDR_ANY;
 	_adress.sin_port = htons(port);
 }
+
+//Buffer Management
+void	Client::appendToSendBuffer(const std::string& data) {
+	_sendBuffer += data;
+}
+
+std::string	Client::getSendBuffer(void) const {
+	return (_sendBuffer);
+}
+
+bool	Client::isSendBufferEmpty(void) const {
+	return (_sendBuffer.empty());
+}
