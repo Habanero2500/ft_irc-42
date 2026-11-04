@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 14:24:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 14:40:12 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ Server::~Server()
 	close(_fd);
 }
 
-//********** MAIN FUNCTIONS ************
+//********** SERVER INITIATION AND POLL LOOP ************
 
 void	Server::initServerAdress(int port, std::string pwd)
 {
@@ -153,6 +153,10 @@ void	Server::deleteClient(size_t *i, int fd)
 	_listFd.erase(_listFd.begin() + *i);
 	(*i)--;
 }
+
+
+/******** COMMANDS PARSING AND GESTION  *******/
+
 
 void	Server::parsingBuffer(int fd)
 {
