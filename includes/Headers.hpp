@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 13:44:34 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/30 15:31:43 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/03 13:20:43 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 #include <poll.h>
 #include <sys/socket.h>
 #include <fcntl.h>
+
+/*** SIGNAUX ***/
+#include <csignal>
 
 /*** PERSO ***/
 #include "Colors.hpp"
