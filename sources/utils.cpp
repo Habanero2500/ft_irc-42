@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 15:38:52 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/03 15:47:22 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 14:24:18 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.hpp"
+#include "../includes/utils/utils.hpp"
 
 
 std::vector<std::string> split(const std::string& s, char delimiter) {

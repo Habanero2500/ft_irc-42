@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@learner.42.tech>        +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 16:54:51 by opapouts          #+#    #+#             */
-/*   Updated: 2026/10/26 16:54:53 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/04 14:25:53 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 #define START 0//Pas sur de ces defines
 #define	CRLF 2
 #define	OFFSET 2
-#include <string>
-#include <vector>
+#include "../utils/Headers.hpp"
 
 //[:prefix] <command> <param1> <param2> ... [:trailing] \r\n
 struct	Parser {

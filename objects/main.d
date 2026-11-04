@@ -1,13 +1,18 @@
-objects/main.o: sources/main.cpp sources/../includes/IRC.hpp \
- sources/../includes/Headers.hpp sources/../includes/Colors.hpp \
- sources/../includes/Replies.hpp sources/../includes/Server.hpp \
- sources/../includes/Client.hpp sources/../includes/Message.hpp \
- sources/../includes/Client.hpp
-sources/../includes/IRC.hpp:
-sources/../includes/Headers.hpp:
-sources/../includes/Colors.hpp:
-sources/../includes/Replies.hpp:
-sources/../includes/Server.hpp:
-sources/../includes/Client.hpp:
-sources/../includes/Message.hpp:
-sources/../includes/Client.hpp:
+objects/main.o: sources/main.cpp sources/../includes/class/IRC.hpp \
+ sources/../includes/class/../utils/Headers.hpp \
+ sources/../includes/class/../utils/Colors.hpp \
+ sources/../includes/class/../utils/Replies.hpp \
+ sources/../includes/class/../utils/Headers.hpp \
+ sources/../includes/class/Server.hpp \
+ sources/../includes/class/Client.hpp \
+ sources/../includes/class/Message.hpp \
+ sources/../includes/class/Client.hpp
+sources/../includes/class/IRC.hpp:
+sources/../includes/class/../utils/Headers.hpp:
+sources/../includes/class/../utils/Colors.hpp:
+sources/../includes/class/../utils/Replies.hpp:
+sources/../includes/class/../utils/Headers.hpp:
+sources/../includes/class/Server.hpp:
+sources/../includes/class/Client.hpp:
+sources/../includes/class/Message.hpp:
+sources/../includes/class/Client.hpp:

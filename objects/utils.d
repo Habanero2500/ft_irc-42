@@ -1,7 +1,8 @@
-objects/utils.o: sources/utils.cpp sources/../includes/utils.hpp \
- sources/../includes/Headers.hpp sources/../includes/Colors.hpp \
- sources/../includes/Replies.hpp
-sources/../includes/utils.hpp:
-sources/../includes/Headers.hpp:
-sources/../includes/Colors.hpp:
-sources/../includes/Replies.hpp:
+objects/utils.o: sources/utils.cpp sources/../includes/utils/utils.hpp \
+ sources/../includes/utils/Headers.hpp \
+ sources/../includes/utils/Colors.hpp \
+ sources/../includes/utils/Replies.hpp
+sources/../includes/utils/utils.hpp:
+sources/../includes/utils/Headers.hpp:
+sources/../includes/utils/Colors.hpp:
+sources/../includes/utils/Replies.hpp:

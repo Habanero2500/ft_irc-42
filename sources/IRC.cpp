@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 14:50:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/03 18:03:04 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 14:23:13 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRC.hpp"
+#include "../includes/class/IRC.hpp"
 #include <iostream>
 
 /**** ORTHODOX CANONICAL FORM AND CONSTRUCTORS ****/

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/03 17:43:20 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 14:23:29 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRC.hpp"
-#include "../includes/Server.hpp"
-#include "../includes/Client.hpp"
+#include "../includes/class/IRC.hpp"
+#include "../includes/class/Server.hpp"
+#include "../includes/class/Client.hpp"
 #include <stdlib.h>
 
 #ifdef DEBUG_MODE
