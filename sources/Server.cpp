@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 13:39:39 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 15:32:33 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,9 +202,11 @@ void	Server::handlePass(Client &client, const Message& msg)
 {
 	(void)client;
 	(void)msg;
+	Parser test = msg.getParser();
+	
 	std::cout << "Pass ok" << std::endl;  
 	// if(client.getAttempt() > 2)
-		//deleteClient(client.get le numero du client, fd);
+		// deleteClient(client.get le numero du client, fd);
 	// if(client.getPass() == true)
 	// {
 	// 	(void)ERR_ALREADYREGISTRED(); // Est-ce que ca marche ??

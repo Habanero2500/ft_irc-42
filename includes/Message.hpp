@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@learner.42.tech>        +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 16:54:51 by opapouts          #+#    #+#             */
-/*   Updated: 2026/10/26 16:54:53 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/04 15:17:45 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ class	Message {
 		void		parsePrefix(std::string& input);
 		void		parseCommand(std::string& input);
 		void		parseParams(std::string& input);
-		//Getter
-		Parser		getParser(void) const;
+		//Getter and setters
+		Parser						getParser(void) const;
+
 	private	:
 		Parser	_parser;
 

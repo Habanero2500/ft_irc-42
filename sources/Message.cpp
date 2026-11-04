@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@learner.42.tech>        +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 16:55:12 by opapouts          #+#    #+#             */
-/*   Updated: 2026/10/26 16:55:13 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/04 15:17:50 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	Message::parsing(std::string& input) {
 	parseParams(input);
 }
 
-//Getter
+//Getters and setters
 Parser	Message::getParser(void) const {
 	return (_parser);
 }
