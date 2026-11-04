@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/03 18:18:39 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 13:39:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Server::Server()
 {
 	if ((_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		throw std::runtime_error("SERVER: Socket failure");
+	initCommands();
 }
 
 Server::Server(const Server &copy) : _fd(copy._fd){}//A regler
@@ -129,8 +130,6 @@ void	Server::receiveCommunication(size_t *i, int fd)
 	if (bits > 0)
 	{
 		_clients[fd].addBuffer(buffer);
-		if (_clients[fd].getBuffer().find_first_not_of("\r\n") != std::string::npos)
-			parsingBuffer(fd);
 		if (DEBUG)
 		{
 			std::cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
@@ -141,7 +140,8 @@ void	Server::receiveCommunication(size_t *i, int fd)
 				exit (1);
 			}
 		}
-	}
+		parsingBuffer(fd);
+	}	
 	else if (bits == 0 || bits == -1)
 		deleteClient(i, fd);
 }
@@ -154,10 +154,21 @@ void	Server::deleteClient(size_t *i, int fd)
 	(*i)--;
 }
 
-void	Server::parsingBuffer(int fd)
+void	Server::parsingBuffer(int fd) // 
 {
-	if (DEBUG)
-		std::cout << _clients[fd].getBuffer() << std::endl;
+	Client		&client = _clients[fd];
+	std::string	buf = client.getBuffer();
+	size_t		pos;
+
+	while ((pos = buf.find('\n')) != std::string::npos)
+	{
+		std::string line = buf.substr(0, pos);
+		buf.erase(0, pos + 1);
+		if (!line.empty() && line[line.size() - 1] == '\r')
+			line.erase(line.size() - 1);
+		if (!line.empty())
+			executeCommand(client, line);
+	}
 }
 
 //Command Map Functions
@@ -191,7 +202,20 @@ void	Server::handlePass(Client &client, const Message& msg)
 {
 	(void)client;
 	(void)msg;
-	std::cout << "Pass ok" << std::endl;
+	std::cout << "Pass ok" << std::endl;  
+	// if(client.getAttempt() > 2)
+		//deleteClient(client.get le numero du client, fd);
+	// if(client.getPass() == true)
+	// {
+	// 	(void)ERR_ALREADYREGISTRED(); // Est-ce que ca marche ??
+	// 	return;
+	// }
+	// else
+	// {
+	// 	if(msg.params == _pwd)
+		
+	// }
+		
 }
 void	Server::handleNick(Client &client, const Message& msg)
 {
