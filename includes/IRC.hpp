@@ -13,47 +13,47 @@
 #ifndef IRC_HPP
 #define IRC_HPP
 
-#include "Headers.hpp"
+#include <string>
 
 class irc {
 
-    public	: 
+	public	: 
 
     // **** ORTHODOX CANONICAL FORM ****
-    irc(void);
-    irc(const irc& copy);
-    irc& operator = (const irc& copy);
-    ~irc(void);
+	irc(void);
+	irc(const irc& copy);
+	irc& operator = (const irc& copy);
+	~irc(void);
 
     // **** USEFUL CONSTRUCTOR ****
-   irc(const char* port, const char* pwd);
+	irc(const char* port, const char* pwd);
 
     // **** PARSING ****
-    int parsingPort(const std::string str) ;
-    int parsingPwd(const std::string str) ;
+	int parsingPort(const std::string str) ;
+	int parsingPwd(const std::string str) ;
 
     //**** EXEC ****
-    void exec(int val, std::string pwd);
+	void exec(int val, std::string pwd);
     
     //****EXCEPTIONS ****
-    class	pwdEmptyException : public std::exception { 
+	class	pwdEmptyException : public std::exception { 
 		public	: 
 			virtual const char *what() const throw();
     };
-    class	valueException : public std::exception {
+	class	valueException : public std::exception {
 		public : 
 			virtual const char *what() const throw();
     };
 
-    class	notANumberException : public std::exception {
+	class	notANumberException : public std::exception {
 		public : 
 			virtual const char *what() const throw();
     };
 
     private	: 
     
-    int _port;
-    std::string _pwd; 
+	int _port;
+	std::string _pwd; 
     
 };
 

@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
+#include "../includes/Replies.hpp"
+#include "../includes/Client.hpp"
+#include "../includes/Message.hpp"
+#include "../includes/Colors.hpp"
+#include <fcntl.h>
+#include <iostream>
+#include <unistd.h>
+#include <cstdlib>
 
 // **** ORTHODOX CANONICAL FORM ****
 
@@ -162,14 +170,14 @@ void	Server::parsingBuffer(int fd)
 }
 
 //Command Map Functions
-void	Server::initCommands(void) {
+/*void	Server::initCommands(void) {
 	_commandMap["PASS"] = &Server::handlePass;
 	_commandMap["NICK"] = &Server::handleNick;
 	_commandMap["USER"] = &Server::handleUser;
 	_commandMap["PING"] = &Server::handlePing;
 	_commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
-}
+}*/
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
 	Message msg;

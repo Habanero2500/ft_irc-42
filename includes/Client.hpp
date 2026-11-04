@@ -13,7 +13,9 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "Headers.hpp"
+#include <string>
+#include <poll.h>
+#include <netinet/in.h>
 
 extern bool DEBUG;
 
@@ -23,52 +25,49 @@ class Client{
     
 
     // **** ORTHODOX CANONICAL FORM ****
-    Client (void);
-    ~Client (void);
-    Client(const Client& copy);
-    Client& operator=(const Client& copy);
+	Client (void);
+	~Client (void);
+	Client(const Client& copy);
+	Client& operator=(const Client& copy);
 
 	void	initClientAdress(int port);
 
     //**** SETTERS AND GETTERS ****
-    void 			setNickname(std::string name);
-    void 			setUsername(std::string name);
-    void 			setHostname(std::string name);
-    void 			setRealName(std::string name);
-    void 			setID(std::string ID);
-    void 			setFd(int i);
+	void 			setNickname(std::string name);
+	void 			setUsername(std::string name);
+	void 			setHostname(std::string name);
+	void 			setRealName(std::string name);
+	void 			setID(std::string ID);
+	void 			setFd(int i);
 	void 			setPollFd();
 	void 			addBuffer(char buffer[1024]);
-    std::string 	getName(void);
-    std::string 	getID(void);
-    int 			getFd(void);
+	std::string 	getName(void);
+	std::string 	getID(void);
+	int 			getFd(void);
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
-    std::string 	getNickname(void); 
-    std::string 	getUsername(void);
-    std::string 	getHostname(void);
-    std::string 	getRealName(void);
-    
+	std::string 	getNickname(void); 
+	std::string 	getUsername(void);
+	std::string 	getHostname(void);
+	std::string 	getRealName(void);
+
     private :
 
-    std::string 			_nickname;
-    std::string				_username;
-    std::string				_hostname;
-    std::string				_realname;
+	std::string 			_nickname;
+	std::string				_username;
+	std::string				_hostname;
+	std::string				_realname;
     
-    std::string				_ID;
-    int 				_fd;
+	std::string				_ID;
+	int 				_fd;
 	struct sockaddr_in 		_adress;
 	struct pollfd			_pollFd;
 	std::string				_buffer;
 
-    bool                    _pass;
-    bool                    _nick;
-    bool                    _user;
+	bool                    _pass;
+	bool                    _nick;
+	bool                    _user;
     
 };
-
-
-
 
 #endif

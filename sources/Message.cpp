@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/Message.hpp"
+#include <cstdlib>
 
 //Orthodox Canonical Form
 Message::Message(void) {

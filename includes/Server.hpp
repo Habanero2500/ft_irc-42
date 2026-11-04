@@ -13,10 +13,15 @@
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-#include "Client.hpp"
-#include "Message.hpp"
+#include <string>
+#include <map>
+#include <vector>
+#include <netinet/in.h>
 
-class	Server;//Forward declaration for the typedef below
+//Forward declarations
+class	Message;
+class	Client;
+class	Server;
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 
 extern bool DEBUG;

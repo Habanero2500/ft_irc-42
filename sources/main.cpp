@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRC.hpp"
 #include "../includes/Server.hpp"
 #include "../includes/Client.hpp"
+#include "../includes/Replies.hpp"
 #include <stdlib.h>
 
 #ifdef DEBUG_MODE

@@ -16,7 +16,7 @@ CC = c++
 FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
 RM = rm -rf
 
-SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp
+SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp ./sources/Message.cpp
 OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 DEPS = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.d))
 
