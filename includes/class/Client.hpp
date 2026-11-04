@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/04 14:25:43 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 17:19:46 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Client{
     void            setPass(void);
     void            setNick(void);
     void            setUser(void);
+	void    		setBuffer(std::string Newbuffer);
 	void 			addBuffer(char buffer[1024]);
     std::string 	getName(void);
     std::string 	getID(void);

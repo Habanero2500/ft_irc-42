@@ -6,11 +6,12 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 16:00:54 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/04 18:03:54 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Server.hpp"
+#include "../includes/utils/Debug.hpp"
 
 // **** ORTHODOX CANONICAL FORM ****
 
@@ -179,6 +180,7 @@ void	Server::parsingBuffer(int fd)
 		if (!line.empty())
 			executeCommand(client, line);
 	}
+	client.setBuffer(buf);
 }
 
 //Command Map Functions
@@ -212,29 +214,59 @@ void	Server::handlePass(Client &client, const Message& msg)
 {
 	(void)client;
 	(void)msg;
-	Parser test = msg.getParser();
 	
 	std::cout << "Pass ok" << std::endl;  
 	if(client.getAttempt() > 2)
 		deleteClient(client.getFd());
-	// if(client.getPass() == true)
-	// {
-	// 	(void)ERR_ALREADYREGISTRED(); // Est-ce que ca marche ??
-	// 	return;
-	// }
-	// else
-	// {
-	// 	if(msg.params == _pwd)
-		
-	// }
-		
 }
 void	Server::handleNick(Client &client, const Message& msg)
 {
-	(void)client;
-	(void)msg;
-	std::cout << "Nick ok" << std::endl;
+	Parser	line = msg.getParser();
+	
+	std::string	Nickname = parsingNick(client, line);
+	if ((Nickname.empty()))
+		return;
+
+	client.setNickname(Nickname);
+	client.setNick();
+	if (DEBUG)
+		std::cout << formatDebugBuffer(client.getNickname()) << std::endl;
+	std::string message = "Nick ok\r\n";
+    send(client.getFd(), message.c_str(), message.size(), 0);
+		
 }
+
+std::string	Server::parsingNick(Client &client, const Parser &line)
+{
+	if (line.params.size() == 0)
+	{
+		std::string message = ERR_NONICKNAMEGIVEN();
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return "";
+	}
+	
+	std::string	NicknameGiven = *(line.params.begin());
+
+	if (NicknameGiven.find_first_of("@!#:*\f\r\t\n\v ") != std::string::npos 
+		|| NicknameGiven.size() > 9)
+	{
+		std::string message = ERR_ERRONEUSNICKNAME(NicknameGiven);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return "";
+	}
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	{
+		if (it->second.getNickname() == NicknameGiven)
+		{
+			std::string message = ERR_NICKNAMEINUSE(NicknameGiven);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
+			return "";
+		}
+	}
+	return (NicknameGiven);
+}
+
+
 void	Server::handleUser(Client &client, const Message& msg)
 {
 	(void)client;
