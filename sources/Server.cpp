@@ -88,8 +88,10 @@ void	Server::pollLoop()
 void	Server::checkEvents(void)
 {
 	for(size_t i = 0; i < _listFd.size(); i++) {
-		if (_listFd[i].revents & (POLLERR | POLLHUP | POLLNVAL))
-			return (deleteClient(i, _listFd[i].fd));
+		if (_listFd[i].revents & (POLLERR | POLLHUP | POLLNVAL)) {
+			deleteClient(i, _listFd[i].fd);
+			continue ;
+		}
 		if (_listFd[i].revents & POLLIN)
 		{
 			if (_listFd[i].fd == _fd)
@@ -97,6 +99,8 @@ void	Server::checkEvents(void)
 			else
 				receiveCommunication(i, _listFd[i].fd);
 		}
+		if (i< _listFd.size() && (_listFd[i].revents & POLLOUT))
+			sendPendingData(i, _listFd[i].fd);
 	}
 }
 
@@ -196,11 +200,10 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 void	Server::saveOrSend(Client& client, const std::string& data) {
 	if (!client.isSendBufferEmpty()) {//when _sendBuffer not empty
 		client.appendToSendBuffer(data);
-		enablePollout(client.getFd());
-		return ;
+		return (enablePollout(client.getFd()));
 	}
-	size_t bytesSent = send(client.getFd(), data.c_str(), data.size(), 0);
-	if (bytesSent >= 0 && bytesSent == data.size())
+	ssize_t bytesSent = send(client.getFd(), data.c_str(), data.size(), 0);
+	if (bytesSent >= 0 && static_cast<size_t>(bytesSent) == data.size())
 		return ;//Everything was sent
 	if (bytesSent > 0)
 		client.appendToSendBuffer(data.substr(bytesSent));//Partial sent
@@ -221,8 +224,34 @@ void	Server::enablePollout(int clientFd) {
 void	Server::disablePollout(int clientFd) {
 	for (size_t i = 0; i < _listFd.size(); ++i) {
 		if (clientFd == _listFd[i].fd) {
-			_listFd[i].events |= POLLIN;
+			_listFd[i].events &= ~POLLOUT;
 			return ;
 		}
 	}
 }
+
+void	Server::sendPendingData(size_t i, int fd) {
+	Client &client = _clients[fd];
+	std::string &buffer = client.getSendBuffer();
+
+	if (!buffer.empty()) {
+		ssize_t bytes = send(fd, buffer.c_str(), buffer.size(), 0);
+		if (bytes > 0)
+			buffer.erase(0, bytes);
+		else if (bytes == -1) {
+			deleteClient(i, fd);
+			return ;
+		}
+	}
+	if (buffer.empty())
+		disablePollout(fd);
+}
+
+//PRIVMSG <receiver> :<text to be sent>
+void	Server::handlePrivmsg(Client &client, const Message& msg) {
+	//Il faut verifier si le client est registered. Si non err 451
+	if (1) {//a modifier
+	      (void)ERR_NOTREGISTERED();
+		return ;
+	}
+

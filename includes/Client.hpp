@@ -22,7 +22,6 @@ extern bool DEBUG;
 class Client{
   
     public :
-    
 
     // **** ORTHODOX CANONICAL FORM ****
 	Client (void);
@@ -50,9 +49,9 @@ class Client{
 	std::string 	getUsername(void);
 	std::string 	getHostname(void);
 	std::string 	getRealName(void);
-	//Buffer Management
+	//Send Buffer Management
 	void			appendToSendBuffer(const std::string& data);
-	std::string		getSendBuffer(void) const;
+	std::string&		getSendBuffer(void);
 	bool			isSendBufferEmpty(void) const;
 
     private :

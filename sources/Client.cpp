@@ -109,7 +109,7 @@ void	Client::appendToSendBuffer(const std::string& data) {
 	_sendBuffer += data;
 }
 
-std::string	Client::getSendBuffer(void) const {
+std::string&	Client::getSendBuffer(void) {
 	return (_sendBuffer);
 }
 

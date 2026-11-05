@@ -51,6 +51,7 @@ class	Server
 		void	saveOrSend(Client& client, const std::string& data);
 		void	enablePollout(int clientFd);
 		void	disablePollout(int clientFd);
+		void	sendPendingData(size_t i, int fd);
 
 	private:
 		int					_fd;
