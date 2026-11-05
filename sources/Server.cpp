@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/04 17:35:56 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/05 12:37:46 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ void	Server::handlePass(Client &client, const Message& msg)
 		if(DEBUG)
 			std::cout << "Too much attempts" << std::endl;
 		deleteClient(client.getFd());
+		return;
 	}
 	if(client.getPass() == true) //pwd deja rentre
   	{
@@ -238,13 +239,15 @@ void	Server::handlePass(Client &client, const Message& msg)
 	{
 		if(DEBUG)
 			std::cout << "Wrong password" << std::endl;
-		client.increaseAttempt();	
+		client.increaseAttempt();
+		return;	
 	} 
 	else if(pars.params[0] == _pwd)
 	{
 		if(DEBUG)
 			std::cout << "PWD OK" << std::endl; 
-		client.setPass();	
+		client.setPass();
+		return;	
 	}
 }
 void	Server::handleNick(Client &client, const Message& msg)
