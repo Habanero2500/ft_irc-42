@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:29:25 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 14:32:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,9 +207,8 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 		(this->*(it->second))(client, msg);
 	else 
 	{
-		
-		std::string message = ERR_UNKNOWNCOMMAND(command);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+		// std::string message = ERR_UNKNOWNCOMMAND(command);
+        // send(client.getFd(), message.c_str(), message.size(), 0);
 		return ;
 	}
 }
@@ -235,7 +234,8 @@ void	Server::handlePass(Client &client, const Message& msg)
 	{
 		if(DEBUG)
 			std::cout << "Argument missing" << std::endl; 
-		std::string message = ERR_NEEDMOREPARAMS(nick, "PASS");
+		std::string msg = "PASS";
+		std::string message = ERR_NEEDMOREPARAMS(msg);
         send(client.getFd(), message.c_str(), message.size(), 0);
 		return;
 	}
