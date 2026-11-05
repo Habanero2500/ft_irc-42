@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/04 17:19:46 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 15:56:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ class Client{
     bool            getPass(void);
     bool            getNick(void);
     bool            getUser(void);
+	int             getNumberChannels(void);
 
     //**** OTHERS ****
     
     void increaseAttempt(void);
+	void increaseNumberChannels(void);
     
     private :
 
@@ -78,6 +80,8 @@ class Client{
     bool                    _nick;
     bool                    _user;
     int                     _attempt;     
+
+	int						_channelsJoined;
 };
 
 

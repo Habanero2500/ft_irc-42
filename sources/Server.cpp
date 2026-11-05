@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:47:00 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 16:25:00 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ void	Server::initCommands(void) {
 	// _commandMap["PING"] = &Server::handlePing;
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	// _commandMap["PRIVMSG"] = &Server::handlePrivmsg;
+	_commandMap["JOIN"] = &Server::handleJoin;
 }
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
@@ -267,8 +268,7 @@ void	Server::handleNick(Client &client, const Message& msg)
 	if (DEBUG)
 		std::cout << formatDebugBuffer(client.getNickname()) << std::endl;
 	std::string message = "Nick ok\r\n";
-    send(client.getFd(), message.c_str(), message.size(), 0);
-		
+	send(client.getFd(), message.c_str(), message.size(), 0);
 }
 
 std::string	Server::parsingNick(Client &client, const Parser &line)
@@ -283,7 +283,8 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	std::string	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
-		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-')
+		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-'
+		|| NicknameGiven.size() < 1)
 	{
 		std::string message = ERR_ERRONEUSNICKNAME(NicknameGiven);
         send(client.getFd(), message.c_str(), message.size(), 0);
@@ -307,4 +308,58 @@ void	Server::handleUser(Client &client, const Message& msg)
 	(void)client;
 	(void)msg;
 	std::cout << "User ok" << std::endl;
+}
+
+
+
+void	Server::handleJoin(Client &client, const Message& msg)
+{
+	Parser	line = msg.getParser();
+	std::string	ChannelName = parsingChannelName(client, line);
+	if ((ChannelName.empty()))
+		return;
+	
+	if (client.getNumberChannels() > 10)
+	{
+		std::string message = ERR_TOOMANYCHANNELS(ChannelName);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+	}
+	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+	{
+		if (it->second.getName() == ChannelName)
+		{
+			joinChannel(client, ChannelName);
+			return ;
+		}
+	}
+	createChannel(client, ChannelName);
+}
+
+std::string	Server::parsingChannelName(Client &client, const Parser &line)
+{
+	if (line.params.size() == 0)
+	{
+		std::string command = "JOIN";
+		std::string message = ERR_NEEDMOREPARAMS(command);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return "";
+	}
+	std::string	ChannelName = *(line.params.begin());
+
+	if (ChannelName[0] != '@' || ChannelName[0] != '#' || ChannelName.size() > 200
+		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
+	{
+		std::string message = ERR_NOSUCHCHANNEL(ChannelName);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return "";
+	}
+	return (ChannelName);
+}
+
+void	Server::createChannel(Client &client, std::string channelName)
+{
+	Channel	newChannel(channelName);
+
+	newChannel.addMember(client);
+	_channels[channelName] = newChannel;
 }

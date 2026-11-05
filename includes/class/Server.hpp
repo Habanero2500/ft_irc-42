@@ -6,15 +6,15 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:44:25 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 16:15:19 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-#include "Client.hpp"
 #include "Message.hpp"
+#include "Channel.hpp"
 
 
 #include <ctype.h>
@@ -30,12 +30,13 @@ extern bool DEBUG;
 class	Server
 {
 	private:
-	int							_fd;
-	struct sockaddr_in 			_adress;
-	std::map<int, Client>		_clients;
-	std::vector<struct pollfd>	_listFd;
-	std::string					_pwd;
-	int							_port;
+	int								_fd;
+	struct sockaddr_in 				_adress;
+	std::map<int, Client>			_clients;
+	std::map<std::string, Channel>	_channels;
+	std::vector<struct pollfd>		_listFd;
+	std::string						_pwd;
+	int								_port;
 	std::map<std::string, CommandHandler> 	_commandMap;
 	
 	public:
@@ -58,14 +59,20 @@ class	Server
 		void	executeCommand(Client& client, const std::string& rawline);
 
 		//Command Handlers
-		void	handlePass(Client &client, const Message& msg);
+		void		handlePass(Client &client, const Message& msg);
 		
 		void		handleNick(Client &client, const Message& msg);
 		std::string	parsingNick(Client &client, const Parser &line);
 		
-		void	handleUser(Client &client, const Message& msg);
+		void		handleUser(Client &client, const Message& msg);
 		// void	handlePing(Client &client, const Message& msg);
 		// void	handleQuit(Client &client, const Message& msg);
 		// void	handlePrivmsg(Client &client, const Message& msg);
+		
+		void		handleJoin(Client &client, const Message& msg);
+		std::string	parsingChannelName(Client &client, const Parser &line);
+		void		joinChannel(Client &client, std::string channelName);
+		void		createChannel(Client &client, std::string channelName);
+
 };
 #endif

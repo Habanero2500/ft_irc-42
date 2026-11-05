@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/04 17:20:02 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 15:56:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,42 +83,29 @@ void    Client::setUser(void)
         _user = true;
 }
 
-void    Client::setBuffer(std::string Newbuffer)
+void    		Client::setBuffer(std::string Newbuffer)
 {
 	_buffer = Newbuffer;
 }
 
-void Client::addBuffer(char buffer[1024])
+void			Client::addBuffer(char buffer[1024])
 {
 	_buffer.append(buffer);
 }
 
-std::string Client::getID(void)
-{
-    return _ID;
-}
-int Client::getFd(void)
-{
-    return _fd;
-}
-
-struct pollfd Client::getPollFd(void)
-{
-    return _pollFd;
-}
-
-std::string	Client::getBuffer(void)
-{
-    return (_buffer);
-}
+std::string		Client::getID(void){return _ID;}
+int				Client::getFd(void){return _fd;}
+struct pollfd	Client::getPollFd(void){return _pollFd;}
+std::string		Client::getBuffer(void){return (_buffer);}
 std::string 	Client::getNickname(void){return _nickname;}
 std::string 	Client::getUsername(void){return _username;}
 std::string 	Client::getHostname(void){return _hostname;}
 std::string 	Client::getRealName(void){return _realname;}
 int             Client::getAttempt(void){return _attempt;}
-bool             Client::getPass(void){return _pass;}
-bool             Client::getNick(void){return _nick;}
-bool             Client::getUser(void){return _user;}
+bool            Client::getPass(void){return _pass;}
+bool            Client::getNick(void){return _nick;}
+bool            Client::getUser(void){return _user;}
+int             Client::getNumberChannels(void){return _channelsJoined;}
 
 // **** OTHERS ****
 
