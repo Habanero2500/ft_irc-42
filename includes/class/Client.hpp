@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/04 14:25:43 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 15:04:50 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class Client{
     void 			setRealName(std::string name);
     void 			setID(std::string ID);
     void 			setFd(int i);
-	void 			setPollFd();
+	void 			setPollFd(void);
     void            setPass(void);
     void            setNick(void);
     void            setUser(void);
@@ -58,7 +58,12 @@ class Client{
 
     //**** OTHERS ****
     
-    void increaseAttempt(void);
+    void            increaseAttempt(void);
+    bool	        isRegistered(void);
+    void	        setRegistered(void);
+    bool	        shouldDisconnect(void);
+    void	        setToDisconnect(void);
+    void	        setBuffer(const std::string &s);
     
     private :
 
@@ -76,7 +81,10 @@ class Client{
     bool                    _pass;
     bool                    _nick;
     bool                    _user;
-    int                     _attempt;     
+    int                     _attempt;
+    
+    bool	                _registered;
+    bool	                _toDisconnect;
 };
 
 

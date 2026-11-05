@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 12:40:43 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/05 13:01:58 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class	Server
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);
 
+		
 		//Command Handlers
 		void	handlePass(Client &client, const Message& msg);
 		void	handleNick(Client &client, const Message& msg);
