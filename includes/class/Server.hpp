@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 12:40:43 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/05 13:33:02 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "Client.hpp"
 #include "Message.hpp"
 
+
+#include <ctype.h>
 class	Server;//Forward declaration for the typedef below
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 
@@ -53,7 +55,10 @@ class	Server
 
 		//Command Handlers
 		void	handlePass(Client &client, const Message& msg);
-		void	handleNick(Client &client, const Message& msg);
+		
+		void		handleNick(Client &client, const Message& msg);
+		std::string	parsingNick(Client &client, const Parser &line);
+		
 		void	handleUser(Client &client, const Message& msg);
 		// void	handlePing(Client &client, const Message& msg);
 		// void	handleQuit(Client &client, const Message& msg);
