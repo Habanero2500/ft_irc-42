@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 16:19:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 16:50:40 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ class Channel
 	private:
 	std::string				_name;
 	std::map<int, Client>	_members;
+	std::map<char, bool>	_modes;
 
 	public:
 	Channel();

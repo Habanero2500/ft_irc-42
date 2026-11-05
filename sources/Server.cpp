@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 16:25:00 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 16:57:35 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	{
 		if (it->second.getName() == ChannelName)
 		{
-			joinChannel(client, ChannelName);
+			joinChannel(client, it->second);
 			return ;
 		}
 	}
@@ -362,4 +362,9 @@ void	Server::createChannel(Client &client, std::string channelName)
 
 	newChannel.addMember(client);
 	_channels[channelName] = newChannel;
+}
+
+void	Server::joinChannel(Client &client, Channel &channel)
+{
+	
 }
