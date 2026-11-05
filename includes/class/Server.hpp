@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 13:33:02 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 14:44:25 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ class	Server;//Forward declaration for the typedef below
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 
 extern bool DEBUG;
+
+#define NUMBERS "0123456789"
+#define LETTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define SPECIAL_IRC "[]\\_^{|}"
 
 class	Server
 {

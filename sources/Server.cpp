@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:32:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 14:47:00 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,8 +282,8 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	
 	std::string	NicknameGiven = *(line.params.begin());
 
-	if (NicknameGiven.find_first_of("@!#:*\f\r\t\n\v ") != std::string::npos 
-		|| NicknameGiven.size() > 9)
+	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
+		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-')
 	{
 		std::string message = ERR_ERRONEUSNICKNAME(NicknameGiven);
         send(client.getFd(), message.c_str(), message.size(), 0);

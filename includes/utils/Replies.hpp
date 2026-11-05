@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:14:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/05 14:37:33 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,6 @@
 
 // 433     ERR_NICKNAMEINUSE
 # define ERR_NICKNAMEINUSE(nick) ("localhost 433 " + nick + " :Nickname is already in use\r\n")
-
-// 436     ERR_NICKCOLLISION
-# define ERR_NICKCOLLISION(nick) ("localhost 436 " + nick + " :Nickname collision KILL\r\n")
 
 // 441     ERR_USERNOTINCHANNEL
 # define ERR_USERNOTINCHANNEL(nick, channel) ("localhost 441 " + nick + " " + channel + " :They aren't on that channel\r\n")
