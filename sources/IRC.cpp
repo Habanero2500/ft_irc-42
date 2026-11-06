@@ -12,6 +12,7 @@
 
 #include "../includes/class/IRC.hpp"
 #include <iostream>
+#include <cstdlib>
 
 /**** ORTHODOX CANONICAL FORM AND CONSTRUCTORS ****/
 irc::irc(void){}
@@ -41,7 +42,7 @@ int irc::parsingPort(const std::string str)
     }
     if(str.size() > 5 && str.size() < 4)
         return (2);
-    long long val = strtoll(str.c_str(), NULL, 10);
+    long long val = strtoll(str.c_str(), NULL, 10);//?
     
     if (val < 1024 || val > 65535)
         return (2);

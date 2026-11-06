@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Message.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 16:55:12 by opapouts          #+#    #+#             */
-/*   Updated: 2026/11/04 15:59:03 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 16:00:56 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Message.hpp"
+#include <cstdlib>
 
 //Orthodox Canonical Form
 Message::Message(void) {

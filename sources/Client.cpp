@@ -110,7 +110,7 @@ std::string	Client::getBuffer(void)
 {
     return (_buffer);
 }
-std::string 	Client::getNickname(void){return _nickname;}
+std::string 	Client::getNickname(void) const {return _nickname;}
 std::string 	Client::getUsername(void){return _username;}
 std::string 	Client::getHostname(void){return _hostname;}
 std::string 	Client::getRealName(void){return _realname;}
@@ -135,4 +135,17 @@ void	Client::initClientAdress(int port)
 	_adress.sin_family = AF_INET;
 	_adress.sin_addr.s_addr = INADDR_ANY;
 	_adress.sin_port = htons(port);
+}
+
+//Buffer Management
+void	Client::appendToSendBuffer(const std::string& data) {
+	_sendBuffer += data;
+}
+
+std::string&	Client::getSendBuffer(void) {
+	return (_sendBuffer);
+}
+
+bool	Client::isSendBufferEmpty(void) const {
+	return (_sendBuffer.empty());
 }

@@ -3,30 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 14:01:17 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/06 15:53:56 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "../utils/Headers.hpp"
+#include <string>
+#include <poll.h>
+#include <netinet/in.h>
 
 extern bool DEBUG;
 
 class Client{
   
     public :
-    
 
     // **** ORTHODOX CANONICAL FORM ****
-    Client (void);
-    ~Client (void);
-    Client(const Client& copy);
-    Client& operator=(const Client& copy);
+	Client (void);
+	~Client (void);
+	Client(const Client& copy);
+	Client& operator=(const Client& copy);
 
 	void	initClientAdress(int port);
 
@@ -43,12 +44,12 @@ class Client{
     void            setUser(void);
 	void    		setBuffer(std::string Newbuffer);
 	void 			addBuffer(char buffer[1024]);
-    std::string 	getName(void);
-    std::string 	getID(void);
-    int 			getFd(void);
+	std::string 	getName(void);
+	std::string 	getID(void);
+	int 			getFd(void);
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
-    std::string 	getNickname(void); 
+    std::string 	getNickname(void) const; 
     std::string 	getUsername(void);
     std::string 	getHostname(void);
     std::string 	getRealName(void);
@@ -65,15 +66,20 @@ class Client{
     bool	        shouldDisconnect(void);
     void	        setToDisconnect(void);
     
+	//Send Buffer Management
+	void			appendToSendBuffer(const std::string& data);
+	std::string&		getSendBuffer(void);
+	bool			isSendBufferEmpty(void) const;
+
     private :
 
-    std::string 			_nickname;
-    std::string             _username;
-    std::string             _hostname;
-    std::string             _realname;
+	std::string 			_nickname;
+	std::string				_username;
+	std::string				_hostname;
+	std::string				_realname;
     
-    std::string 			_ID;
-    int 					_fd;
+	std::string				_ID;
+	int 				_fd;
 	struct sockaddr_in 		_adress;
 	struct pollfd			_pollFd;
 	std::string				_buffer;
@@ -85,7 +91,9 @@ class Client{
     
     bool	                _registered;
     bool	                _toDisconnect;
+	//Buffer related fields
+	std::string	_sendBuffer;//Outgoing data that couldn't be send immediately
+    
 };
-
 
 #endif
