@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/11/06 17:47:59 by malaimo          ###   ########.fr       */
-=======
-/*   Updated: 2026/11/06 19:16:14 by jmetayer         ###   ########.fr       */
->>>>>>> bajuju
+/*   Updated: 2026/11/06 20:43:29 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,14 +296,10 @@ void	Server::handleNick(Client &client, const Message& msg)
 	{
 		std::cout << formatDebugBuffer(client.getNickname()) << std::endl;
 	std::string message = "Nick ok\r\n";
-<<<<<<< HEAD
-	send(client.getFd(), message.c_str(), message.size(), 0);
-=======
     send(client.getFd(), message.c_str(), message.size(), 0);
 	}
 	isRegistered(client);
 		
->>>>>>> bajuju
 }
 
 std::string	Server::parsingNick(Client &client, const Parser &line)
@@ -323,12 +315,7 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	std::string	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
-<<<<<<< HEAD
-		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-'
-		|| NicknameGiven.size() < 1)
-=======
 		|| NicknameGiven.size() > 9 || isdigit(NicknameGiven[0]) || NicknameGiven[0] == '-')
->>>>>>> bajuju
 	{
 		std::string message = ERR_ERRONEUSNICKNAME(NicknameGiven);
         send(client.getFd(), message.c_str(), message.size(), 0);
@@ -351,12 +338,8 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 void	Server::handleUser(Client &client, const Message& msg)
 {
 	
-<<<<<<< HEAD
-	if(client.getPass() != true && client.getNick() != true) {
-=======
 	if(client.getPass() != true) 
 	{
->>>>>>> bajuju
 		if(DEBUG)
 			std::cout << "Password has to be set before anything" << std::endl;
 		return;
@@ -427,7 +410,6 @@ void Server::isRegistered(Client &client)
 	}
 }
 
-<<<<<<< HEAD
 //Message Transmission
 void	Server::saveOrSend(Client& client, const std::string& data) {
 	if (!client.isSendBufferEmpty()) {//when _sendBuffer not empty
@@ -611,8 +593,3 @@ void	Server::joinVerification(Client &client, Channel &channel)
 		throw -1;
 	}
 }
-=======
-
-
-
->>>>>>> bajuju
