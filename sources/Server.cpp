@@ -129,13 +129,13 @@ void	Server::setNewClient(void)
 	_clients[newClient.getFd()] = newClient;
 }
 
-bool	Server::getClientByNick(const std::string& nick) const {
-	for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); ++it) {
+Client*	Server::getClientByNick(const std::string& nick) {
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
 		if (nick == it->second.getNickname())
-			return (true);
+			return (&(it->second));
 	}
-	return (false);
-}//A modifier
+	return (NULL);
+}
 
 void	Server::receiveCommunication(size_t i, int fd)
 {
@@ -198,10 +198,8 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	std::map<std::string, CommandHandler>::iterator it = _commandMap.find(command);
 	if (it != _commandMap.end())
 		(this->*(it->second))(client, msg);
-	else {
-		(void)ERR_UNKNOWNCOMMAND(command);//No match found
-		return ;
-	}
+	else
+		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(command)));//No match found
 }
 
 //Message Transmission
@@ -257,21 +255,22 @@ void	Server::sendPendingData(size_t i, int fd) {
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
-	if (1) {//a modifier
-	      (void)ERR_NOTREGISTERED();//451
-		return ;
-	}
-	const	std::vector<std::string>& params = msg.getParser().params;
+	if (1) //a modifier
+		return (saveOrSend(client, ERR_NOTREGISTERED()));
 
-	if (params.empty() ||params[0].empty())
-		return (void(ERR_NORECIPIENT(msg.getParser().command)));//411
-	if (params.size() < 2 || params[1].empty())
-		return (void(ERR_NOTEXTTOSEND()));//412
+	const	std::vector<std::string>& params = msg.getParser().params;
+	if (params.empty() ||params[0].empty())//411
+		return(saveOrSend(client, ERR_NORECIPIENT(msg.getParser().command)));
+	if (params.size() < 2 || params[1].empty())//412
+		return (saveOrSend(client, ERR_NOTEXTTOSEND()));
 	
 	const std::string& target = params[0];
 	const std::string& textToSend = params[1];
-	if (!getClientByNick(target))
-		return (void(ERR_NOSUCHNICK(target)));//401
-	//Validation reussite. Mnt il faut envoyer le message entre users
+	if (!getClientByNick(target))//401
+		return (saveOrSend(client, ERR_NOSUCHNICK(target)));
+	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
 	
-
+	std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
+	saveOrSend(*getClientByNick(target), line);
+}

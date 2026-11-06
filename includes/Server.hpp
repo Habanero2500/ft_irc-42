@@ -45,7 +45,7 @@ class	Server
 		void	executeCommand(int fd, const std::string &line);
 		//Setters and Getters
 		void	setNewClient(void);
-		bool	getClientByNick(const std::string& nick) const;
+		Client*	getClientByNick(const std::string& nick);
 		//Command Map Functions
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);
