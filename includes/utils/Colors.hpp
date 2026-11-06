@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   Colors.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/10/26 15:49:05 by malaimo          ###   ########.fr       */
+/*   Created: 2026/10/30 13:43:10 by malaimo           #+#    #+#             */
+/*   Updated: 2026/11/03 11:55:48 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	SERVER_HPP
-#define SERVER_HPP
+#ifndef  COLORS_HPP
+# define COLORS_HPP
 
-#include <cstring>
-#include <iostream>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
+# define RESET "\e[0m"
+# define RED "\e[31m"
+# define GREEN "\e[32m"
+# define BLUE "\e[1;36m"
+# define CYAN "\e[0;36m"
+# define PURPLE "\e[0;35m"
+# define PINK "\e[0;95m"
+# define YELLOW "\e[33m"
 
-class	Server
-{
-	private:
-	int						_fd;
-	struct sockaddr_in 		_adress;
-	
-	public:
-	Server();
-	Server(const Server &copy);
-	Server	&operator=(const Server &copy);
-	~Server();
 
-	void	initServerAdress(int port);
-	void	receiveData();
-	
-};
-#endif
+#endif 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 14:50:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/10/20 17:06:17 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/04 14:23:13 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRC.hpp"
+#include "../includes/class/IRC.hpp"
 #include <iostream>
+#include <cstdlib>
 
-//Test
 /**** ORTHODOX CANONICAL FORM AND CONSTRUCTORS ****/
 irc::irc(void){}
 
@@ -42,13 +42,16 @@ int irc::parsingPort(const std::string str)
     }
     if(str.size() > 5 && str.size() < 4)
         return (2);
-    long long val = strtoll(str.c_str(), NULL, 10);
+    long long val = strtoll(str.c_str(), NULL, 10);//?
     
     if (val < 1024 || val > 65535)
         return (2);
     return (val);
     
 }
+
+int irc::getPort(void){return _port;}
+std::string irc::getPwd(){return _pwd;}
 
 int irc::parsingPwd(const std::string str) 
 {
