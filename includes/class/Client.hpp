@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 13:42:29 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/06 14:01:17 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ class Client{
     void	        setRegistered(void);
     bool	        shouldDisconnect(void);
     void	        setToDisconnect(void);
-    void	        setBuffer(const std::string &s);
     
     private :
 

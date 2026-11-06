@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 13:42:48 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/06 14:01:13 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ Client::~Client(){}
 
 void Client::setNickname(std::string name){ _nickname = name;}
 void Client::setUsername(std::string name){ _username = name;}
-
 void Client::setHostname(std::string name){ _hostname = name;}
 void Client::setRealName(std::string name){ _realname = name;}
 
@@ -127,7 +126,6 @@ bool	Client::isRegistered(void)		{return _registered;}
 void	Client::setRegistered(void)		{_registered = true;}
 bool	Client::shouldDisconnect(void)	{return _toDisconnect;}
 void	Client::setToDisconnect(void)	{_toDisconnect = true;}
-void	Client::setBuffer(const std::string &s) {_buffer = s;}
 
 
 //**********INITIALISATION ************

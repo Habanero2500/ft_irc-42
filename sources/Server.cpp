@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 13:42:58 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/06 13:59:06 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void	Server::parsingBuffer(int fd)
 			line.erase(line.size() - 1);
 		if (!line.empty())
 			executeCommand(client, line);
-			if (client.shouldDisconnect())
+		if (client.shouldDisconnect())
 			break ;
 	}
 	client.setBuffer(buf);
@@ -317,7 +317,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 		return;
 	}
 	Parser pars = msg.getParser();
-	else if(client.getUser() == true)
+	if(client.getUser() == true)
 	{
 		if(DEBUG)
 			std::cout << "Already registered" << std::endl;
@@ -330,13 +330,14 @@ void	Server::handleUser(Client &client, const Message& msg)
 	{
 		if(DEBUG)
 			std::cout << "Need more params" << std::endl;
-		std::string msg = ERR_NEEDMOREPARAMS("USER");
+		std::string cmd = "USER";
+		std::string msg = ERR_NEEDMOREPARAMS(cmd);
 		send(client.getFd(), msg.c_str(), msg.size(), 0);
 		return;
 	}
 	else
 	{
-		for(int i(0); pars.params[i] ; i++)
+		for(int i(0); i < 5 ; i++)
 		{
 			int o(0);
 			while(pars.params[i][o])
@@ -344,7 +345,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 				
 				if(i != 3)
 				{
-					if(!((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122))))
+					if(!((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
 					{
 						if(DEBUG)
 							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
@@ -353,7 +354,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 				}
 				else 
 				{
-					if((o == 0 && pars.params[i][o] != ':') || !((str[i] >= 65 && str[i] <= 90) || (str[i] >= 97 && str[i] <= 122)))
+					if((o == 0 && pars.params[i][o] != ':') || !((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
 					{
 						if(DEBUG)
 							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
@@ -366,7 +367,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 		client.setNickname(pars.params[0]);
 		client.setUsername(pars.params[1]);
 		client.setHostname(pars.params[2]);
-		client.setRealname(pars.params[3]);
+		client.setRealName(pars.params[3]);
 	}
 }
 
