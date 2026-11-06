@@ -90,7 +90,7 @@ std::string	Client::getBuffer(void)
 {
     return (_buffer);
 }
-std::string 	Client::getNickname(void){return _nickname;}
+std::string 	Client::getNickname(void) const {return _nickname;}
 std::string 	Client::getUsername(void){return _username;}
 std::string 	Client::getHostname(void){return _hostname;}
 std::string 	Client::getRealName(void){return _realname;}

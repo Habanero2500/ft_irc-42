@@ -87,7 +87,7 @@ void	Server::pollLoop()
 
 void	Server::checkEvents(void)
 {
-	for(size_t i = 0; i < _listFd.size(); i++) {
+	for (size_t i = 0; i < _listFd.size(); i++) {
 		if (_listFd[i].revents & (POLLERR | POLLHUP | POLLNVAL)) {
 			deleteClient(i, _listFd[i].fd);
 			continue ;
@@ -104,7 +104,8 @@ void	Server::checkEvents(void)
 	}
 }
 
-void	Server::setNewClient()
+//Setters and Getters
+void	Server::setNewClient(void)
 {
 	Client	newClient;
 	int		fd;
@@ -127,6 +128,14 @@ void	Server::setNewClient()
 	_listFd.push_back(newClient.getPollFd());
 	_clients[newClient.getFd()] = newClient;
 }
+
+bool	Server::getClientByNick(const std::string& nick) const {
+	for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); ++it) {
+		if (nick == it->second.getNickname())
+			return (true);
+	}
+	return (false);
+}//A modifier
 
 void	Server::receiveCommunication(size_t i, int fd)
 {
@@ -159,7 +168,6 @@ void	Server::deleteClient(size_t i, int fd)
 	close(fd);
 	_clients.erase(fd);
 	_listFd.erase(_listFd.begin() + i);
-	--i;//Necessaire?
 }
 
 void	Server::parsingBuffer(int fd)
@@ -249,9 +257,21 @@ void	Server::sendPendingData(size_t i, int fd) {
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
-	//Il faut verifier si le client est registered. Si non err 451
 	if (1) {//a modifier
-	      (void)ERR_NOTREGISTERED();
+	      (void)ERR_NOTREGISTERED();//451
 		return ;
 	}
+	const	std::vector<std::string>& params = msg.getParser().params;
+
+	if (params.empty() ||params[0].empty())
+		return (void(ERR_NORECIPIENT(msg.getParser().command)));//411
+	if (params.size() < 2 || params[1].empty())
+		return (void(ERR_NOTEXTTOSEND()));//412
+	
+	const std::string& target = params[0];
+	const std::string& textToSend = params[1];
+	if (!getClientByNick(target))
+		return (void(ERR_NOSUCHNICK(target)));//401
+	//Validation reussite. Mnt il faut envoyer le message entre users
+	
 

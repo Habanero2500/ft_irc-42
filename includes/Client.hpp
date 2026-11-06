@@ -45,7 +45,7 @@ class Client{
 	int 			getFd(void);
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
-	std::string 	getNickname(void); 
+	std::string 	getNickname(void) const;  
 	std::string 	getUsername(void);
 	std::string 	getHostname(void);
 	std::string 	getRealName(void);

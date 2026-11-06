@@ -39,11 +39,13 @@ class	Server
 		void	initServerAdress(int port);
 		void	pollLoop();
 		void	checkEvents(void);//Modifie
-		void	setNewClient();
 		void	receiveCommunication(size_t i ,int fd);//Modifie
 		void	deleteClient(size_t i, int fd);//Modifie
 		void	parsingBuffer(int fd);
 		void	executeCommand(int fd, const std::string &line);
+		//Setters and Getters
+		void	setNewClient(void);
+		bool	getClientByNick(const std::string& nick) const;
 		//Command Map Functions
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);
