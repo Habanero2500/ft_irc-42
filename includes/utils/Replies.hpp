@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:37:33 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 15:13:51 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@
 					  <<  "================================================" RESET << std::endl << std::endl 
 
 
+/******* CHANNELS MESSAGE ********/
+
+# define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
+
+					  
 /******* ERRORS MESSAGES ********/
+
 // 401 ERR_NOSUCHNICK
 # define ERR_NOSUCHNICK(nickName) ("localhost 401 " + nickName + " :No such nick/channel\r\n")
 
