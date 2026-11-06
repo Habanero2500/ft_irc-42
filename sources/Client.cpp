@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/04 17:20:02 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 13:42:48 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,16 +116,18 @@ std::string 	Client::getUsername(void){return _username;}
 std::string 	Client::getHostname(void){return _hostname;}
 std::string 	Client::getRealName(void){return _realname;}
 int             Client::getAttempt(void){return _attempt;}
-bool             Client::getPass(void){return _pass;}
-bool             Client::getNick(void){return _nick;}
-bool             Client::getUser(void){return _user;}
+bool            Client::getPass(void){return _pass;}
+bool            Client::getNick(void){return _nick;}
+bool            Client::getUser(void){return _user;}
 
 // **** OTHERS ****
 
-void Client::increaseAttempt(void)
-{
-    _attempt++;
-}
+void    Client::increaseAttempt(void){_attempt++;}
+bool	Client::isRegistered(void)		{return _registered;}
+void	Client::setRegistered(void)		{_registered = true;}
+bool	Client::shouldDisconnect(void)	{return _toDisconnect;}
+void	Client::setToDisconnect(void)	{_toDisconnect = true;}
+void	Client::setBuffer(const std::string &s) {_buffer = s;}
 
 
 //**********INITIALISATION ************
