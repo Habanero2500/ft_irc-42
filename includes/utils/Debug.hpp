@@ -1,4 +1,5 @@
-#include "Headers.hpp"
+#include "Colors.hpp"
+#include <string>
 
 std::string formatDebugBuffer(const std::string& buffer)
 {

@@ -16,7 +16,8 @@
 #define START 0//Pas sur de ces defines
 #define	CRLF 2
 #define	OFFSET 2
-#include "../utils/Headers.hpp"
+#include <string>
+#include <vector>
 
 //[:prefix] <command> <param1> <param2> ... [:trailing] \r\n
 struct	Parser {
@@ -52,7 +53,6 @@ class	Message {
 
 	private	:
 		Parser	_parser;
-
 
 };
 

@@ -12,7 +12,7 @@
 
 #include "../includes/class/Server.hpp"
 #include "../includes/utils/Debug.hpp"
-#include "../includes/Replies.hpp"
+#include "../includes/utils/Replies.hpp"
 #include "../includes/class/Client.hpp"
 #include "../includes/class/Message.hpp"
 #include "../includes/utils/Colors.hpp"
@@ -101,10 +101,10 @@ void	Server::checkEvents()
 			if (_listFd[i].fd == _fd)
 				setNewClient();
 			else
-				receiveCommunication(i, _listFd[i].fd);
+				receiveCommunication(_listFd[i].fd);
 		}
 		if (i< _listFd.size() && (_listFd[i].revents & POLLOUT))
-			sendPendingData(i, _listFd[i].fd);
+			sendPendingData(_listFd[i].fd);
 	}
 }
 
@@ -141,7 +141,7 @@ Client*	Server::getClientByNick(const std::string& nick) {
 	return (NULL);
 }
 
-void	Server::receiveCommunication(size_t i, int fd)
+void	Server::receiveCommunication(int fd)
 {
 	int		bits;
 	char	buffer[1024] = { 0 };
@@ -418,7 +418,7 @@ void	Server::disablePollout(int clientFd) {
 	}
 }
 
-void	Server::sendPendingData(size_t i, int fd) {
+void	Server::sendPendingData( int fd) {
 	Client &client = _clients[fd];
 	std::string &buffer = client.getSendBuffer();
 
@@ -427,7 +427,7 @@ void	Server::sendPendingData(size_t i, int fd) {
 		if (bytes > 0)
 			buffer.erase(0, bytes);
 		else if (bytes == -1) {
-			deleteClient(i, fd);
+			deleteClient(fd);
 			return ;
 		}
 	}
