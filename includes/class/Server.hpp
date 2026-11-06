@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:44:25 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 13:40:18 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class	Server
 
 		void	initServerAdress(int port, std::string pwd);
 		void	pollLoop();
-		void	checkEvents(size_t *i);
+		void	checkEvents();
 		void	setNewClient();
 		void	receiveCommunication(int fd);
 		void	deleteClient(int fd);

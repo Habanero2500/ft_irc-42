@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 14:47:00 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 13:40:00 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,26 @@ void	Server::pollLoop()
 			else
 				throw std::runtime_error("SERVER: Poll failure");
 		}
-		for(size_t	i = 0; i < _listFd.size(); i++)
-			checkEvents(&i);
+			checkEvents();
 	}
 }
 
-void	Server::checkEvents(size_t *i)
+void	Server::checkEvents()
 {
-	if (_listFd[*i].revents & (POLLERR | POLLHUP | POLLNVAL))
+	for(size_t	i = 0; i < _listFd.size(); i++)
 	{
-		deleteClient(_listFd[*i].fd);
-		return ;
-	}
-	if (_listFd[*i].revents & POLLIN)
-	{
-		if (_listFd[*i].fd == _fd)
-			setNewClient();
-		else
-			receiveCommunication(_listFd[*i].fd);
+		if (_listFd[i].revents & (POLLERR | POLLHUP | POLLNVAL))
+		{
+			deleteClient(_listFd[i].fd);
+			return ;
+		}
+		if (_listFd[i].revents & POLLIN)
+		{
+			if (_listFd[i].fd == _fd)
+				setNewClient();
+			else
+				receiveCommunication(_listFd[i].fd);
+		}
 	}
 }
 
