@@ -3,38 +3,57 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+         #
+#    By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/10/20 16:55:41 by jmetayer         ###   ########.fr        #
+#    Updated: 2026/11/06 16:08:57 by opapouts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-NAME = ircserv
-SRCS = ./sources/main.cpp ./sources/IRC.cpp
+OBJ_DIR = objects
+OBJ_DIR_DEBUG = objects_debug
 
 CC = c++ 
-FLAGS = -Wall -Werror -Wextra -std=c++98
+FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
+RM = rm -rf
 
-RM = rm -f
-OBJS = $(SRCS:.cpp=.o)
+SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp ./sources/Message.cpp
+OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.cpp=.o)))
+DEPS = $(OBJ:.o=.d)
+DEPS_DEBUG = $(OBJ_DEBUG:.o=.d)
+OBJ_DEBUG = $(addprefix $(OBJ_DIR_DEBUG)/, $(notdir $(SRCS:.cpp=.o)))
 
-%.o: %.cpp
-	@$(CC) $(FLAGS) -c $< -o $@
+NAME = ircserv
+NAME_DEBUG = ircserv_debug
 
 all : $(NAME)
 
-$(NAME)	: $(OBJS)
-	@$(CC) $(FLAGS) $^ -o $(NAME)
+$(NAME)	: $(OBJ)
+	$(CC) $(FLAGS) $^ -o $(NAME)
 	@echo '$(NAME) compiled!'
 
-fclean : clean
-	@$(RM) $(NAME)
+$(OBJ_DIR)/%.o : sources/%.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(FLAGS) -c $< -o $@
+
+debug : $(NAME_DEBUG)
+
+$(NAME_DEBUG) : $(OBJ_DEBUG)
+	$(CC) $(FLAGS) $^ -o $(NAME_DEBUG)
+	@echo '$(NAME_DEBUG) compiled!'
+
+$(OBJ_DIR_DEBUG)/%.o : sources/%.cpp
+	@mkdir -p $(OBJ_DIR_DEBUG)
+	$(CC) $(FLAGS) -D DEBUG_MODE=1 -c $< -o $@
 
 clean :
-	@$(RM) $(OBJS)
+	@$(RM) $(OBJ_DIR) $(OBJ_DIR) $(OBJ_DIR_DEBUG)
 
-re			: fclean all
+fclean : clean
+	@$(RM) $(NAME) $(NAME_DEBUG)
+
+re : fclean all
+
+-include $(DEPS) $(DEPS_DEBUG)
 
 .PHONY : all clean fclean re
