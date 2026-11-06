@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 13:42:36 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/06 18:34:17 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ extern bool DEBUG;
 
 #define NUMBERS "0123456789"
 #define LETTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#define SPECIAL_IRC "[]\\_^{|}"
+#define SPECIAL_IRC "[]\\_^{|}-"
 
 class	Server
 {
@@ -56,6 +56,8 @@ class	Server
 		//Command Map Functions
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);
+		void	isRegistered(Client &client);
+
 
 		
 		//Command Handlers

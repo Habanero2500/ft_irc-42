@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 13:59:06 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/06 19:16:14 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,13 @@ void	Server::handlePass(Client &client, const Message& msg)
 		deleteClient(client.getFd());
 		return;
 	}
+	if (pars.params.empty())
+    {
+		std::string cmd = "PASS";
+        std::string message = ERR_NEEDMOREPARAMS(cmd);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+        return;
+    }
 	if(client.getPass() == true) //pwd deja rentre
   	{
 		if(DEBUG)
@@ -235,6 +242,15 @@ void	Server::handlePass(Client &client, const Message& msg)
         send(client.getFd(), message.c_str(), message.size(), 0);
     	return;
     }
+	if(pars.params[0] != _pwd)
+	{
+		if(DEBUG)
+			std::cout << "Wrong password" << std::endl;
+		std::string message = ERR_PASSWDMISMATCH();
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		client.increaseAttempt();
+		return;	
+	}
 	if(pars.params.size() < 1) // pas d'arg
 	{
 		if(DEBUG)
@@ -244,13 +260,6 @@ void	Server::handlePass(Client &client, const Message& msg)
         send(client.getFd(), message.c_str(), message.size(), 0);
 		return;
 	}
-	if(pars.params[0] != _pwd)
-	{
-		if(DEBUG)
-			std::cout << "Wrong password" << std::endl;
-		client.increaseAttempt();
-		return;	
-	} 
 	else if(pars.params[0] == _pwd)
 	{
 		if(DEBUG)
@@ -270,9 +279,12 @@ void	Server::handleNick(Client &client, const Message& msg)
 	client.setNickname(Nickname);
 	client.setNick();
 	if (DEBUG)
+	{
 		std::cout << formatDebugBuffer(client.getNickname()) << std::endl;
 	std::string message = "Nick ok\r\n";
     send(client.getFd(), message.c_str(), message.size(), 0);
+	}
+	isRegistered(client);
 		
 }
 
@@ -285,10 +297,11 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 		return "";
 	}
 	
+	
 	std::string	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
-		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-')
+		|| NicknameGiven.size() > 9 || isdigit(NicknameGiven[0]) || NicknameGiven[0] == '-')
 	{
 		std::string message = ERR_ERRONEUSNICKNAME(NicknameGiven);
         send(client.getFd(), message.c_str(), message.size(), 0);
@@ -296,6 +309,8 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	}
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
+		if (it->first == client.getFd()) // On compare pas avec le premier 
+            continue;
 		if (it->second.getNickname() == NicknameGiven)
 		{
 			std::string message = ERR_NICKNAMEINUSE(NicknameGiven);
@@ -306,14 +321,13 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	return (NicknameGiven);
 }
 
-
 void	Server::handleUser(Client &client, const Message& msg)
 {
 	
-	if(client.getPass() != true && client.getNick() != true) 
+	if(client.getPass() != true) 
 	{
 		if(DEBUG)
-			std::cout << "Password and nickname have to be set before anything" << std::endl;
+			std::cout << "Password has to be set before anything" << std::endl;
 		return;
 	}
 	Parser pars = msg.getParser();
@@ -337,7 +351,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 	}
 	else
 	{
-		for(int i(0); i < 5 ; i++)
+		for(int i(0); i < 4 ; i++)
 		{
 			int o(0);
 			while(pars.params[i][o])
@@ -354,7 +368,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 				}
 				else 
 				{
-					if((o == 0 && pars.params[i][o] != ':') || !((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
+					if(/*(o == 0 && pars.params[i][o] != ':') ||*/ !((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
 					{
 						if(DEBUG)
 							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
@@ -368,6 +382,22 @@ void	Server::handleUser(Client &client, const Message& msg)
 		client.setUsername(pars.params[1]);
 		client.setHostname(pars.params[2]);
 		client.setRealName(pars.params[3]);
+		client.setUser();
+		if(DEBUG)
+			std::cout << "USER ok" << std::endl;
+	}
+	isRegistered(client);
+}
+
+void Server::isRegistered(Client &client)
+{
+	if(client.getNick() == true && client.getUser() == true && client.getPass() == true)
+	{
+		client.setRegistered();
+		std::cout << BLUE "A new client just registered !" RESET << std::endl;
 	}
 }
+
+
+
 
