@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 16:40:02 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 14:54:04 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,12 @@ class	Server
 		// void	handleQuit(Client &client, const Message& msg);
 		// void	handlePrivmsg(Client &client, const Message& msg);
 		
+	
 		void		handleJoin(Client &client, const Message& msg);
 		std::string	parsingChannelName(Client &client, const Parser &line);
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel);
+		void		joinVerification(Client &client, Channel &channel);
 
 };
 #endif

@@ -1,37 +1,37 @@
-// int main()
-// {
-//     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+#include <cstring>
+#include <iostream>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <bitset>
 
-//     sockaddr_in serverAddress;
-//     serverAddress.sin_family = AF_INET;
-//     serverAddress.sin_port = htons(6667);
-//     serverAddress.sin_addr.s_addr = INADDR_ANY;
+int main()
+{
+    int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-//     connect(clientSocket, (struct sockaddr*)&serverAddress,
-//             sizeof(serverAddress));
+    sockaddr_in serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(6667);
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
 
-//     const char* message = "EXIT\n";
-//     send(clientSocket, message, strlen(message), 0);
+    connect(clientSocket, (struct sockaddr*)&serverAddress,
+            sizeof(serverAddress));
 
-// 	close(clientSocket);
-//     return 0;
-// }
+    const char* message = "EXIT\n";
+    send(clientSocket, message, strlen(message), 0);
 
-// #include <cstring>
-// #include <iostream>
-// #include <netinet/in.h>
-// #include <sys/socket.h>
-// #include <unistd.h>
-// #include <bitset>
+	close(clientSocket);
+    return 0;
+}
 
 // int	main()
 // {
 // 	std::bitset<11>	bits;
 
-// 	bits.set(3);
+// 	bits.flip();
 // 	if (bits.all())
 // 		std::cout << "all at 1\n";
 // 	if (bits.any())
 // 		std::cout << "at least 1 at 1\n";
-// 	if ()
+// 	std::cout << bits.count() << std::endl;
 // }

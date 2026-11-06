@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/05 16:57:35 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 15:25:01 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,10 @@ void	Server::handleUser(Client &client, const Message& msg)
 
 
 
+
+
+/***************** JOIN & CHANNELS *********************/
+
 void	Server::handleJoin(Client &client, const Message& msg)
 {
 	Parser	line = msg.getParser();
@@ -361,10 +365,66 @@ void	Server::createChannel(Client &client, std::string channelName)
 	Channel	newChannel(channelName);
 
 	newChannel.addMember(client);
+	newChannel.setOperator(client);
 	_channels[channelName] = newChannel;
+	std::string message = NEWMEMBERMESSAGE(client.getNickname());
+    send(client.getFd(), message.c_str(), message.size(), 0);
+	if (DEBUG)
+	{
+		std::cout << "current channels :" << std::endl;
+		for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+			std::cout <<it->second.getName() << std::endl;
+	}
 }
 
 void	Server::joinChannel(Client &client, Channel &channel)
 {
-	
+	try
+	{
+		joinVerification(client, channel);
+		channel.addMember(client);
+		std::string message = NEWMEMBERMESSAGE(client.getNickname());
+    	send(client.getFd(), message.c_str(), message.size(), 0);
+		if (DEBUG)
+		{
+			std::cout << BLUE "channel: " << channel.getName() << " accepted new member: " << client.getNickname() << RESET << std::endl;
+			// std::cout << "current members :" << std::endl;
+			// for (size_t i = 0; i < channel.getNumberMember(); i++)
+			// {
+			// 	std::cout << channel.getMember().client.getNickname() << std::endl;
+			// }
+		}
+	}
+	catch (int e)
+	{
+		return ;
+	}
+}
+
+void	Server::joinVerification(Client &client, Channel &channel)
+{
+	if (channel.isModeActive(I))
+	{
+		std::string message = ERR_INVITEONLYCHAN(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
+	if (channel.isModeActive(K))
+	{
+		std::string message = ERR_BADCHANNELKEY(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
+	if (channel.isModeActive(L) && channel.isMembersLimitReached())
+	{
+		std::string message = ERR_CHANNELISFULL(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
+	if (channel.isMemberBanned(client.getFd()))
+	{
+		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
 }

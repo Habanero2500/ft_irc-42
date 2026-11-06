@@ -9,11 +9,11 @@ std::string formatDebugBuffer(const std::string& buffer)
         if (buffer[i] == '\r')
             debugStr += RED "\\r" RESET;
         else if (buffer[i] == '\n')
-            debugStr += RED "\\n" RESET "\n"; // Ajoute le texte "\n" visuel + un vrai saut de ligne
+            debugStr += RED "\\n" RESET "\n";
         else if (buffer[i] == '\0')
             debugStr += RED "\\0" RESET;
         else if (buffer[i] < 32 || buffer[i] > 126)
-            debugStr += RED "?" RESET; // Remplace tout autre caractère non imprimable par un ?
+            debugStr += RED "?" RESET;
         else
             debugStr += buffer[i];
     }

@@ -6,13 +6,12 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:47:55 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/04 14:23:29 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 15:15:42 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/IRC.hpp"
 #include "../includes/class/Server.hpp"
-#include "../includes/class/Client.hpp"
 #include <stdlib.h>
 
 #ifdef DEBUG_MODE
