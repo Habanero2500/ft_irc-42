@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:14:56 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 17:47:59 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -571,7 +571,7 @@ void	Server::joinVerification(Client &client, Channel &channel)
         send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
-	if (channel.isMemberBanned(client.getFd()))
+	if (channel.isMemberBanned(client))
 	{
 		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
         send(client.getFd(), message.c_str(), message.size(), 0);

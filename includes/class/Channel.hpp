@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:19:19 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 17:47:34 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,24 @@ struct	Member{
 	Member() : op(false), voice(false){}
 };
 
+struct	BannedMember{
+	std::string 			nickname;
+    std::string             username;
+    std::string             hostname;
+
+	BannedMember() : nickname(""), username(""), hostname(""){}
+};
+
+
 class Channel
 {
 	private:
-	std::string				_name;
-	std::map<int, Member>	_members;
-	std::vector<int>		_operators;
-	std::vector<int>		_banList;
-	std::bitset<8>			_modes;
-	size_t					_maxMembers;
+	std::string					_name;
+	std::map<int, Member>		_members;
+	std::vector<int>			_operators;
+	std::vector<BannedMember>	_banList;
+	std::bitset<8>				_modes;
+	size_t						_maxMembers;
 
 	public:
 	Channel();
@@ -64,6 +73,6 @@ class Channel
 	
 	bool		isModeActive(int mode);
 	bool		isMembersLimitReached();
-	bool		isMemberBanned(int fd);
+	bool		isMemberBanned(Client Member);
 };
 	
