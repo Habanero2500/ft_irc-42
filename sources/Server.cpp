@@ -20,6 +20,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstdlib>
+#include <cerrno>
 
 
 // **** ORTHODOX CANONICAL FORM ****
@@ -111,8 +112,7 @@ void	Server::checkEvents()
 }
 
 //Setters and Getters
-void	Server::setNewClient(void)
-{
+void	Server::setNewClient(void) {
 	Client	newClient;
 	int		fd;
 	
@@ -184,8 +184,6 @@ void	Server::deleteClient(int fd)
 
 
 /******** COMMANDS PARSING AND GESTION  *******/
-
-
 void	Server::parsingBuffer(int fd)
 {
 	Client		&client = _clients[fd];
@@ -326,15 +324,13 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 void	Server::handleUser(Client &client, const Message& msg)
 {
 	
-	if(client.getPass() != true && client.getNick() != true) 
-	{
+	if(client.getPass() != true && client.getNick() != true) {
 		if(DEBUG)
 			std::cout << "Password and nickname have to be set before anything" << std::endl;
 		return;
 	}
 	Parser pars = msg.getParser();
-	if(client.getUser() == true)
-	{
+	if (client.getUser() == true) {
 		if(DEBUG)
 			std::cout << "Already registered" << std::endl;
 		std::string msg = ERR_ALREADYREGISTRED();
@@ -342,8 +338,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 		return;
 
 	}
-	else if(pars.params.size() < 4)
-	{
+	else if (pars.params.size() < 4) {
 		if(DEBUG)
 			std::cout << "Need more params" << std::endl;
 		std::string cmd = "USER";
@@ -351,8 +346,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 		send(client.getFd(), msg.c_str(), msg.size(), 0);
 		return;
 	}
-	else
-	{
+	else {
 		for(int i(0); i < 5 ; i++)
 		{
 			int o(0);
@@ -460,12 +454,7 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	saveOrSend(*getClientByNick(target), line);
 }
 
-
-
-
-
 /***************** JOIN & CHANNELS *********************/
-
 void	Server::handleJoin(Client &client, const Message& msg)
 {
 	Parser	line = msg.getParser();
@@ -481,10 +470,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
 	{
 		if (it->second.getName() == ChannelName)
-		{
-			joinChannel(client, it->second);
-			return ;
-		}
+			return (joinChannel(client, it->second));
 	}
 	createChannel(client, ChannelName);
 }

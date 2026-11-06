@@ -79,15 +79,14 @@ class	Server
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
 		
-		private:
-		int										_fd;
-		struct sockaddr_in 						_address;
-		std::map<int, Client>					_clients;
+	private:
+		int						_fd;
+		struct sockaddr_in 				_address;
+		std::map<int, Client>				_clients;
 		std::map<std::string, Channel>			_channels;
-		std::map<std::string, CommandHandler> 	_commandMap;
-		std::vector<struct pollfd>				_listFd;
-		std::string								_pwd;
-		int										_port;
-		// void	handlePrivmsg(Client &client, const Message& msg);
+		std::map<std::string, CommandHandler> 		_commandMap;
+		std::vector<struct pollfd>			_listFd;
+		std::string					_pwd;
+		int						_port;
 };
 #endif
