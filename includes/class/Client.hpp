@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 15:53:56 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/06 17:18:49 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ class Client{
     bool            getPass(void);
     bool            getNick(void);
     bool            getUser(void);
+	int             getNumberChannels(void);
 
     //**** OTHERS ****
     
@@ -65,6 +66,9 @@ class Client{
     void	        setRegistered(void);
     bool	        shouldDisconnect(void);
     void	        setToDisconnect(void);
+
+	/****** CHANNELS *********/
+	void 			increaseNumberChannels(void);
     
 	//Send Buffer Management
 	void			appendToSendBuffer(const std::string& data);
@@ -79,7 +83,7 @@ class Client{
 	std::string				_realname;
     
 	std::string				_ID;
-	int 				_fd;
+	int 					_fd;
 	struct sockaddr_in 		_adress;
 	struct pollfd			_pollFd;
 	std::string				_buffer;
@@ -91,9 +95,10 @@ class Client{
     
     bool	                _registered;
     bool	                _toDisconnect;
+
+	int						_channelsJoined;
 	//Buffer related fields
-	std::string	_sendBuffer;//Outgoing data that couldn't be send immediately
-    
+	std::string				_sendBuffer;//Outgoing data that couldn't be send immediately
 };
 
 #endif

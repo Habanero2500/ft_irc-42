@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:10:43 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 17:14:56 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ void	Server::initCommands(void) {
 	// _commandMap["PING"] = &Server::handlePing;
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
+	_commandMap["JOIN"] = &Server::handleJoin;
 }
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
@@ -287,8 +288,7 @@ void	Server::handleNick(Client &client, const Message& msg)
 	if (DEBUG)
 		std::cout << formatDebugBuffer(client.getNickname()) << std::endl;
 	std::string message = "Nick ok\r\n";
-    send(client.getFd(), message.c_str(), message.size(), 0);
-		
+	send(client.getFd(), message.c_str(), message.size(), 0);
 }
 
 std::string	Server::parsingNick(Client &client, const Parser &line)
@@ -303,7 +303,8 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	std::string	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
-		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-')
+		|| NicknameGiven.size() > 9 || isalpha(NicknameGiven[0]) || NicknameGiven[0] == '-'
+		|| NicknameGiven.size() < 1)
 	{
 		std::string message = ERR_ERRONEUSNICKNAME(NicknameGiven);
         send(client.getFd(), message.c_str(), message.size(), 0);
@@ -457,4 +458,123 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
 	saveOrSend(*getClientByNick(target), line);
+}
+
+
+
+
+
+/***************** JOIN & CHANNELS *********************/
+
+void	Server::handleJoin(Client &client, const Message& msg)
+{
+	Parser	line = msg.getParser();
+	std::string	ChannelName = parsingChannelName(client, line);
+	if ((ChannelName.empty()))
+		return;
+	
+	if (client.getNumberChannels() > 10)
+	{
+		std::string message = ERR_TOOMANYCHANNELS(ChannelName);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+	}
+	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+	{
+		if (it->second.getName() == ChannelName)
+		{
+			joinChannel(client, it->second);
+			return ;
+		}
+	}
+	createChannel(client, ChannelName);
+}
+
+std::string	Server::parsingChannelName(Client &client, const Parser &line)
+{
+	if (line.params.size() == 0)
+	{
+		std::string command = "JOIN";
+		std::string message = ERR_NEEDMOREPARAMS(command);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return "";
+	}
+	std::string	ChannelName = *(line.params.begin());
+
+	if (ChannelName[0] != '@' || ChannelName[0] != '#' || ChannelName.size() > 200
+		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
+	{
+		std::string message = ERR_NOSUCHCHANNEL(ChannelName);
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		return "";
+	}
+	return (ChannelName);
+}
+
+void	Server::createChannel(Client &client, std::string channelName)
+{
+	Channel	newChannel(channelName);
+
+	newChannel.addMember(client);
+	newChannel.setOperator(client);
+	_channels[channelName] = newChannel;
+	std::string message = NEWMEMBERMESSAGE(client.getNickname());
+    send(client.getFd(), message.c_str(), message.size(), 0);
+	if (DEBUG)
+	{
+		std::cout << "current channels :" << std::endl;
+		for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+			std::cout <<it->second.getName() << std::endl;
+	}
+}
+
+void	Server::joinChannel(Client &client, Channel &channel)
+{
+	try
+	{
+		joinVerification(client, channel);
+		channel.addMember(client);
+		std::string message = NEWMEMBERMESSAGE(client.getNickname());
+    	send(client.getFd(), message.c_str(), message.size(), 0);
+		if (DEBUG)
+		{
+			std::cout << BLUE "channel: " << channel.getName() << " accepted new member: " << client.getNickname() << RESET << std::endl;
+			// std::cout << "current members :" << std::endl;
+			// for (size_t i = 0; i < channel.getNumberMember(); i++)
+			// {
+			// 	std::cout << channel.getMember().client.getNickname() << std::endl;
+			// }
+		}
+	}
+	catch (int e)
+	{
+		return ;
+	}
+}
+
+void	Server::joinVerification(Client &client, Channel &channel)
+{
+	if (channel.isModeActive(I))
+	{
+		std::string message = ERR_INVITEONLYCHAN(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
+	if (channel.isModeActive(K))
+	{
+		std::string message = ERR_BADCHANNELKEY(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
+	if (channel.isModeActive(L) && channel.isMembersLimitReached())
+	{
+		std::string message = ERR_CHANNELISFULL(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
+	if (channel.isMemberBanned(client.getFd()))
+	{
+		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
+        send(client.getFd(), message.c_str(), message.size(), 0);
+		throw -1;
+	}
 }
