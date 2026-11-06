@@ -6,7 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/11/06 17:20:14 by malaimo          ###   ########.fr       */
+=======
+/*   Updated: 2026/11/06 18:34:17 by jmetayer         ###   ########.fr       */
+>>>>>>> bajuju
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +34,7 @@ extern bool DEBUG;
 
 #define NUMBERS "0123456789"
 #define LETTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#define SPECIAL_IRC "[]\\_^{|}"
+#define SPECIAL_IRC "[]\\_^{|}-"
 
 class	Server
 {	
@@ -59,6 +63,7 @@ class	Server
 		void	enablePollout(int clientFd);
 		void	disablePollout(int clientFd);
 		void	sendPendingData(int fd);
+		void	isRegistered(Client &client);
 
 
 		//Command Handlers
