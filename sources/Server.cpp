@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 16:06:46 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/06 17:10:43 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	Server::initServerAdress(int port, std::string pwd)
 	_address.sin_family = AF_INET;
 	_address.sin_addr.s_addr = INADDR_ANY;
 	_address.sin_port = htons(port);
+
+	_pwd = pwd;
 
 	if (bind(_fd, (const sockaddr *)&_address, sizeof(_address)) == -1)
 		throw std::runtime_error("SERVER: Bind failure");
@@ -205,15 +207,15 @@ void	Server::parsingBuffer(int fd)
 }
 
 
-//Command Map Functions
-/*void	Server::initCommands(void) {
+// Command Map Functions
+void	Server::initCommands(void) {
 	_commandMap["PASS"] = &Server::handlePass;
 	_commandMap["NICK"] = &Server::handleNick;
 	_commandMap["USER"] = &Server::handleUser;
 	// _commandMap["PING"] = &Server::handlePing;
 	// _commandMap["QUIT"] = &Server::handleQuit;
-	// _commandMap["PRIVMSG"] = &Server::handlePrivmsg;
-}*/
+	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
+}
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
 	Message msg;
@@ -437,7 +439,7 @@ void	Server::sendPendingData( int fd) {
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
-	if (1) //a modifier
+	if (!client.isRegistered()) //a modifier
 		return (saveOrSend(client, ERR_NOTREGISTERED()));
 
 	const	std::vector<std::string>& params = msg.getParser().params;
