@@ -438,8 +438,8 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 		return (saveOrSend(client, ERR_NOTREGISTERED()));
 
 	const	std::vector<std::string>& params = msg.getParser().params;
-	if (params.empty() ||params[0].empty())//411
-		return(saveOrSend(client, ERR_NORECIPIENT(msg.getParser().command)));
+	if (params.empty() || params[0].empty())//411
+		return (saveOrSend(client, ERR_NORECIPIENT(msg.getParser().command)));
 	if (params.size() < 2 || params[1].empty())//412
 		return (saveOrSend(client, ERR_NOTEXTTOSEND()));
 	
@@ -447,8 +447,8 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	const std::string& textToSend = params[1];
 	if (!getClientByNick(target))//401
 		return (saveOrSend(client, ERR_NOSUCHNICK(target)));
+
 	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
-	
 	std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
 	saveOrSend(*getClientByNick(target), line);
@@ -465,7 +465,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	if (client.getNumberChannels() > 10)
 	{
 		std::string message = ERR_TOOMANYCHANNELS(ChannelName);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 	}
 	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
 	{
@@ -481,7 +481,7 @@ std::string	Server::parsingChannelName(Client &client, const Parser &line)
 	{
 		std::string command = "JOIN";
 		std::string message = ERR_NEEDMOREPARAMS(command);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		return "";
 	}
 	std::string	ChannelName = *(line.params.begin());
@@ -490,7 +490,7 @@ std::string	Server::parsingChannelName(Client &client, const Parser &line)
 		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
 	{
 		std::string message = ERR_NOSUCHCHANNEL(ChannelName);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		return "";
 	}
 	return (ChannelName);
@@ -542,25 +542,33 @@ void	Server::joinVerification(Client &client, Channel &channel)
 	if (channel.isModeActive(I))
 	{
 		std::string message = ERR_INVITEONLYCHAN(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isModeActive(K))
 	{
 		std::string message = ERR_BADCHANNELKEY(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isModeActive(L) && channel.isMembersLimitReached())
 	{
 		std::string message = ERR_CHANNELISFULL(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isMemberBanned(client))
 	{
 		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 }
+
+void	Server::kickClient(Channel& channel, Client& client) {
+	//Validation checks 451, 461, 403, 442, 482, 441
+	if (!client.isRegistered())//451
+		saveOrSend(client, ERR_NOTREGISTERED());
+	//Execution + Broadcast
+}
+

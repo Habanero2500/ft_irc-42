@@ -63,7 +63,6 @@ class	Server
 
 		//Command Handlers
 		void		handlePass(Client &client, const Message& msg);
-		
 		void		handleNick(Client &client, const Message& msg);
 		std::string	parsingNick(Client &client, const Parser &line);
 		
@@ -78,7 +77,9 @@ class	Server
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
-		
+		//Operator Commands	
+		void		kickClient(Channel& chan, Client& client);
+
 	private:
 		int						_fd;
 		struct sockaddr_in 				_address;
