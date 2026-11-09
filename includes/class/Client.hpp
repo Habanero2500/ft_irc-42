@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 17:18:49 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/09 14:32:35 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <poll.h>
 #include <netinet/in.h>
+#include <iostream>
 
 extern bool DEBUG;
 
@@ -66,6 +67,7 @@ class Client{
     void	        setRegistered(void);
     bool	        shouldDisconnect(void);
     void	        setToDisconnect(void);
+    void            displayClient(void);
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
