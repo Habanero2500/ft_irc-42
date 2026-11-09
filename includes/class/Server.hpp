@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 16:08:19 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/09 16:33:55 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ class	Server
 		
 		
 	private:
-		int						_fd;
-		struct sockaddr_in 				_address;
-		std::map<int, Client>				_clients;
+		int										_fd;
+		struct sockaddr_in 						_address;
+		std::map<int, Client>					_clients;
 		std::map<std::string, Channel>			_channels;
-		std::map<std::string, CommandHandler> 		_commandMap;
-		std::vector<struct pollfd>			_listFd;
-		std::string					_pwd;
-		int						_port;
+		std::map<std::string, CommandHandler> 	_commandMap;
+		std::vector<struct pollfd>				_listFd;
+		std::string								_pwd;
+		int										_port;
 };
 #endif

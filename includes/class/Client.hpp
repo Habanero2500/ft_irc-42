@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/09 14:32:35 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/09 16:36:20 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ class Client{
     void            setNick(void);
     void            setUser(void);
 	void    		setBuffer(std::string Newbuffer);
+    void    		setServername(std::string name);
 	void 			addBuffer(char buffer[1024]);
 	std::string 	getName(void);
 	std::string 	getID(void);
@@ -82,6 +83,7 @@ class Client{
 	std::string 			_nickname;
 	std::string				_username;
 	std::string				_hostname;
+	std::string				_serverName;    
 	std::string				_realname;
     
 	std::string				_ID;
