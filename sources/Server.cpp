@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:47:59 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 17:52:10 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -553,19 +553,19 @@ void	Server::joinChannel(Client &client, Channel &channel)
 
 void	Server::joinVerification(Client &client, Channel &channel)
 {
-	if (channel.isModeActive(I))
+	if (channel.isModeActive(I)) // check if channel is in invite only
 	{
 		std::string message = ERR_INVITEONLYCHAN(channel.getName());
         send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
-	if (channel.isModeActive(K))
+	if (channel.isModeActive(K)) // check du mot de pass du channel a rajouter
 	{
 		std::string message = ERR_BADCHANNELKEY(channel.getName());
         send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
-	if (channel.isModeActive(L) && channel.isMembersLimitReached())
+	if (channel.isModeActive(L) && channel.isMembersLimitReached()) // check if channel got to its limit
 	{
 		std::string message = ERR_CHANNELISFULL(channel.getName());
         send(client.getFd(), message.c_str(), message.size(), 0);

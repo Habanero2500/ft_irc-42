@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:47:22 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 17:49:20 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ bool	Channel::isMembersLimitReached()
 
 bool	Channel::isMemberBanned(Client Member)
 {
-	for (std::vector<BannedMember>::iterator	it = _banList.begin(); it != _banList.end(); it++)
+	for (std::vector<BannedMember>::iterator it = _banList.begin(); it != _banList.end(); it++)
 	{
 		if (it->nickname == Member.getNickname() || it->username == Member.getUsername() || it->hostname == Member.getHostname())
 			return (true);

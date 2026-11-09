@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 15:13:51 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 17:51:11 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@
 // 451     ERR_NOTREGISTERED
 # define ERR_NOTREGISTERED() ("localhost 451 :You have not registered\r\n")
 
-// 461 ERR_NEEDMOREPARAMS
+// 461	   ERR_NEEDMOREPARAMS
 # define ERR_NEEDMOREPARAMS(command) ("localhost 461 : " + command + " :Not enough parameters\r\n")
 
 // 462     ERR_ALREADYREGISTRED
