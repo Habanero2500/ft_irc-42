@@ -53,19 +53,18 @@ size_t		Channel::getNumberMember()
 	return _members.size();
 }
 
-// Member		Channel::getMember()
-// {
-// 	return	
-// }
-
-	size_t		getNumberMember();	
-	Member		getMember();
+Member*		Channel::getMemberByNick(const std::string& client) {
+	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); ++it) {
+		if (it->second.client.getNickname() == client)
+			return (&(it->second));
+	}
+	return	(NULL);
+}
 
 void		Channel::setName(std::string name)
 {
 	_name = name;
 }
-
 
 /****** MEMBERS MANAGEMENT *******/
 

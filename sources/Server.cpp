@@ -38,7 +38,7 @@ Server	&Server::operator=(const Server &copy)//A regler
     if(this != &copy)
     {
         _fd = copy._fd;
-    }
+}
     return *this;
 }
 
@@ -137,7 +137,7 @@ void	Server::setNewClient(void) {
 
 Client*	Server::getClientByNick(const std::string& nick) {
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
-		if (nick == it->second.getNickname())
+		if (it->second.getNickname() == nick)
 			return (&(it->second));
 	}
 	return (NULL);
@@ -434,7 +434,7 @@ void	Server::sendPendingData( int fd) {
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
-	if (!client.isRegistered()) //a modifier
+	if (!client.isRegistered())
 		return (saveOrSend(client, ERR_NOTREGISTERED()));
 
 	const	std::vector<std::string>& params = msg.getParser().params;
@@ -565,10 +565,35 @@ void	Server::joinVerification(Client &client, Channel &channel)
 	}
 }
 
-void	Server::kickClient(Channel& channel, Client& client) {
-	//Validation checks 451, 461, 403, 442, 482, 441
-	if (!client.isRegistered())//451
-		saveOrSend(client, ERR_NOTREGISTERED());
+//KICK <channel> <user>
+void	Server::kickClient(Client& client, const Message& msg) {
+	if (!kickValidation(client, msg))
+		return ;
 	//Execution + Broadcast
+}
+//peut etre ajouter ca dans la map avec les commandes
+bool	Server::kickValidation(Client& client, const Message& msg) {
+	if (!client.isRegistered())//451
+		return (saveOrSend(client, ERR_NOTREGISTERED()), false);
+
+	const std::vector<std::string>& params = msg.getParser().params;
+	if (params.size() < 2)
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(std::string("KICK"))), false);//461
+								     
+	const std::string& channel = params[0];
+	const std::string& user = params[1];
+
+	std::map<std::string, Channel>::iterator it = _channels.find(channel);
+	if (it == _channels.end())
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(channel)), false);//403
+
+	const Member* member = it->second.getMemberByNick(client.getNickname());
+	if (!member)
+		return (saveOrSend(client, ERR_NOTONCHANNEL(channel)), false);//442
+	if (!member->op)
+		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel)), false);//482
+	if (!it->second.getMemberByNick(user))
+		return (saveOrSend(client, ERR_USERNOTINCHANNEL(user, channel)), false);//441
+	return (true);
 }
 

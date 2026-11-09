@@ -78,7 +78,8 @@ class	Server
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
 		//Operator Commands	
-		void		kickClient(Channel& chan, Client& client);
+		void		kickClient(Client& client, const Message& msg);
+		bool		kickValidation(Client& client, const Message& msg);
 
 	private:
 		int						_fd;

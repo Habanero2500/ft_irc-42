@@ -12,7 +12,6 @@
 
 #include "Client.hpp"
 
-#include <iostream>
 #include <map>
 #include <bitset>
 #include <vector>
@@ -38,8 +37,8 @@ struct	Member{
 
 struct	BannedMember{
 	std::string 			nickname;
-    std::string             username;
-    std::string             hostname;
+	std::string             username;
+	std::string             hostname;
 
 	BannedMember() : nickname(""), username(""), hostname(""){}
 };
@@ -66,7 +65,7 @@ class Channel
 	
 	std::string	getName();
 	size_t		getNumberMember();	
-	// Member		getMember();
+	Member*		getMemberByNick(const std::string& user);
 
 	void		addMember(Client member);
 	void		setOperator(Client member);

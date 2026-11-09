@@ -50,7 +50,7 @@ class Client{
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
     std::string 	getNickname(void) const; 
-    std::string 	getUsername(void);
+    std::string 	getUsername(void) const;
     std::string 	getHostname(void);
     std::string 	getRealName(void);
     int             getAttempt(void);
