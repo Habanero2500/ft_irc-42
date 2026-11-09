@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:20:14 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/06 20:43:35 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ extern bool DEBUG;
 
 #define NUMBERS "0123456789"
 #define LETTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#define SPECIAL_IRC "[]\\_^{|}"
+#define SPECIAL_IRC "[]\\_^{|}-"
 
 class	Server
 {	
@@ -59,6 +59,7 @@ class	Server
 		void	enablePollout(int clientFd);
 		void	disablePollout(int clientFd);
 		void	sendPendingData(int fd);
+		void	isRegistered(Client &client);
 
 
 		//Command Handlers
@@ -79,15 +80,14 @@ class	Server
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
 		
-		private:
-		int										_fd;
-		struct sockaddr_in 						_address;
-		std::map<int, Client>					_clients;
+	private:
+		int						_fd;
+		struct sockaddr_in 				_address;
+		std::map<int, Client>				_clients;
 		std::map<std::string, Channel>			_channels;
-		std::map<std::string, CommandHandler> 	_commandMap;
-		std::vector<struct pollfd>				_listFd;
-		std::string								_pwd;
-		int										_port;
-		// void	handlePrivmsg(Client &client, const Message& msg);
+		std::map<std::string, CommandHandler> 		_commandMap;
+		std::vector<struct pollfd>			_listFd;
+		std::string					_pwd;
+		int						_port;
 };
 #endif
