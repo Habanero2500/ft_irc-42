@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/09 14:37:48 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/09 16:18:15 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void    Client::displayClient(void)
     std::cout << "ID : " << _ID << std::endl;
     std::cout << "Fd : " << _fd << std::endl;
     std::cout << "Pass : " << _pass << std::endl;
-    std::cout << "Nick : " << _nick << std::endl;    
+    std::cout << "Nick : " << _nick << std::endl;
     std::cout << "User : " << _user << std::endl;
     std::cout << "Attempt : " << _attempt << std::endl;
     std::cout << "Registered : " << _registered << std::endl;

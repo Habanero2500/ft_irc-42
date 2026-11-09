@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 20:43:29 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/09 16:14:33 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,16 @@ void	Server::initCommands(void) {
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
+	if(DEBUG)
+		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }
+
+void Server::handleDisplay(Client& client, const Message& message)
+{
+	(void)message;
+	client.displayClient();
+}
+
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
 	Message msg;
@@ -231,6 +240,7 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	else
 		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(command)));//No match found
 }
+
 void	Server::handlePass(Client &client, const Message& msg)
 {
 	Parser pars = msg.getParser();  
