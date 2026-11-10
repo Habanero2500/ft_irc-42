@@ -10,11 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
 
+#include "Client.hpp"
 #include <map>
 #include <bitset>
 #include <vector>
+
+//Forwards declarations
+class	Server;
 
 enum modes{
 	P,
@@ -64,7 +69,7 @@ class Channel
 	void		setName(std::string name);
 	
 	std::string	getName();
-	size_t		getNumberMember();	
+	size_t		getNumberMember() const;	
 	Member*		getMemberByNick(const std::string& user);
 
 	void		addMember(Client member);
@@ -73,5 +78,11 @@ class Channel
 	bool		isModeActive(int mode);
 	bool		isMembersLimitReached();
 	bool		isMemberBanned(Client Member);
+
+	//Broadcast and shit
+	void	broadcast(Server& server, const std::string& msg) const;
+	void	removeClientFromChannel(Client& client);
+
 };
 	
+#endif

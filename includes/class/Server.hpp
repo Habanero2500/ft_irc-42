@@ -20,9 +20,9 @@
 #include "Channel.hpp"
 
 //Forward declarations
+class	Server;
 class	Message;
 class	Client;
-class	Server;
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 struct Parser;
 
@@ -48,9 +48,15 @@ class	Server
 		void	deleteClient(int fd);
 		void	parsingBuffer(int fd);
 		void	executeCommand(int fd, const std::string &line);
+
 		//Setters and Getters
 		void	setNewClient(void);
 		Client*	getClientByNick(const std::string& nick);
+
+		//Helper Functions for Commands
+		const std::string	getPrefixForCommand(Client& client) const;
+		Channel* 		getChannelByNick(const std::string& name);
+
 		//Command Map Functions
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);

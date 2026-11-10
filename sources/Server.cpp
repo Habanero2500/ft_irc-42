@@ -143,6 +143,19 @@ Client*	Server::getClientByNick(const std::string& nick) {
 	return (NULL);
 }
 
+//Helper Functions for Commands
+const std::string	Server::getPrefixForCommand(Client& client) const {
+	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	return (prefix);
+}
+
+Channel*	Server::getChannelByNick(const std::string& name) {
+	std::map<std::string, Channel>::iterator it = _channels.find(name);
+	if (it == _channels.end())
+		return (NULL);
+	return (&(it->second));
+}
+
 void	Server::receiveCommunication(int fd)
 {
 	int		bits;
@@ -449,8 +462,8 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 		return (saveOrSend(client, ERR_NOSUCHNICK(target)));
 
 	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
-	std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
-	std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
+	const std::string prefix = getPrefixForCommand(client);
+	const std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
 	saveOrSend(*getClientByNick(target), line);
 }
 
@@ -569,8 +582,21 @@ void	Server::joinVerification(Client &client, Channel &channel)
 void	Server::kickClient(Client& client, const Message& msg) {
 	if (!kickValidation(client, msg))
 		return ;
+
 	//Execution + Broadcast
+	//:<clientNickname>!<clientUsername>@<clientHostname> KICK <channame> <targetNickname> :\r\n
+	const std::vector<std::string>& params = msg.getParser().params;
+	const std::string prefix = getPrefixForCommand(client);
+	const std::string line = ":" + prefix + " KICK " + params[0] + " " + params[1] + "\r\n";
+
+	Channel* channel = getChannelByNick(params[0]);
+	Client* target = getClientByNick(params[1]);
+	channel->broadcast(*this, line);
+	channel->removeClientFromChannel(*target);
+	if (!channel->getNumberMember())
+		_channels.erase(params[0]);
 }
+
 //peut etre ajouter ca dans la map avec les commandes
 bool	Server::kickValidation(Client& client, const Message& msg) {
 	if (!client.isRegistered())//451
@@ -584,7 +610,7 @@ bool	Server::kickValidation(Client& client, const Message& msg) {
 	const std::string& user = params[1];
 
 	std::map<std::string, Channel>::iterator it = _channels.find(channel);
-	if (it == _channels.end())
+	if (it == _channels.end())//maybe I can add getChannelByNick ici
 		return (saveOrSend(client, ERR_NOSUCHCHANNEL(channel)), false);//403
 
 	const Member* member = it->second.getMemberByNick(client.getNickname());
