@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/10 15:38:43 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/10 18:23:35 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,41 @@ void	Server::initCommands(void) {
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
+	_commandMap["INVITE"] = &Server::handleInvite;
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
+}
+
+// INVITE <nickname> <channel>
+void	Server::handleInvite(Client &client, const Message &msg)
+{
+	if (!client.isRegistered()) //Deja sur le channel 
+		return (saveOrSend(client, ERR_NOTREGISTERED()));
+	const std::vector<std::string>	&params = msg.getParser().params;
+	if (params.size() < 2)
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(msg.getParser().command)));
+
+	const std::string	targetNick = params[0];
+	const std::string	channelName = params[1];
+	const std::string	me = client.getNickname();
+
+	std::map<std::string, Channel>::iterator chanIt = _channels.find(channelName);
+	if (chanIt == _channels.end())
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(channelName)));
+	Channel	&channel = chanIt->second;
+
+	if (!channel.isMember(client.getFd())) //Si celui qi fait l'invit n'est pas membre
+		return (saveOrSend(client, ERR_NOTONCHANNEL(channelName)));
+	if (!channel.isOperator(client.getFd())) //s'il n'est pas chouffin (operator)
+		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(channelName)));
+
+	Client	*target = getClientByNick(targetNick);
+	if (!target) //Invite n'existe pas
+		return (saveOrSend(client, ERR_NOSUCHNICK(targetNick))); 
+	if (channel.isMember(target->getFd())) //si l'invite est deja sur le channel
+		return (saveOrSend(client, ERR_USERONCHANNEL(targetNick, channelName))); 
+
+	channel.addInvite(targetNick); //on l'invite
 }
 
 void Server::handleDisplay(Client& client, const Message& message)
@@ -320,8 +353,6 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
         send(client.getFd(), message.c_str(), message.size(), 0);
 		return "";
 	}
-	
-	
 	std::string	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
@@ -410,6 +441,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 	client.setRealName(realname);
 	client.setHostname(pars.params[1]);
 	client.setServername(pars.params[2]);
+	client.setUser();
 	if(DEBUG)
 			std::cout << "USER ok" << std::endl;
 	isRegistered(client);

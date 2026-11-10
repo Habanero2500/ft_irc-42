@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:47:34 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/10 17:55:12 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <map>
 #include <bitset>
 #include <vector>
+#include <set>
 
 enum modes{
 	P,
@@ -54,6 +55,7 @@ class Channel
 	std::vector<BannedMember>	_banList;
 	std::bitset<8>				_modes;
 	size_t						_maxMembers;
+	std::set<std::string>		_invited; // pasde doublon et on y accede par valeur (on itere pas)
 
 	public:
 	Channel();
@@ -74,5 +76,10 @@ class Channel
 	bool		isModeActive(int mode);
 	bool		isMembersLimitReached();
 	bool		isMemberBanned(Client Member);
+	bool	isMember(int fd);
+	bool	isOperator(int fd);
+	void	addInvite(const std::string &nick);
+	bool	isInvited(const std::string &nick);
+	void	removeInvite(const std::string &nick);
 };
 	

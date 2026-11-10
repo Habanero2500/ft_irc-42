@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:47:22 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/10 17:52:52 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,3 +102,18 @@ bool	Channel::isMemberBanned(Client Member)
 	}
 	return (false);
 }
+
+bool	Channel::isMember(int fd)
+{
+	return (_members.find(fd) != _members.end());
+}
+
+bool	Channel::isOperator(int fd)
+{
+	std::map<int, Member>::iterator it = _members.find(fd);   // adapte au type de ta map
+	return (it != _members.end() && it->second.op);
+}
+
+void	Channel::addInvite(const std::string &nick)    { _invited.insert(nick); }
+bool	Channel::isInvited(const std::string &nick)    { return (_invited.find(nick) != _invited.end()); }
+void	Channel::removeInvite(const std::string &nick) { _invited.erase(nick); }
