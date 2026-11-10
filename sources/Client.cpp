@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/09 16:37:46 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/10 15:41:49 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ std::string		Client::getBuffer(void){return (_buffer);}
 std::string 	Client::getNickname(void) const {return _nickname;}
 std::string 	Client::getUsername(void){return _username;}
 std::string 	Client::getHostname(void){return _hostname;}
+std::string 	Client::getServername(void){return _serverName;}
 std::string 	Client::getRealName(void){return _realname;}
 int             Client::getAttempt(void){return _attempt;}
 bool            Client::getPass(void){return _pass;}
@@ -119,6 +120,7 @@ void    Client::displayClient(void)
     std::cout << "Nickname : " << _nickname << std::endl;
     std::cout << "Username : " << _username << std::endl;
     std::cout << "Hostname : " << _hostname << std::endl;
+    std::cout << "Servername : " << _realname << std::endl;
     std::cout << "Realname : " << _realname << std::endl;
     std::cout << "ID : " << _ID << std::endl;
     std::cout << "Fd : " << _fd << std::endl;

@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/09 16:36:20 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/09 17:50:45 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class Client{
 	void    		setBuffer(std::string Newbuffer);
     void    		setServername(std::string name);
 	void 			addBuffer(char buffer[1024]);
+    std::string 	getServername(void);
 	std::string 	getName(void);
 	std::string 	getID(void);
 	int 			getFd(void);

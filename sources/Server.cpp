@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 16:33:04 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/10 15:38:43 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,9 +345,36 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	return (NicknameGiven);
 }
 
+#define USERLEN 16      // longueur max conservée, valeur au choix
+
+static bool isValidUsername(const std::string &s)
+{
+	if (s.empty())
+		return false;
+	for (size_t i = 0; i < s.size(); i++)
+	{
+		char c = s[i];
+		if (c <= ' ' || c == 127 || c == '@' || c == '!')
+			return false;
+	}
+	return true;
+}
+
+static bool isValidRealname(const std::string &s)
+{
+	if (s.empty())
+		return false;
+	for (size_t i = 0; i < s.size(); i++)
+	{
+		char c = s[i];
+		if (c < ' ' || c == 127)
+			return false;
+	}
+	return true;
+}
+
 void	Server::handleUser(Client &client, const Message& msg)
 {
-	
 	if(client.getPass() != true) 
 	{
 		if(DEBUG)
@@ -371,46 +398,22 @@ void	Server::handleUser(Client &client, const Message& msg)
 		send(client.getFd(), msg.c_str(), msg.size(), 0);
 		return;
 	}
-	else
+	std::string			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
+	const std::string	&realname = pars.params[3];              
+	if (!isValidUsername(username) || !isValidRealname(realname))
 	{
-		for(int i(0); i < 4 ; i++)
-		{
-			int o(0);
-			while(pars.params[i][o])
-			{
-				
-				if(i != 3)
-				{
-					if(!((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
-					{
-						if(DEBUG)
-							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
-						return;
-					}
-				}
-				else 
-				{
-					if(/*(o == 0 && pars.params[i][o] != ':') ||*/ !((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
-					{
-						if(DEBUG)
-							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
-						return;
-					}
-				}
-				o++;
-			}
-		}
-		client.setUsername(pars.params[0]);
-		client.setHostname(pars.params[2]);
-		client.setServername(pars.params[2]);
-		client.setRealName(pars.params[3]);
-		client.setUser();
-		if(DEBUG)
-			std::cout << "USER ok" << std::endl;
+		if (DEBUG)
+			std::cout << "Wrong argument --> " << username << " / " << realname << std::endl;
+		return ;
 	}
+	client.setUsername(username);
+	client.setRealName(realname);
+	client.setHostname(pars.params[1]);
+	client.setServername(pars.params[2]);
+	if(DEBUG)
+			std::cout << "USER ok" << std::endl;
 	isRegistered(client);
 }
-
 void Server::isRegistered(Client &client)
 {
 	if(client.getNick() == true && client.getUser() == true && client.getPass() == true)
