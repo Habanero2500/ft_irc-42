@@ -10,12 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
 
-#include <iostream>
+#include "Client.hpp"
 #include <map>
 #include <bitset>
 #include <vector>
+
+//Forwards declarations
+class	Server;
 
 enum modes{
 	P,
@@ -38,8 +42,8 @@ struct	Member{
 
 struct	BannedMember{
 	std::string 			nickname;
-    std::string             username;
-    std::string             hostname;
+	std::string             username;
+	std::string             hostname;
 
 	BannedMember() : nickname(""), username(""), hostname(""){}
 };
@@ -65,8 +69,8 @@ class Channel
 	void		setName(std::string name);
 	
 	std::string	getName();
-	size_t		getNumberMember();	
-	// Member		getMember();
+	size_t		getNumberMember() const;	
+	Member*		getMemberByNick(const std::string& user);
 
 	void		addMember(Client member);
 	void		setOperator(Client member);
@@ -74,5 +78,11 @@ class Channel
 	bool		isModeActive(int mode);
 	bool		isMembersLimitReached();
 	bool		isMemberBanned(Client Member);
+
+	//Broadcast and shit
+	void	broadcast(Server& server, const std::string& msg) const;
+	void	removeClientFromChannel(Client& client);
+
 };
 	
+#endif

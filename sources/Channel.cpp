@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
+#include "../includes/class/Server.hpp"
 
 Channel::Channel() : _name(""), _maxMembers(1000)
 {
@@ -48,24 +49,22 @@ std::string	Channel::getName()
 	return _name;
 }
 
-size_t		Channel::getNumberMember()
-{
-	return _members.size();
+size_t		Channel::getNumberMember() const {
+	return (_members.size());
 }
 
-// Member		Channel::getMember()
-// {
-// 	return	
-// }
-
-	size_t		getNumberMember();	
-	Member		getMember();
+Member*		Channel::getMemberByNick(const std::string& client) {
+	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); ++it) {
+		if (it->second.client.getNickname() == client)
+			return (&(it->second));
+	}
+	return	(NULL);
+}
 
 void		Channel::setName(std::string name)
 {
 	_name = name;
 }
-
 
 /****** MEMBERS MANAGEMENT *******/
 
@@ -101,4 +100,22 @@ bool	Channel::isMemberBanned(Client Member)
 			return (true);
 	}
 	return (false);
+}
+
+//Broadcast and shit
+void	Channel::broadcast(Server& server, const std::string& msg) const {
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client* target = server.getClientByNick(it->second.client.getNickname());
+		if (target)
+			server.saveOrSend(*target, msg);
+	}
+}
+
+void	Channel::removeClientFromChannel(Client& client) {
+	_members.erase(client.getFd());
+	for (std::vector<int>::iterator it = _operators.begin(); it != _operators.end(); ++it)
+		if (*it == client.getFd()) {
+			_operators.erase(it);
+			return ;//Voir si il faut modifier plus de trucs
+		}
 }

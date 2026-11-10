@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 16:33:55 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/10 20:18:40 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 #include "Channel.hpp"
 
 //Forward declarations
+class	Server;
 class	Message;
 class	Client;
-class	Server;
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 struct Parser;
 
@@ -48,9 +48,15 @@ class	Server
 		void	deleteClient(int fd);
 		void	parsingBuffer(int fd);
 		void	executeCommand(int fd, const std::string &line);
+
 		//Setters and Getters
 		void	setNewClient(void);
 		Client*	getClientByNick(const std::string& nick);
+
+		//Helper Functions for Commands
+		const std::string	getPrefixForCommand(Client& client) const;
+		Channel* 		getChannelByNick(const std::string& name);
+
 		//Command Map Functions
 		void	initCommands(void);
 		void	executeCommand(Client& client, const std::string& rawline);
@@ -64,7 +70,6 @@ class	Server
 
 		//Command Handlers
 		void		handlePass(Client &client, const Message& msg);
-		
 		void		handleNick(Client &client, const Message& msg);
 		std::string	parsingNick(Client &client, const Parser &line);
 		
@@ -80,8 +85,10 @@ class	Server
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
-		
-		
+		//Operator Commands	
+		void		kickClient(Client& client, const Message& msg);
+		bool		kickValidation(Client& client, const Message& msg);
+
 	private:
 		int										_fd;
 		struct sockaddr_in 						_address;
