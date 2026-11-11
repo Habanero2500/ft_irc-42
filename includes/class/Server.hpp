@@ -6,18 +6,31 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:18:40 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:44:55 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
+#include "Channel.hpp"
+#include "Client.hpp"
+#include "Message.hpp"
+
+#include "../utils/Colors.hpp"
+#include "../utils/Debug.hpp"
+#include "../utils/Replies.hpp"
+
 #include <string>
 #include <map>
 #include <vector>
 #include <netinet/in.h>
-#include "Channel.hpp"
+#include <fcntl.h>
+#include <iostream>
+#include <unistd.h>
+#include <cstdlib>
+#include <cerrno>
+#include <sstream>
 
 //Forward declarations
 class	Server;
@@ -55,8 +68,8 @@ class	Server
 
 		//Helper Functions for Commands
 		const std::string	getPrefixForCommand(Client& client) const;
-		Channel* 		getChannelByNick(const std::string& name);
-		std::string	size_tToString(size_t src);
+		Channel* 			getChannelByNick(const std::string& name);
+		std::string			size_tToString(size_t src);
 
 		//Command Map Functions
 		void	initCommands(void);
