@@ -6,16 +6,20 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 14:46:47 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 14:51:10 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
 
-#include <iostream>
+#include "Client.hpp"
 #include <map>
 #include <bitset>
 #include <vector>
+
+//Forwards declarations
+class	Server;
 
 enum modes{
 	P,
@@ -29,17 +33,15 @@ enum modes{
 };
 
 struct	Member{
-	Client	client;
+	Client	*client;
 	bool	op;
 	bool	voice;
-
-	Member() : op(false), voice(false){}
 };
 
 struct	BannedMember{
 	std::string 			nickname;
-    std::string             username;
-    std::string             hostname;
+	std::string             username;
+	std::string             hostname;
 
 	BannedMember() : nickname(""), username(""), hostname(""){}
 };
@@ -65,14 +67,22 @@ class Channel
 	void		setName(std::string name);
 	
 	std::string	getName();
-	size_t		getNumberMember();	
-	// Member		getMember();
+	size_t		getNumberMember() const;	
+	Member*		getMemberByNick(const std::string& user);
 
-	void		addMember(Client member);
-	void		setOperator(Client member);
+	void		addMember(Client &member);
+	void		setOperator(Client &member);
 	
 	bool		isModeActive(int mode);
 	bool		isMembersLimitReached();
-	bool		isMemberBanned(Client Member);
+	bool		isMemberBanned(Client &member);
+	bool		isalreadyjoined(Client &member);
+
+
+	//Broadcast and shit
+	void	broadcast(Server& server, const std::string& msg) const;
+	void	removeClientFromChannel(Client& client);
+
 };
 	
+#endif

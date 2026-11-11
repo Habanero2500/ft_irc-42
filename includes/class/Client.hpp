@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 17:18:49 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 14:26:22 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <poll.h>
 #include <netinet/in.h>
+#include <iostream>
 
 extern bool DEBUG;
 
@@ -43,14 +44,16 @@ class Client{
     void            setNick(void);
     void            setUser(void);
 	void    		setBuffer(std::string Newbuffer);
+    void    		setServername(std::string name);
 	void 			addBuffer(char buffer[1024]);
+    std::string 	getServername(void);
 	std::string 	getName(void);
 	std::string 	getID(void);
 	int 			getFd(void);
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
     std::string 	getNickname(void) const; 
-    std::string 	getUsername(void);
+    std::string 	getUsername(void) const;
     std::string 	getHostname(void);
     std::string 	getRealName(void);
     int             getAttempt(void);
@@ -66,13 +69,14 @@ class Client{
     void	        setRegistered(void);
     bool	        shouldDisconnect(void);
     void	        setToDisconnect(void);
+    void            displayClient(void);
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
     
 	//Send Buffer Management
 	void			appendToSendBuffer(const std::string& data);
-	std::string&		getSendBuffer(void);
+	std::string&	getSendBuffer(void);
 	bool			isSendBufferEmpty(void) const;
 
     private :
@@ -80,6 +84,7 @@ class Client{
 	std::string 			_nickname;
 	std::string				_username;
 	std::string				_hostname;
+	std::string				_serverName;    
 	std::string				_realname;
     
 	std::string				_ID;

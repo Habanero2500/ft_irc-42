@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 15:11:38 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 17:26:59 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ Server	&Server::operator=(const Server &copy)//A regler
     if(this != &copy)
     {
         _fd = copy._fd;
-    }
+}
     return *this;
 }
 
@@ -137,10 +137,23 @@ void	Server::setNewClient(void) {
 
 Client*	Server::getClientByNick(const std::string& nick) {
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
-		if (nick == it->second.getNickname())
+		if (it->second.getNickname() == nick)
 			return (&(it->second));
 	}
 	return (NULL);
+}
+
+//Helper Functions for Commands
+const std::string	Server::getPrefixForCommand(Client& client) const {
+	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	return (prefix);
+}
+
+Channel*	Server::getChannelByNick(const std::string& name) {
+	std::map<std::string, Channel>::iterator it = _channels.find(name);
+	if (it == _channels.end())
+		return (NULL);
+	return (&(it->second));
 }
 
 void	Server::receiveCommunication(int fd)
@@ -214,7 +227,16 @@ void	Server::initCommands(void) {
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
+	if(DEBUG)
+		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }
+
+void Server::handleDisplay(Client& client, const Message& message)
+{
+	(void)message;
+	client.displayClient();
+}
+
 
 void	Server::executeCommand(Client& client, const std::string& rawline) {
 	Message msg;
@@ -231,6 +253,7 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	else
 		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(command)));//No match found
 }
+
 void	Server::handlePass(Client &client, const Message& msg)
 {
 	Parser pars = msg.getParser();  
@@ -335,9 +358,36 @@ std::string	Server::parsingNick(Client &client, const Parser &line)
 	return (NicknameGiven);
 }
 
+#define USERLEN 16      // longueur max conservée, valeur au choix
+
+static bool isValidUsername(const std::string &s)
+{
+	if (s.empty())
+		return false;
+	for (size_t i = 0; i < s.size(); i++)
+	{
+		char c = s[i];
+		if (c <= ' ' || c == 127 || c == '@' || c == '!')
+			return false;
+	}
+	return true;
+}
+
+static bool isValidRealname(const std::string &s)
+{
+	if (s.empty())
+		return false;
+	for (size_t i = 0; i < s.size(); i++)
+	{
+		char c = s[i];
+		if (c < ' ' || c == 127)
+			return false;
+	}
+	return true;
+}
+
 void	Server::handleUser(Client &client, const Message& msg)
 {
-	
 	if(client.getPass() != true) 
 	{
 		if(DEBUG)
@@ -361,46 +411,22 @@ void	Server::handleUser(Client &client, const Message& msg)
 		send(client.getFd(), msg.c_str(), msg.size(), 0);
 		return;
 	}
-	else
+	std::string			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
+	const std::string	&realname = pars.params[3];              
+	if (!isValidUsername(username) || !isValidRealname(realname))
 	{
-		for(int i(0); i < 4 ; i++)
-		{
-			int o(0);
-			while(pars.params[i][o])
-			{
-				
-				if(i != 3)
-				{
-					if(!((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
-					{
-						if(DEBUG)
-							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
-						return;
-					}
-				}
-				else 
-				{
-					if(/*(o == 0 && pars.params[i][o] != ':') ||*/ !((pars.params[i][o] >= 65 && pars.params[i][o] <= 90) || (pars.params[i][o] >= 97 && pars.params[i][o] <= 122)))
-					{
-						if(DEBUG)
-							std::cout << "Wrong argument --> " << pars.params[i] << std::endl;
-						return;
-					}
-				}
-				o++;
-			}
-		}
-		client.setNickname(pars.params[0]);
-		client.setUsername(pars.params[1]);
-		client.setHostname(pars.params[2]);
-		client.setRealName(pars.params[3]);
-		client.setUser();
-		if(DEBUG)
-			std::cout << "USER ok" << std::endl;
+		if (DEBUG)
+			std::cout << "Wrong argument --> " << username << " / " << realname << std::endl;
+		return ;
 	}
+	client.setUsername(username);
+	client.setRealName(realname);
+	client.setHostname(pars.params[1]);
+	client.setServername(pars.params[2]);
+	if(DEBUG)
+			std::cout << "USER ok" << std::endl;
 	isRegistered(client);
 }
-
 void Server::isRegistered(Client &client)
 {
 	if(client.getNick() == true && client.getUser() == true && client.getPass() == true)
@@ -463,12 +489,12 @@ void	Server::sendPendingData( int fd) {
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
-	if (!client.isRegistered()) //a modifier
+	if (!client.isRegistered())
 		return (saveOrSend(client, ERR_NOTREGISTERED()));
 
 	const	std::vector<std::string>& params = msg.getParser().params;
-	if (params.empty() ||params[0].empty())//411
-		return(saveOrSend(client, ERR_NORECIPIENT(msg.getParser().command)));
+	if (params.empty() || params[0].empty())//411
+		return (saveOrSend(client, ERR_NORECIPIENT(msg.getParser().command)));
 	if (params.size() < 2 || params[1].empty())//412
 		return (saveOrSend(client, ERR_NOTEXTTOSEND()));
 	
@@ -476,32 +502,31 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	const std::string& textToSend = params[1];
 	if (!getClientByNick(target))//401
 		return (saveOrSend(client, ERR_NOSUCHNICK(target)));
+
 	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
-	
-	std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
-	std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
+	const std::string prefix = getPrefixForCommand(client);
+	const std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
 	saveOrSend(*getClientByNick(target), line);
 }
 
 /***************** JOIN & CHANNELS *********************/
+
 void	Server::handleJoin(Client &client, const Message& msg)
 {
 	Parser	line = msg.getParser();
-	std::string	ChannelName = parsingChannelName(client, line);
-	if ((ChannelName.empty()))
+	std::string	channelName = parsingChannelName(client, line);
+	if ((channelName.empty()))
 		return;
 	
 	if (client.getNumberChannels() >= 10)
 	{
-		std::string message = ERR_TOOMANYCHANNELS(ChannelName);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+		std::string message = ERR_TOOMANYCHANNELS(channelName);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 	}
-	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
-	{
-		if (it->second.getName() == ChannelName)
-			return (joinChannel(client, it->second));
-	}
-	createChannel(client, ChannelName);
+	std::map<std::string, Channel>::iterator it = _channels.find(channelName);
+	if (it != _channels.end())
+		return (joinChannel(client, it->second));
+	createChannel(client, channelName);
 }
 
 std::string	Server::parsingChannelName(Client &client, const Parser &line)
@@ -510,16 +535,16 @@ std::string	Server::parsingChannelName(Client &client, const Parser &line)
 	{
 		std::string command = "JOIN";
 		std::string message = ERR_NEEDMOREPARAMS(command);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		return "";
 	}
 	std::string	ChannelName = *(line.params.begin());
 
-	if ((ChannelName[0] != '@' && ChannelName[0] != '#') || ChannelName.size() > 200
+	if ((ChannelName[0] != '&' && ChannelName[0] != '#') || ChannelName.size() > 200
 		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
 	{
 		std::string message = ERR_NOSUCHCHANNEL(ChannelName);
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		return "";
 	}
 	return (ChannelName);
@@ -568,28 +593,113 @@ void	Server::joinChannel(Client &client, Channel &channel)
 
 void	Server::joinVerification(Client &client, Channel &channel)
 {
+	if (channel.isalreadyjoined(client))
+	{
+		throw -1;
+	}
 	if (channel.isModeActive(I)) // check if channel is in invite only
 	{
 		std::string message = ERR_INVITEONLYCHAN(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isModeActive(K)) // check du mot de pass du channel a rajouter
 	{
 		std::string message = ERR_BADCHANNELKEY(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isModeActive(L) && channel.isMembersLimitReached()) // check if channel got to its limit
 	{
 		std::string message = ERR_CHANNELISFULL(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isMemberBanned(client))
 	{
 		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
-        send(client.getFd(), message.c_str(), message.size(), 0);
+        	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 }
+
+/**************** MODE *************************/
+
+void	Server::handleMode(Client &client, const Message& msg)
+{
+	Parser	line = msg.getParser();
+	
+	if (line.params.size() == 0)
+	{
+		std::string command = "MODE";
+		saveOrSend(client, ERR_NEEDMOREPARAMS(command));
+		return ;
+	}
+	if (line.params[0][0] == '&' || line.params[0][0] == '#')
+		channelMode(line);
+	else
+		userMode(line);
+}
+
+void	Server::channelMode(Client &client, const Parser &line)
+{
+	std::map<std::string, Channel>::iterator it = _channels.find(line.params[0]);
+	if (it == _channels.end())
+		saveOrSend(client, ERR_NOSUCHCHANNEL(line.params[0]));
+	else
+	{
+		
+	}
+}
+
+void	Server::userMode(Client &client, const Parser &line)
+{
+	
+}
+
+
+/*************KICK <channel> <user> ********************/
+void	Server::kickClient(Client& client, const Message& msg) {
+	if (!kickValidation(client, msg))
+		return ;
+
+	//Execution + Broadcast
+	//:<clientNickname>!<clientUsername>@<clientHostname> KICK <channame> <targetNickname> :\r\n
+	const std::vector<std::string>& params = msg.getParser().params;
+	const std::string prefix = getPrefixForCommand(client);
+	const std::string line = ":" + prefix + " KICK " + params[0] + " " + params[1] + "\r\n";
+
+	Channel* channel = getChannelByNick(params[0]);
+	Client* target = getClientByNick(params[1]);
+	channel->broadcast(*this, line);
+	channel->removeClientFromChannel(*target);
+	if (!channel->getNumberMember())
+		_channels.erase(params[0]);
+}
+
+//peut etre ajouter ca dans la map avec les commandes
+bool	Server::kickValidation(Client& client, const Message& msg) {
+	if (!client.isRegistered())//451
+		return (saveOrSend(client, ERR_NOTREGISTERED()), false);
+
+	const std::vector<std::string>& params = msg.getParser().params;
+	if (params.size() < 2)
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(std::string("KICK"))), false);//461
+								     
+	const std::string& channel = params[0];
+	const std::string& user = params[1];
+
+	std::map<std::string, Channel>::iterator it = _channels.find(channel);
+	if (it == _channels.end())//maybe I can add getChannelByNick ici
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(channel)), false);//403
+
+	const Member* member = it->second.getMemberByNick(client.getNickname());
+	if (!member)
+		return (saveOrSend(client, ERR_NOTONCHANNEL(channel)), false);//442
+	if (!member->op)
+		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel)), false);//482
+	if (!it->second.getMemberByNick(user))
+		return (saveOrSend(client, ERR_USERNOTINCHANNEL(user, channel)), false);//441
+	return (true);
+}
+

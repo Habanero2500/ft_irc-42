@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 14:48:16 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 17:22:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 /******* CHANNELS MESSAGE ********/
 
 # define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
+
+# define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " channel + " " + mode + " " + modeParams + " \r\n")
 
 					  
 /******* ERRORS MESSAGES ********/
