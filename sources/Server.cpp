@@ -665,3 +665,26 @@ bool	Server::kickValidation(Client& client, const Message& msg) {
 	return (true);
 }
 
+//TOPIC <channel> [<topic>]
+void	Server::handleTopic(Client& client, const Message& msg) {
+	//One param errors  331, 332
+	//Two params errors 482, 
+	if (!client.isRegistered())//451
+		return (saveOrSend(client, ERR_NOTREGISTERED()));
+	
+	const std::vector<std::string>& params = msg.getParser().params;
+	if (params.size() < 1)
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(std::string("KICK"))));//461
+
+	const std::string& channel = params[0];
+	if (params.size() > 1)//a modifier
+		const std::string& topic = params[1];
+
+	std::map<std::string, Channel>::iterator it = _channels.find(channel);
+	if (it == _channels.end())//maybe I can add getChannelByNick ici
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(channel)));//403
+
+	const Member* member = it->second.getMemberByNick(client.getNickname());
+	if (!member)
+		return (saveOrSend(client, ERR_NOTONCHANNEL(channel)));//442
+}

@@ -88,6 +88,7 @@ class	Server
 		//Operator Commands	
 		void		kickClient(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
+		void		handleTopic(Client& client, const Message& msg);
 
 	private:
 		int										_fd;

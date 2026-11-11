@@ -26,6 +26,11 @@
 # define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
 
 					  
+/******* SUCCESSFULL NUMERIC REPLIES ********/
+# define RPL_NOTOPIC(channelName) (":" + channelName + " :No topic is set\r\n")//a voir
+
+# define RPL_TOPIC(channelName, topicName) (":" + channelName + " :" + topicName + "\r\n")//a voir aussi
+
 /******* ERRORS MESSAGES ********/
 
 // 401 ERR_NOSUCHNICK
