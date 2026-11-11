@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/09 12:25:19 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/09 15:11:38 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ void	Server::handlePass(Client &client, const Message& msg)
 	else if(pars.params[0] == _pwd)
 	{
 		if(DEBUG)
-			std::cout << "PWD OK" << std::endl; 
+			std::cout << "PWD OK" << std::endl;
 		client.setPass();
 		return;	
 	}
@@ -491,7 +491,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	if ((ChannelName.empty()))
 		return;
 	
-	if (client.getNumberChannels() > 10)
+	if (client.getNumberChannels() >= 10)
 	{
 		std::string message = ERR_TOOMANYCHANNELS(ChannelName);
         send(client.getFd(), message.c_str(), message.size(), 0);
@@ -515,7 +515,7 @@ std::string	Server::parsingChannelName(Client &client, const Parser &line)
 	}
 	std::string	ChannelName = *(line.params.begin());
 
-	if (ChannelName[0] != '@' || ChannelName[0] != '#' || ChannelName.size() > 200
+	if ((ChannelName[0] != '@' && ChannelName[0] != '#') || ChannelName.size() > 200
 		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
 	{
 		std::string message = ERR_NOSUCHCHANNEL(ChannelName);
