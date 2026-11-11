@@ -6,22 +6,22 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 14:52:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:01:14 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
 
-Channel::Channel() : _name(""), _maxMembers(1000)
+Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
 }
 
-Channel::Channel(std::string name) : _name(name), _maxMembers(1000)
+Channel::Channel(std::string name) : _name(name), _maxMembers(1000), _pwd("")
 {
 }
 
-Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _banList(copy._banList), _maxMembers(copy._maxMembers)
+Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _banList(copy._banList), _maxMembers(copy._maxMembers), _pwd(copy._pwd)
 {
 }
 
@@ -32,6 +32,7 @@ Channel	&Channel::operator=(const Channel &copy)
 		_name = copy._name;
 		_members = copy._members;
 		_maxMembers = copy._maxMembers;
+		_pwd = copy._pwd;
     }
     return *this;
 }
@@ -61,9 +62,37 @@ Member*		Channel::getMemberByNick(const std::string& client) {
 	return	(NULL);
 }
 
+std::string	Channel::getModes()
+{
+	std::string	levels[8] = {"P", "S", "I", "T", "N", "M", "L", "K"};
+	std::string	activeModes = "+";
+
+	for (size_t i = 0; i < 8; i++)
+	{
+		if (_modes.test(i))
+			activeModes.append(levels[i]);
+	}
+	return activeModes;
+}
+
+size_t		Channel::getMaxMember() const 
+{
+	return (_maxMembers);
+}
+
+std::string	Channel::getPwd() const 
+{
+	return (_pwd);
+}
+
 void		Channel::setName(std::string name)
 {
 	_name = name;
+}
+
+void		Channel::setPwd(std::string pwd)
+{
+	_pwd = pwd;
 }
 
 /****** MEMBERS MANAGEMENT *******/

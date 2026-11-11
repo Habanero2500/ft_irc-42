@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 17:26:59 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:12:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <cerrno>
+#include <string>
+#include <sstream>
 
 
 // **** ORTHODOX CANONICAL FORM ****
@@ -193,6 +195,17 @@ void	Server::deleteClient(int fd)
 			return ;
 		}
 	}
+}
+
+/************ UTILS ***********/
+
+std::string	Server::size_tToString(size_t src)
+{
+	std::stringstream	temp;
+	temp << src;
+	
+	std ::string 		result = temp.str(); 
+	return result;
 }
 
 
@@ -636,9 +649,9 @@ void	Server::handleMode(Client &client, const Message& msg)
 		return ;
 	}
 	if (line.params[0][0] == '&' || line.params[0][0] == '#')
-		channelMode(line);
+		channelMode(client, line);
 	else
-		userMode(line);
+		userMode(client, line);
 }
 
 void	Server::channelMode(Client &client, const Parser &line)
@@ -648,9 +661,28 @@ void	Server::channelMode(Client &client, const Parser &line)
 		saveOrSend(client, ERR_NOSUCHCHANNEL(line.params[0]));
 	else
 	{
-		
+		if (line.params.size() == 1)
+		{
+			printChannelModes(client, it, line.params[0]);
+		}
+		else
+		{
+			parsing
+		}
 	}
 }
+
+void	Server::printChannelModes(Client &client, const std::map<std::string, Channel>::iterator &it, const std::string &channel)
+{
+	std::string mode = it->second.getModes();
+	std::string modeParams = "";
+	if (it->second.isModeActive(L))
+		modeParams.append(size_tToString(it->second.getMaxMember()));
+	if (it->second.isModeActive(K))
+		modeParams.append(it->second.getPwd());
+	saveOrSend(client, RPL_CHANNELMODEIS(channel, mode, modeParams));
+}
+
 
 void	Server::userMode(Client &client, const Parser &line)
 {

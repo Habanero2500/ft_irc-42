@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 17:25:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:18:40 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ class	Server
 		//Helper Functions for Commands
 		const std::string	getPrefixForCommand(Client& client) const;
 		Channel* 		getChannelByNick(const std::string& name);
+		std::string	size_tToString(size_t src);
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -88,14 +89,16 @@ class	Server
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);
+		void		printChannelModes(Client &client, const std::map<std::string, Channel>::iterator &it, const std::string &channel);
 		void		userMode(Client &client, const Parser &line);
-
-
 		
 		//Operator Commands	
 		void		kickClient(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
 
+		/******* UTILS *******/
+
+		
 	private:
 		int										_fd;
 		struct sockaddr_in 						_address;
