@@ -6,11 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:38:57 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:52:15 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/class/Server.hpp"
+#include "../../../includes/class/Server.hpp"
 
 /*************KICK <channel> <user> ********************/
 void	Server::kickClient(Client& client, const Message& msg) {

@@ -6,11 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:34:12 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 14:10:55 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/class/Server.hpp"
+#include "../../../includes/class/Server.hpp"
 
 void	Server::handleNick(Client &client, const Message& msg)
 {
@@ -24,9 +24,8 @@ void	Server::handleNick(Client &client, const Message& msg)
 	client.setNick();
 	if (DEBUG)
 	{
-		std::cout << formatDebugBuffer(client.getNickname()) << std::endl;
-	std::string message = "Nick ok\r\n";
-    send(client.getFd(), message.c_str(), message.size(), 0);
+		std::string message = "Nick ok\r\n";
+    	send(client.getFd(), message.c_str(), message.size(), 0);
 	}
 	isRegistered(client);
 		

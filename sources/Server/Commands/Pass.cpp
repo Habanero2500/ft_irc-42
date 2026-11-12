@@ -6,11 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:33:18 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:33:27 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:52:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/class/Server.hpp"
+#include "../../../includes/class/Server.hpp"
 
 void	Server::handlePass(Client &client, const Message& msg)
 {

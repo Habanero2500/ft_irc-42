@@ -6,11 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:36:32 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:36:44 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:52:24 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/class/Server.hpp"
+#include "../../../includes/class/Server.hpp"
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {

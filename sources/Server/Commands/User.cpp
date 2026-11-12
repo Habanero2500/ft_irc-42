@@ -6,11 +6,11 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:55 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:35:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 18:52:27 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/class/Server.hpp"
+#include "../../../includes/class/Server.hpp"
 
 #define USERLEN 16      // longueur max conservée, valeur au choix
 

@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:01:14 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 17:26:16 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ Channel::~Channel()
 /****** GETTERS AND SETTERS *******/
 
 
-std::string	Channel::getName()
+std::string	Channel::getName() const
 {
 	return _name;
 }
@@ -62,7 +62,7 @@ Member*		Channel::getMemberByNick(const std::string& client) {
 	return	(NULL);
 }
 
-std::string	Channel::getModes()
+std::string	Channel::getModes() const
 {
 	std::string	levels[8] = {"P", "S", "I", "T", "N", "M", "L", "K"};
 	std::string	activeModes = "+";
@@ -85,12 +85,12 @@ std::string	Channel::getPwd() const
 	return (_pwd);
 }
 
-void		Channel::setName(std::string name)
+void		Channel::setName(std::string &name)
 {
 	_name = name;
 }
 
-void		Channel::setPwd(std::string pwd)
+void		Channel::setPwd(std::string &pwd)
 {
 	_pwd = pwd;
 }
@@ -113,12 +113,12 @@ void		Channel::setOperator(Client &member)
 /****** MODES *******/
 
 
-bool	Channel::isModeActive(int mode)
+bool	Channel::isModeActive(int mode) const
 {
 	return _modes.test(mode);
 }
 
-bool	Channel::isMembersLimitReached()
+bool	Channel::isMembersLimitReached() const
 {
 	return (_members.size() >= _maxMembers);
 }
@@ -133,7 +133,7 @@ bool	Channel::isMemberBanned(Client &member)
 	return (false);
 }
 
-bool	Channel::isalreadyjoined(Client &member)
+bool	Channel::isMember(Client &member)
 {
 	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); it++)
 	{
@@ -143,6 +143,14 @@ bool	Channel::isalreadyjoined(Client &member)
 	return false;
 }
 
+bool	Channel::isOperator(Client &member)
+{
+	if (!isMember(member))
+		return false;
+	if (_members[member.getFd()].op)
+		return true;
+	return false;
+}
 
 //Broadcast and shit
 void	Channel::broadcast(Server& server, const std::string& msg) const {

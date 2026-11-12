@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:44:55 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 17:21:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "Message.hpp"
 
 #include "../utils/Colors.hpp"
-#include "../utils/Debug.hpp"
 #include "../utils/Replies.hpp"
 
 #include <string>
@@ -66,10 +65,10 @@ class	Server
 		void	setNewClient(void);
 		Client*	getClientByNick(const std::string& nick);
 
-		//Helper Functions for Commands
+		//***** Helper Functions for Commands *****//
 		const std::string	getPrefixForCommand(Client& client) const;
 		Channel* 			getChannelByNick(const std::string& name);
-		std::string			size_tToString(size_t src);
+		std::string			size_tToString(size_t &src) const;
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -102,7 +101,8 @@ class	Server
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);
-		void		printChannelModes(Client &client, const std::map<std::string, Channel>::iterator &it, const std::string &channel);
+		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
+		void 		addChannelModes(Client &client, Channel &channel, const Parser &line);
 		void		userMode(Client &client, const Parser &line);
 		
 		//Operator Commands	
