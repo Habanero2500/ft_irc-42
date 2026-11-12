@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:33:18 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:52:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 20:38:17 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void	Server::handlePass(Client &client, const Message& msg)
 	}
 	if (pars.params.empty())
     {
-		std::string cmd = "PASS";
-        std::string message = ERR_NEEDMOREPARAMS(cmd);
+        std::string message = ERR_NEEDMOREPARAMS(pars.command);
         send(client.getFd(), message.c_str(), message.size(), 0);
         return;
     }
