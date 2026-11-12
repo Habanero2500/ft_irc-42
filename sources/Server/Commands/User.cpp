@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:55 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 22:24:12 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/12 22:29:07 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	Server::handleUser(Client &client, const Message& msg)
 	client.setRealName(realname);
 	client.setHostname(pars.params[1]);
 	client.setServername(pars.params[2]);
+	client.setUser();
 	isRegistered(client);
 }
