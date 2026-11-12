@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 17:57:25 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 19:27:51 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,13 @@
 
 # define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " + channel + " " + mode + " " + modeParams + " \r\n")
 
+// 341 RPL_INVITING
+#define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")
 					  
 /******* ERRORS MESSAGES ********/
+
+// 341 RPL_INVITING
+#define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")
 
 // 401 ERR_NOSUCHNICK
 # define ERR_NOSUCHNICK(nickName) ("localhost 401 " + nickName + " :No such nick/channel\r\n")

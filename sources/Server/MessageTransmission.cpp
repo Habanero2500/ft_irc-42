@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   MessageTransmission.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:35:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:36:08 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 20:24:35 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@ void Server::isRegistered(Client &client)
 	if(client.getNick() == true && client.getUser() == true && client.getPass() == true)
 	{
 		client.setRegistered();
-		std::cout << BLUE "A new client just registered !" RESET << std::endl;
+		if(DEBUG)
+			std::cout << BLUE "A new client just registered !" RESET << std::endl;
+		saveOrSend(client, ":localhost 001 " + client.getNickname() + " :Welcome to the IRC Network, "
+			+ client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + "\r\n");
+		saveOrSend(client, ":localhost 002 " + client.getNickname() + " :Your host is localhost, running version 1.0\r\n");
+		saveOrSend(client, ":localhost 003 " + client.getNickname() + " :This server was created today\r\n");
+		saveOrSend(client, ":localhost 004 " + client.getNickname() + " localhost 1.0 o itkol\r\n");
 	}
 }
 

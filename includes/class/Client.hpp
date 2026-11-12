@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/11 14:26:22 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 19:05:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,21 @@ class Client{
 	void    		setBuffer(std::string Newbuffer);
     void    		setServername(std::string name);
 	void 			addBuffer(char buffer[1024]);
-    std::string 	getServername(void);
-	std::string 	getName(void);
-	std::string 	getID(void);
-	int 			getFd(void);
-	struct pollfd 	getPollFd(void); 
-	std::string		getBuffer(void);
+    std::string 	getServername(void) const;
+	std::string 	getName(void) const;
+	std::string 	getID(void) const;
+	int 			getFd(void) const;
+	struct pollfd 	getPollFd(void) const; 
+	std::string		getBuffer(void) const;
     std::string 	getNickname(void) const; 
     std::string 	getUsername(void) const;
-    std::string 	getHostname(void);
-    std::string 	getRealName(void);
-    int             getAttempt(void);
-    bool            getPass(void);
-    bool            getNick(void);
-    bool            getUser(void);
-	int             getNumberChannels(void);
+    std::string 	getHostname(void) const;
+    std::string 	getRealName(void) const;
+    int             getAttempt(void) const;
+    bool            getPass(void) const;
+    bool            getNick(void) const;
+    bool            getUser(void) const;
+	int             getNumberChannels(void) const;
 
     //**** OTHERS ****
     
@@ -70,6 +70,7 @@ class Client{
     bool	        shouldDisconnect(void);
     void	        setToDisconnect(void);
     void            displayClient(void);
+    
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
