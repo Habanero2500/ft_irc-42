@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 15:13:51 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/11 17:57:25 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 /******* CHANNELS MESSAGE ********/
 
 # define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
+
+# define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " + channel + " " + mode + " " + modeParams + " \r\n")
 
 					  
 /******* SUCCESSFULL NUMERIC REPLIES ********/
@@ -111,7 +113,7 @@
 // 451     ERR_NOTREGISTERED
 # define ERR_NOTREGISTERED() ("localhost 451 :You have not registered\r\n")
 
-// 461 ERR_NEEDMOREPARAMS
+// 461	   ERR_NEEDMOREPARAMS
 # define ERR_NEEDMOREPARAMS(command) ("localhost 461 : " + command + " :Not enough parameters\r\n")
 
 // 462     ERR_ALREADYREGISTRED

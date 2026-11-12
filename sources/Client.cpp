@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/10 20:19:28 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/11 14:23:40 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,9 @@ void	Client::initClientAdress(int port)
 	_adress.sin_addr.s_addr = INADDR_ANY;
 	_adress.sin_port = htons(port);
 }
+
+/****** CHANNELS *********/
+void 	Client::increaseNumberChannels(void){_channelsJoined++;}
 
 //Buffer Management
 void	Client::appendToSendBuffer(const std::string& data) {

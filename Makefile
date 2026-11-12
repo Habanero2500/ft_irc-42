@@ -6,7 +6,7 @@
 #    By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/11/06 17:39:21 by malaimo          ###   ########.fr        #
+#    Updated: 2026/11/11 18:51:18 by malaimo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,16 @@ CC = c++
 FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
 RM = rm -rf
 
-SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server.cpp ./sources/Client.cpp ./sources/Message.cpp ./sources/Channel.cpp
-OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.cpp=.o)))
+SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server/Server.cpp ./sources/Client.cpp ./sources/Message.cpp ./sources/Channel.cpp \
+		./sources/Server/InitServerandPollLoop.cpp ./sources/Server/MessageTransmission.cpp ./sources/Server/SettersGetters.cpp \
+		./sources/Server/Utils.cpp ./sources/Server/Commands/Display.cpp ./sources/Server/Commands/Pass.cpp ./sources/Server/Commands/Nick.cpp \
+		./sources/Server/Commands/Join.cpp ./sources/Server/Commands/Kick.cpp ./sources/Server/Commands/Mode.cpp \
+		./sources/Server/Commands/Privmsg.cpp ./sources/Server/Commands/User.cpp
+
+OBJ = $(patsubst ./sources/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(OBJ:.o=.d)
 DEPS_DEBUG = $(OBJ_DEBUG:.o=.d)
-OBJ_DEBUG = $(addprefix $(OBJ_DIR_DEBUG)/, $(notdir $(SRCS:.cpp=.o)))
+OBJ_DEBUG = $(patsubst ./sources/%.cpp, $(OBJ_DIR_DEBUG)/%.o, $(SRCS))
 
 NAME = ircserv
 NAME_DEBUG = ircserv_debug
@@ -32,8 +37,8 @@ $(NAME)	: $(OBJ)
 	$(CC) $(FLAGS) $^ -o $(NAME)
 	@echo '$(NAME) compiled!'
 
-$(OBJ_DIR)/%.o : sources/%.cpp
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/%.o : ./sources/%.cpp
+	@mkdir -p $(dir $@)
 	$(CC) $(FLAGS) -c $< -o $@
 
 debug : $(NAME_DEBUG)
@@ -43,7 +48,7 @@ $(NAME_DEBUG) : $(OBJ_DEBUG)
 	@echo '$(NAME_DEBUG) compiled!'
 
 $(OBJ_DIR_DEBUG)/%.o : sources/%.cpp
-	@mkdir -p $(OBJ_DIR_DEBUG)
+	@mkdir -p $(dir $@)
 	$(CC) $(FLAGS) -D DEBUG_MODE=1 -c $< -o $@
 
 clean :

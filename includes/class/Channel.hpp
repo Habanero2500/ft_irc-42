@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/06 17:47:34 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 19:34:32 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,9 @@ enum modes{
 };
 
 struct	Member{
-	Client	client;
+	Client	*client;
 	bool	op;
 	bool	voice;
-
-	Member() : op(false), voice(false){}
 };
 
 struct	BannedMember{
@@ -51,43 +49,51 @@ struct	BannedMember{
 
 class Channel
 {
-	private:
-	std::string					_name;
-	std::map<int, Member>		_members;
-	std::vector<int>			_operators;
-	std::vector<BannedMember>	_banList;
-	std::bitset<8>				_modes;
-	size_t						_maxMembers;
-	std::string			_topic;
-
 	public:
-	Channel();
-	Channel(std::string name);
-	Channel(const Channel &copy);
-	Channel	&operator=(const Channel &copy);
-	~Channel();
+		Channel();
+		Channel(std::string name);
+		Channel(const Channel &copy);
+		Channel	&operator=(const Channel &copy);
+		~Channel();
 
-	void		setName(std::string name);
+		std::string	getTopic(void) const;
+		std::string	getName() const;
+		size_t		getNumberMember() const;
+		Member*		getMemberByNick(const std::string& user);
+		std::string	getModes() const;
+		size_t		getMaxMember() const;
+		std::string	getPwd() const;
 	
-	std::string	getName();
-	size_t		getNumberMember() const;	
-	Member*		getMemberByNick(const std::string& user);
-	bool		isTopicSet(void) const;
-	std::string	getTopic(void) const;
-	void		setTopic(const std::string& topicName);
-	bool		isClientAnOperator(const Client& client) const;
+		void		setName(std::string &name);
+		void		setTopic(const std::string& topicName);
+		void		setPwd(std::string &pwd);
+		void		setOperator(Client &member);
 
-	void		addMember(Client member);
-	void		setOperator(Client member);
+		void		addMember(Client &member);
 	
-	bool		isModeActive(int mode);
-	bool		isMembersLimitReached();
-	bool		isMemberBanned(Client Member);
+		bool		isModeActive(int mode) const;
+		bool		isTopicSet(void) const;
+		bool		isMembersLimitReached() const;
+		bool		isClientAnOperator(const Client& client) const;
+		bool		isMemberBanned(Client &member);
+		bool		isMember(Client &member);
+		bool		isOperator(Client &member);//a effacer
 
-	//Broadcast and shit
-	void	broadcast(Server& server, const std::string& msg) const;
-	void	removeClientFromChannel(Client& client);
+
+		//Broadcast and shit
+		void	broadcast(Server& server, const std::string& msg) const;
+		void	removeClientFromChannel(Client& client);
+
+	private:
+		std::string					_name;
+		std::map<int, Member>		_members;
+		std::vector<int>			_chouffins;
+		std::vector<BannedMember>	_banList;
+		std::bitset<8>				_modes;
+		size_t						_maxMembers;
+		std::string					_pwd;
+		std::string					_topic;
 
 };
-	
+
 #endif

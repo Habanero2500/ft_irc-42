@@ -3,21 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/10 20:18:40 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/12 17:21:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
+#include "Channel.hpp"
+#include "Client.hpp"
+#include "Message.hpp"
+
+#include "../utils/Colors.hpp"
+#include "../utils/Replies.hpp"
+
 #include <string>
 #include <map>
 #include <vector>
 #include <netinet/in.h>
-#include "Channel.hpp"
+#include <fcntl.h>
+#include <iostream>
+#include <unistd.h>
+#include <cstdlib>
+#include <cerrno>
+#include <sstream>
 
 //Forward declarations
 class	Server;
@@ -53,9 +65,10 @@ class	Server
 		void	setNewClient(void);
 		Client*	getClientByNick(const std::string& nick);
 
-		//Helper Functions for Commands
+		//***** Helper Functions for Commands *****//
 		const std::string	getPrefixForCommand(Client& client) const;
-		Channel* 		getChannelByNick(const std::string& name);
+		Channel* 			getChannelByNick(const std::string& name);
+		std::string			size_tToString(size_t &src) const;
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -85,12 +98,22 @@ class	Server
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
+		/******* MODE *******/
+		void		handleMode(Client &client, const Message& msg);
+		void		channelMode(Client &client, const Parser &line);
+		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
+		void 		addChannelModes(Client &client, Channel &channel, const Parser &line);
+		void		userMode(Client &client, const Parser &line);
+		
 		//Operator Commands	
 		void		kickClient(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
 		void		handleTopic(Client& client, const Message& msg);
 		bool		topicValidation(Client& client, const Message& msg);
 
+		/******* UTILS *******/
+
+		
 	private:
 		int										_fd;
 		struct sockaddr_in 						_address;
