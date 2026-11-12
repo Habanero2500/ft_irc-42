@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include <iostream>
+#include <unistd.h>
 
 // **** ORTHODOX CANONICAL FORM ****
 Server::Server()

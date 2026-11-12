@@ -13,6 +13,8 @@
 #ifndef REPLIES_HPP
 # define REPLIES_HPP
 
+#include "Colors.hpp"
+
 /******* WELCOME MESSAGE ********/
 #define	WELCOME_MESSAGE GREEN <<  "================================================" << std::endl << std::endl \
 							<< "================== WELCOME TO ==================" << std::endl << std::endl \

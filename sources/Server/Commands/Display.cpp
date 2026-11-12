@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Client.hpp"
 
 void Server::handleDisplay(Client& client, const Message& message)
 {

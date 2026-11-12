@@ -1,4 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Topic.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opapouts <opapouts@learner.42.tech>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/12 20:28:40 by opapouts          #+#    #+#             */
+/*   Updated: 2026/11/12 20:28:44 by opapouts         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Channel.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/utils/Replies.hpp"
+
 //TOPIC <channel> [<topic>]
 void	Server::handleTopic(Client& client, const Message& msg) {
 	if (!topicValidation(client, msg))

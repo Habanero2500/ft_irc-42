@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
+#include <iostream>
 
 #define USERLEN 16      // longueur max conservée, valeur au choix
 
@@ -66,7 +70,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 		return;
 	}
 	std::string			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
-	const std::string	&realname = pars.params[3];              
+	std::string	&realname = pars.params[3];              
 	if (!isValidUsername(username) || !isValidRealname(realname))
 	{
 		if (DEBUG)

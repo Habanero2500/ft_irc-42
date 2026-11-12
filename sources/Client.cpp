@@ -31,9 +31,9 @@ Client& Client::operator=(const Client& copy)
         _realname = copy._realname;
         _ID = copy._ID;
         _fd = copy._fd;
-		_adress = copy._adress;
-		_pollFd = copy._pollFd;
-		_buffer = copy._buffer;
+	_adress = copy._adress;
+	_pollFd = copy._pollFd;
+	_buffer = copy._buffer;
         _pass = false;
         _nick = false;
         _user = false;
@@ -46,12 +46,12 @@ Client::~Client(){}
 
 //********** SETTERS AND GETTERS ************
 
-void Client::setNickname(std::string name){ _nickname = name;}
-void Client::setUsername(std::string name){ _username = name;}
-void Client::setHostname(std::string name){ _hostname = name;}
-void Client::setServername(std::string name){ _serverName = name;}
-void Client::setRealName(std::string name){ _realname = name;}
-void Client::setID(std::string ID){_ID = ID;}
+void Client::setNickname(std::string& name){ _nickname = name;}
+void Client::setUsername(std::string& name){ _username = name;}
+void Client::setHostname(std::string& name){ _hostname = name;}
+void Client::setServername(std::string& name){ _serverName = name;}
+void Client::setRealName(std::string& name){ _realname = name;}
+void Client::setID(std::string& ID){_ID = ID;}
 void Client::setFd(int i){_fd = i;}
 
 void Client::setPollFd()
@@ -76,23 +76,23 @@ void    Client::setUser(void)
         _user = true;
 }
 
-void    		Client::setBuffer(std::string Newbuffer){_buffer = Newbuffer;}
+void    		Client::setBuffer(std::string& Newbuffer){_buffer = Newbuffer;}
 void			Client::addBuffer(char buffer[1024]){_buffer.append(buffer);}
 
-std::string		Client::getID(void){return _ID;}
-int				Client::getFd(void) const {return _fd;}
-struct pollfd	Client::getPollFd(void){return _pollFd;}
-std::string		Client::getBuffer(void){return (_buffer);}
-std::string 	Client::getNickname(void) const {return _nickname;}
-std::string 	Client::getUsername(void) const {return _username;}
-std::string 	Client::getHostname(void){return _hostname;}
-std::string 	Client::getServername(void){return _serverName;}
-std::string 	Client::getRealName(void){return _realname;}
-int             Client::getAttempt(void){return _attempt;}
-bool            Client::getPass(void){return _pass;}
-bool            Client::getNick(void){return _nick;}
-bool            Client::getUser(void){return _user;}
-int             Client::getNumberChannels(void){return _channelsJoined;}
+std::string		Client::getID(void) const{return _ID;}
+int			Client::getFd(void) const {return _fd;}
+struct pollfd		Client::getPollFd(void) const{return _pollFd;}
+std::string		Client::getBuffer(void) const{return (_buffer);}
+std::string 		Client::getNickname(void) const {return _nickname;}
+std::string 		Client::getUsername(void) const {return _username;}
+std::string 		Client::getHostname(void) const {return _hostname;}
+std::string 		Client::getServername(void) const {return _serverName;}
+std::string 		Client::getRealName(void) const {return _realname;}
+int			Client::getAttempt(void) const {return _attempt;}
+bool			Client::getPass(void) const {return _pass;}
+bool			Client::getNick(void) const {return _nick;}
+bool			Client::getUser(void) const {return _user;}
+int			Client::getNumberChannels(void) const {return _channelsJoined;}
 
 // **** OTHERS ****
 

@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {

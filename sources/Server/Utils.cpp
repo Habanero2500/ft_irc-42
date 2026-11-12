@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/class/Client.hpp"
+#include "../../includes/class/Channel.hpp"
+#include <sstream>
 
 const std::string	Server::getPrefixForCommand(Client& client) const {
 	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();

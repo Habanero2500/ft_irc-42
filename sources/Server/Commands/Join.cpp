@@ -11,6 +11,12 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/class/Channel.hpp"
+#include "../../../includes/utils/Replies.hpp"
+#include "../../../includes/utils/Colors.hpp"
+#include <iostream>
 
 void	Server::handleJoin(Client &client, const Message& msg)
 {

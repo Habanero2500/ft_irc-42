@@ -13,28 +13,17 @@
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-#include "Channel.hpp"
-#include "Client.hpp"
-#include "Message.hpp"
-
-#include "../utils/Colors.hpp"
-#include "../utils/Replies.hpp"
-
 #include <string>
 #include <map>
 #include <vector>
 #include <netinet/in.h>
-#include <fcntl.h>
-#include <iostream>
-#include <unistd.h>
-#include <cstdlib>
-#include <cerrno>
-#include <sstream>
+#include <poll.h>
+#include "Client.hpp"
+#include "Channel.hpp"
 
 //Forward declarations
 class	Server;
 class	Message;
-class	Client;
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 struct Parser;
 
@@ -115,13 +104,13 @@ class	Server
 
 		
 	private:
-		int										_fd;
-		struct sockaddr_in 						_address;
-		std::map<int, Client>					_clients;
-		std::map<std::string, Channel>			_channels;
+		int					_fd;
+		struct sockaddr_in 			_address;
+		std::map<int, Client>			_clients;
+		std::map<std::string, Channel>		_channels;
 		std::map<std::string, CommandHandler> 	_commandMap;
-		std::vector<struct pollfd>				_listFd;
-		std::string								_pwd;
-		int										_port;
+		std::vector<struct pollfd>		_listFd;
+		std::string				_pwd;
+		int					_port;
 };
 #endif

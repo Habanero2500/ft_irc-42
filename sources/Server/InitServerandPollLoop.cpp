@@ -11,6 +11,12 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/class/Client.hpp"
+#include "../../includes/class/Message.hpp"
+#include "../../includes/utils/Replies.hpp"
+#include <iostream>
+#include <unistd.h>
+#include <cstdlib>
 
 void	Server::initServerAdress(int port, std::string pwd)
 {

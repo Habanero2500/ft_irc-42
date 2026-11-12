@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 void	Server::handleNick(Client &client, const Message& msg)
 {

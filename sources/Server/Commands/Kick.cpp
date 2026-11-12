@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Channel.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 /*************KICK <channel> <user> ********************/
 void	Server::kickClient(Client& client, const Message& msg) {

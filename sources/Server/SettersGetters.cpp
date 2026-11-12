@@ -11,6 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/class/Client.hpp"
+#include "../../includes/utils/Colors.hpp"
+#include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
 
 void	Server::setNewClient(void) {
 	Client	newClient;

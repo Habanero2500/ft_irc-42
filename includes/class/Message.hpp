@@ -49,7 +49,7 @@ class	Message {
 		void		parseCommand(std::string& input);
 		void		parseParams(std::string& input);
 		//Getter and setters
-		Parser						getParser(void) const;
+		Parser		getParser(void) const;
 
 	private	:
 		Parser	_parser;
