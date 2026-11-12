@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 14:50:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/12 18:43:41 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/12 20:32:40 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,7 @@ irc::irc(const char* port, const char* pwd)
         throw pwdEmptyException();
     
     _port = val;
-    _pwd = pwd;
-    std::cout << "OK" << std::endl; 
-    // exec(val, pwd);   
+    _pwd = pwd;   
 }
 
 

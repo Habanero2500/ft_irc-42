@@ -6,7 +6,7 @@
 #    By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/11/12 20:11:32 by jmetayer         ###   ########.fr        #
+#    Updated: 2026/11/12 20:31:48 by jmetayer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server/Server.cpp ./source
 		./sources/Server/Utils.cpp ./sources/Server/Commands/Display.cpp ./sources/Server/Commands/Pass.cpp ./sources/Server/Commands/Nick.cpp \
 		./sources/Server/Commands/Join.cpp ./sources/Server/Commands/Kick.cpp ./sources/Server/Commands/Mode.cpp \
 		./sources/Server/Commands/Privmsg.cpp ./sources/Server/Commands/User.cpp \
-		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp \
+		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp 		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Cap.cpp \
 
 OBJ = $(patsubst ./sources/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(OBJ:.o=.d)

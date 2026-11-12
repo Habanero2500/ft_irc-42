@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:35:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 20:24:35 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/12 20:30:50 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void Server::isRegistered(Client &client)
 {
+	if(client.isRegistered()) // Do not re announce after each call
+		return;
 	if(client.getNick() == true && client.getUser() == true && client.getPass() == true)
 	{
 		client.setRegistered();
