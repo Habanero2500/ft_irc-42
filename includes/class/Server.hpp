@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 20:11:12 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/12 22:13:31 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ class	Server
 		//Command Handlers
 		void		handlePass(Client &client, const Message& msg);
 		void		handleNick(Client &client, const Message& msg);
-		std::string	parsingNick(Client &client, const Parser &line);
+		int			parsingNick(Client &client, const Parser &line);
+
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
 		// void	handlePing(Client &client, const Message& msg);
