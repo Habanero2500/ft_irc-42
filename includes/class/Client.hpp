@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/09 17:50:45 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/11 14:26:22 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ class Client{
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
     std::string 	getNickname(void) const; 
-    std::string 	getUsername(void);
+    std::string 	getUsername(void) const;
     std::string 	getHostname(void);
     std::string 	getRealName(void);
     int             getAttempt(void);
@@ -76,7 +76,7 @@ class Client{
     
 	//Send Buffer Management
 	void			appendToSendBuffer(const std::string& data);
-	std::string&		getSendBuffer(void);
+	std::string&	getSendBuffer(void);
 	bool			isSendBufferEmpty(void) const;
 
     private :

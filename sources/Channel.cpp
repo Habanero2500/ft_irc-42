@@ -6,21 +6,22 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/10 17:52:52 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/12 18:36:35 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
+#include "../includes/class/Server.hpp"
 
-Channel::Channel() : _name(""), _maxMembers(1000)
+Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
 }
 
-Channel::Channel(std::string name) : _name(name), _maxMembers(1000)
+Channel::Channel(std::string name) : _name(name), _maxMembers(1000), _pwd("")
 {
 }
 
-Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _banList(copy._banList), _maxMembers(copy._maxMembers)
+Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _banList(copy._banList), _maxMembers(copy._maxMembers), _pwd(copy._pwd)
 {
 }
 
@@ -31,6 +32,7 @@ Channel	&Channel::operator=(const Channel &copy)
 		_name = copy._name;
 		_members = copy._members;
 		_maxMembers = copy._maxMembers;
+		_pwd = copy._pwd;
     }
     return *this;
 }
@@ -43,77 +45,127 @@ Channel::~Channel()
 /****** GETTERS AND SETTERS *******/
 
 
-std::string	Channel::getName()
+std::string	Channel::getName() const
 {
 	return _name;
 }
 
-size_t		Channel::getNumberMember()
-{
-	return _members.size();
+size_t		Channel::getNumberMember() const {
+	return (_members.size());
 }
 
-// Member		Channel::getMember()
-// {
-// 	return	
-// }
+Member*		Channel::getMemberByNick(const std::string& client) {
+	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); ++it) {
+		if (it->second.client->getNickname() == client)
+			return (&(it->second));
+	}
+	return	(NULL);
+}
 
-	size_t		getNumberMember();	
-	Member		getMember();
+std::string	Channel::getModes() const
+{
+	std::string	levels[8] = {"P", "S", "I", "T", "N", "M", "L", "K"};
+	std::string	activeModes = "+";
 
-void		Channel::setName(std::string name)
+	for (size_t i = 0; i < 8; i++)
+	{
+		if (_modes.test(i))
+			activeModes.append(levels[i]);
+	}
+	return activeModes;
+}
+
+size_t		Channel::getMaxMember() const 
+{
+	return (_maxMembers);
+}
+
+std::string	Channel::getPwd() const 
+{
+	return (_pwd);
+}
+
+void		Channel::setName(std::string &name)
 {
 	_name = name;
 }
 
+void		Channel::setPwd(std::string &pwd)
+{
+	_pwd = pwd;
+}
 
 /****** MEMBERS MANAGEMENT *******/
 
-void		Channel::addMember(Client member)
+void		Channel::addMember(Client &member)
 {
-	_members[member.getFd()].client = member;
+	_members[member.getFd()].client = &member;
+	_members[member.getFd()].op = false;
+    _members[member.getFd()].voice = false;
 }
 
-void		Channel::setOperator(Client member)
+void		Channel::setOperator(Client &member)
 {
-	_members[member.getFd()].op = 1;
+	_members[member.getFd()].op = true;
 }
 
 
 /****** MODES *******/
 
 
-bool	Channel::isModeActive(int mode)
+bool	Channel::isModeActive(int mode) const
 {
 	return _modes.test(mode);
 }
 
-bool	Channel::isMembersLimitReached()
+bool	Channel::isMembersLimitReached() const
 {
 	return (_members.size() >= _maxMembers);
 }
 
-bool	Channel::isMemberBanned(Client Member)
+bool	Channel::isMemberBanned(Client &member)
 {
-	for (std::vector<BannedMember>::iterator	it = _banList.begin(); it != _banList.end(); it++)
+	for (std::vector<BannedMember>::iterator it = _banList.begin(); it != _banList.end(); it++)
 	{
-		if (it->nickname == Member.getNickname() || it->username == Member.getUsername() || it->hostname == Member.getHostname())
+		if (it->nickname == member.getNickname() || it->username == member.getUsername() || it->hostname == member.getHostname())
 			return (true);
 	}
 	return (false);
 }
 
-bool	Channel::isMember(int fd)
+bool	Channel::isMember(Client &member)
 {
-	return (_members.find(fd) != _members.end());
+	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); it++)
+	{
+		if (it->second.client->getNickname() == member.getNickname())
+			return true;
+	}
+	return false;
 }
 
-bool	Channel::isOperator(int fd)
+bool	Channel::isOperator(Client &member)
 {
-	std::map<int, Member>::iterator it = _members.find(fd);   // adapte au type de ta map
-	return (it != _members.end() && it->second.op);
+	if (!isMember(member))
+		return false;
+	if (_members[member.getFd()].op)
+		return true;
+	return false;
 }
 
-void	Channel::addInvite(const std::string &nick)    { _invited.insert(nick); }
-bool	Channel::isInvited(const std::string &nick)    { return (_invited.find(nick) != _invited.end()); }
-void	Channel::removeInvite(const std::string &nick) { _invited.erase(nick); }
+//Broadcast and shit
+void	Channel::broadcast(Server& server, const std::string& msg) const {
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client* target = server.getClientByNick(it->second.client->getNickname());
+		if (target)
+			server.saveOrSend(*target, msg);
+	}
+}
+
+void	Channel::removeClientFromChannel(Client& client) {
+	_members.erase(client.getFd());
+	for (std::vector<int>::iterator it = _chouffins.begin(); it != _chouffins.end(); ++it)
+		if (*it == client.getFd()) {
+			_chouffins.erase(it);
+			return ;//Voir si il faut modifier plus de trucs
+		}
+}
