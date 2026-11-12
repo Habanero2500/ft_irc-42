@@ -16,7 +16,6 @@
 #include <string>
 #include <poll.h>
 #include <netinet/in.h>
-#include <iostream>
 
 extern bool DEBUG;
 
@@ -49,7 +48,7 @@ class Client{
     std::string 	getServername(void);
 	std::string 	getName(void);
 	std::string 	getID(void);
-	int 			getFd(void);
+	int 			getFd(void) const;
 	struct pollfd 	getPollFd(void); 
 	std::string		getBuffer(void);
     std::string 	getNickname(void) const; 

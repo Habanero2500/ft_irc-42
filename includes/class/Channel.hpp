@@ -58,6 +58,7 @@ class Channel
 	std::vector<BannedMember>	_banList;
 	std::bitset<8>				_modes;
 	size_t						_maxMembers;
+	std::string			_topic;
 
 	public:
 	Channel();
@@ -71,6 +72,10 @@ class Channel
 	std::string	getName();
 	size_t		getNumberMember() const;	
 	Member*		getMemberByNick(const std::string& user);
+	bool		isTopicSet(void) const;
+	std::string	getTopic(void) const;
+	void		setTopic(const std::string& topicName);
+	bool		isClientAnOperator(const Client& client) const;
 
 	void		addMember(Client member);
 	void		setOperator(Client member);

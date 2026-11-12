@@ -12,6 +12,7 @@
 
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
+#include <algorithm>
 
 Channel::Channel() : _name(""), _maxMembers(1000)
 {
@@ -59,6 +60,25 @@ Member*		Channel::getMemberByNick(const std::string& client) {
 			return (&(it->second));
 	}
 	return	(NULL);
+}
+
+bool	Channel::isTopicSet(void) const {
+	if (!_topic.empty())
+		return (true);
+	return (false);
+}
+
+std::string	Channel::getTopic(void) const {
+	return (_topic);
+}
+
+void	Channel::setTopic(const std::string& topicName) {
+	_topic = topicName;
+}
+
+bool	Channel::isClientAnOperator(const Client& client) const {
+	std::vector<int>::const_iterator it = std::find(_operators.begin(), _operators.end(), client.getFd());
+	return (it != _operators.end());
 }
 
 void		Channel::setName(std::string name)

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/class/Client.hpp"
+#include <iostream>
 
 // **** ORTHODOX CANONICAL FORM ****
 
@@ -79,7 +80,7 @@ void    		Client::setBuffer(std::string Newbuffer){_buffer = Newbuffer;}
 void			Client::addBuffer(char buffer[1024]){_buffer.append(buffer);}
 
 std::string		Client::getID(void){return _ID;}
-int				Client::getFd(void){return _fd;}
+int				Client::getFd(void) const {return _fd;}
 struct pollfd	Client::getPollFd(void){return _pollFd;}
 std::string		Client::getBuffer(void){return (_buffer);}
 std::string 	Client::getNickname(void) const {return _nickname;}
