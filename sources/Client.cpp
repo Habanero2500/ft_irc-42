@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/10 15:41:49 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/12 19:11:30 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,8 @@ void Client::setUsername(std::string name){ _username = name;}
 void Client::setHostname(std::string name){ _hostname = name;}
 void Client::setServername(std::string name){ _serverName = name;}
 void Client::setRealName(std::string name){ _realname = name;}
-
-void Client::setID(std::string ID){
-	_ID = ID;
-}
-
-void Client::setFd(int i)
-{
-	_fd = i;
-}
+void Client::setID(std::string ID){_ID = ID;}
+void Client::setFd(int i){_fd = i;}
 
 void Client::setPollFd()
 {
@@ -82,30 +75,23 @@ void    Client::setUser(void)
         _user = true;
 }
 
-void    		Client::setBuffer(std::string Newbuffer)
-{
-	_buffer = Newbuffer;
-}
+void    		Client::setBuffer(std::string Newbuffer){_buffer = Newbuffer;}
+void			Client::addBuffer(char buffer[1024]){_buffer.append(buffer);}
 
-void			Client::addBuffer(char buffer[1024])
-{
-	_buffer.append(buffer);
-}
-
-std::string		Client::getID(void){return _ID;}
-int				Client::getFd(void){return _fd;}
-struct pollfd	Client::getPollFd(void){return _pollFd;}
-std::string		Client::getBuffer(void){return (_buffer);}
+std::string		Client::getID(void) const {return _ID;}
+int				Client::getFd(void) const {return _fd;}
+struct pollfd	Client::getPollFd(void) const {return _pollFd;}
+std::string		Client::getBuffer(void) const{return (_buffer);}
 std::string 	Client::getNickname(void) const {return _nickname;}
-std::string 	Client::getUsername(void){return _username;}
-std::string 	Client::getHostname(void){return _hostname;}
-std::string 	Client::getServername(void){return _serverName;}
-std::string 	Client::getRealName(void){return _realname;}
-int             Client::getAttempt(void){return _attempt;}
-bool            Client::getPass(void){return _pass;}
-bool            Client::getNick(void){return _nick;}
-bool            Client::getUser(void){return _user;}
-int             Client::getNumberChannels(void){return _channelsJoined;}
+std::string 	Client::getUsername(void) const {return _username;}
+std::string 	Client::getHostname(void) const {return _hostname;}
+std::string 	Client::getServername(void) const{return _serverName;}
+std::string 	Client::getRealName(void) const {return _realname;}
+int             Client::getAttempt(void) const {return _attempt;}
+bool            Client::getPass(void) const{return _pass;}
+bool            Client::getNick(void) const {return _nick;}
+bool            Client::getUser(void) const {return _user;}
+int             Client::getNumberChannels(void)const{return _channelsJoined;}
 
 // **** OTHERS ****
 
@@ -140,6 +126,9 @@ void	Client::initClientAdress(int port)
 	_adress.sin_addr.s_addr = INADDR_ANY;
 	_adress.sin_port = htons(port);
 }
+
+/****** CHANNELS *********/
+void 	Client::increaseNumberChannels(void){_channelsJoined++;}
 
 //Buffer Management
 void	Client::appendToSendBuffer(const std::string& data) {
