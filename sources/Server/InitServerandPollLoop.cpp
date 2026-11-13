@@ -144,7 +144,7 @@ void	Server::initCommands(void) {
 	_commandMap["NICK"] = &Server::handleNick;
 	_commandMap["USER"] = &Server::handleUser;
 	// _commandMap["PING"] = &Server::handlePing;
-	// _commandMap["QUIT"] = &Server::handleQuit;
+	_commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
 	if(DEBUG)

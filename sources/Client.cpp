@@ -119,6 +119,15 @@ void    Client::displayClient(void)
     std::cout << "To disconnect : " << _toDisconnect << std::endl;
     std::cout << "Channels joined : " << _channelsJoined << std::endl;
 }
+
+bool	Client::isIncluded(std::set<int>& notifiedFds) const {
+	for (std::set<int>::const_iterator it = notifiedFds.begin(); it != notifiedFds.end(); ++it) {
+		if (*it == getFd())
+			return (true);
+	}
+	return (false);
+}
+
 //**********INITIALISATION ************
 
 void	Client::initClientAdress(int port)

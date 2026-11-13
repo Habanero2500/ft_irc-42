@@ -189,3 +189,11 @@ void	Channel::removeClientFromChannel(Client& client) {
 			return ;//Voir si il faut modifier plus de trucs
 		}
 }
+
+void	Channel::broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const {
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client* target = server.getClientByNick(it->second.client->getNickname());
+		if (target && target != &client && !client.isIncluded(notifiedFds))
+			server.saveOrSend(*target, msg);
+	}
+}

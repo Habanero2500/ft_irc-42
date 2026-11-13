@@ -16,6 +16,7 @@
 #include <string>
 #include <poll.h>
 #include <netinet/in.h>
+#include <set>
 
 extern bool DEBUG;
 
@@ -32,25 +33,25 @@ class Client{
 	void	initClientAdress(int port);
 
     //**** SETTERS AND GETTERS ****
-	void 			setNickname(std::string& name);
-	void 			setUsername(std::string& name);
-	void 			setHostname(std::string& name);
-	void 			setRealName(std::string& name);
-	void 			setID(std::string& ID);
-	void 			setFd(int i);
-	void 			setPollFd(void);
+	void 		setNickname(std::string& name);
+	void 		setUsername(std::string& name);
+	void 		setHostname(std::string& name);
+	void 		setRealName(std::string& name);
+	void 		setID(std::string& ID);
+	void 		setFd(int i);
+	void 		setPollFd(void);
 	void            setPass(void);
 	void            setNick(void);
 	void            setUser(void);
-	void    		setBuffer(std::string& Newbuffer);
-	void    		setServername(std::string& name);
-	void 			addBuffer(char buffer[1024]);
+	void    	setBuffer(std::string& Newbuffer);
+	void    	setServername(std::string& name);
+	void 		addBuffer(char buffer[1024]);
 	std::string 	getServername(void) const;
 	std::string 	getName(void) const;
 	std::string 	getID(void) const;
 	int 		getFd(void) const;
 	struct pollfd 	getPollFd(void) const; 
-	std::string		getBuffer(void) const;
+	std::string	getBuffer(void) const;
 	std::string 	getNickname(void) const; 
 	std::string 	getUsername(void) const;
 	std::string 	getHostname(void) const;
@@ -63,12 +64,13 @@ class Client{
 
     //**** OTHERS ****
     
-    void            increaseAttempt(void);
-    bool	        isRegistered(void);
-    void	        setRegistered(void);
-    bool	        shouldDisconnect(void);
-    void	        setToDisconnect(void);
-    void            displayClient(void);
+    void	increaseAttempt(void);
+    bool	isRegistered(void);
+    void	setRegistered(void);
+    bool	shouldDisconnect(void);
+    void	setToDisconnect(void);
+    void	displayClient(void);
+    bool	isIncluded(std::set<int>& notifiedFds) const;
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);

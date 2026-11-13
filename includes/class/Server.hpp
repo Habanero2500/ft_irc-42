@@ -77,10 +77,12 @@ class	Server
 		
 		void		handleUser(Client &client, const Message& msg);
 		// void	handlePing(Client &client, const Message& msg);
-		// void	handleQuit(Client &client, const Message& msg);
+		void		handleQuit(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
 		void		handleDisplay(Client &client, const Message& msg);
 		
+		//Command helpers
+		void		quitHelper(Client& client, const std::string& quitLine);
 		/******** JOIN AND CHANNELS ********/
 		void		handleJoin(Client &client, const Message& msg);
 		std::string	parsingChannelName(Client &client, const Parser &line);
@@ -101,7 +103,6 @@ class	Server
 		bool		topicValidation(Client& client, const Message& msg);
 
 		/******* UTILS *******/
-
 		
 	private:
 		int					_fd;

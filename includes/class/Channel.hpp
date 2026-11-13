@@ -15,6 +15,7 @@
 
 #include "Client.hpp"
 #include <map>
+#include <set>
 #include <bitset>
 #include <vector>
 
@@ -82,6 +83,7 @@ class Channel
 
 		//Broadcast and shit
 		void	broadcast(Server& server, const std::string& msg) const;
+		void	broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const;
 		void	removeClientFromChannel(Client& client);
 
 	private:
