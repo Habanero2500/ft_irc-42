@@ -6,7 +6,11 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2026/11/12 18:36:35 by jmetayer         ###   ########.fr       */
+=======
+/*   Updated: 2026/11/12 18:15:32 by malaimo          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +97,16 @@ void		Channel::setName(std::string &name)
 void		Channel::setPwd(std::string &pwd)
 {
 	_pwd = pwd;
+}
+
+void		Channel::setmode(int mode)
+{
+	_modes.set(mode);
+}
+
+void		Channel::setMaxMembers(int max)
+{
+	_maxMembers = max;
 }
 
 /****** MEMBERS MANAGEMENT *******/

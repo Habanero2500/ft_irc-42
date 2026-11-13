@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 17:27:13 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/13 14:09:19 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,57 +22,84 @@ void	Server::handleMode(Client &client, const Message& msg)
 		saveOrSend(client, ERR_NEEDMOREPARAMS(command));
 		return ;
 	}
-// 	if (line.params[0][0] == '&' || line.params[0][0] == '#')
-// 		channelMode(client, line);
-// 	else
-// 		userMode(client, line);
+	if (line.params[0][0] == '&' || line.params[0][0] == '#')
+		channelMode(client, line);
+	else
+		userMode(client, line);
 }
 
-// void	Server::channelMode(Client &client, const Parser &line)
+void	Server::channelMode(Client &client, const Parser &line)
+{
+	std::map<std::string, Channel>::iterator it = _channels.find(line.params[0]);
+	if (it == _channels.end())
+		saveOrSend(client, ERR_NOSUCHCHANNEL(line.params[0]));
+	else if (!it->second.isMember(client))
+		saveOrSend(client, ERR_NOTONCHANNEL(line.params[0]));
+	else if (!it->second.isOperator(client))
+		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
+	else
+	{
+		if (line.params.size() == 1)
+		{
+			printChannelModes(client, it->second, line.params[0]);
+		}
+		else
+		{
+			addChannelModes(client, it->second, line);
+		}
+	}
+}
+
+void	Server::printChannelModes(Client &client, Channel &channel, const std::string &channelName)
+{
+	std::string mode = channel.getModes();
+	std::string modeParams = "";
+	if (channel.isModeActive(L))
+		modeParams.append(size_tToString(channel.getMaxMember()));
+	if (channel.isModeActive(K))
+		modeParams.append(channel.getPwd());
+	saveOrSend(client, RPL_CHANNELMODEIS(channelName, mode, modeParams));
+}
+
+void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
+{
+	std::string	needParams = "lbvok";
+	int			argument = 2;
+	
+	if (line.params[1].find_first_not_of("+-psitnmovblk") != std::string::npos)
+		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
+	bool	add = true;
+	for(size_t i = 0; i < line.params[1].size(); i++)
+	{
+		if (line.params[1][i] == '+')
+			add = true;
+		else if (line.params[1][i] == '-')
+			add = false;
+		else if (add)
+		{
+			if (needParams.find(line.params[1][i]))
+			{
+				switch	(line.params[1][i])
+					case	'l':
+						channel.setMaxMembers()
+			}
+		}
+			
+	}
+}
+
+// void	Server::addChannelMode(Channel &channel, const Parser &line, char mode, )
 // {
-// 	std::map<std::string, Channel>::iterator it = _channels.find(line.params[0]);
-// 	if (it == _channels.end())
-// 		saveOrSend(client, ERR_NOSUCHCHANNEL(line.params[0]));
-// 	else if (!it->second.isMember(client))
-// 		saveOrSend(client, ERR_NOTONCHANNEL(line.params[0]));
-// 	else if (!it->second.isOperator(client))
-// 		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
-// 	// else
-// 	// {
-// 	// 	if (line.params.size() == 1)
-// 	// 	{
-// 	// 		printChannelModes(client, it->second, line.params[0]);
-// 	// 	}
-// 	// 	else
-// 	// 	{
-// 	// 		addChannelModes(client, it->second, line);
-// 	// 	}
-// 	// }
+// 	std::string	needParams
+// 	if (mode)
+		
+// 	channel.setmode(static_cast<int>(mode));
 // }
 
-// void	Server::printChannelModes(Client &client, Channel &channel, const std::string &channelName)
-// {
-// 	std::string mode = channel.getModes();
-// 	std::string modeParams = "";
-// 	if (channel.isModeActive(L))
-// 		modeParams.append(size_tToString(channel.getMaxMember()));
-// 	if (channel.isModeActive(K))
-// 		modeParams.append(channel.getPwd());
-// 	saveOrSend(client, RPL_CHANNELMODEIS(channelName, mode, modeParams));
-// }
+// lbvok
 
-// void	Server::addChannelModes(Client &client, Channel &channel, const Parser &line)
-// {
-// 	if (line.params[1].find_first_not_of("+-psitnmovblk") != std::string::npos)
-// 		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
-// 	bool	add = true;
-// 	for(size_t i = 0; i < line.params[1].size(); )
-// }
-
-
-
-// void	Server::userMode(Client &client, const Parser &line)
-// {
-// 	(void)client;
-// 	(void)line;
-// }
+void	Server::userMode(Client &client, const Parser &line)
+{
+	(void)client;
+	(void)line;
+}

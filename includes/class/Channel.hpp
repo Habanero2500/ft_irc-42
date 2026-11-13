@@ -6,7 +6,11 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2026/11/12 19:11:32 by jmetayer         ###   ########.fr       */
+=======
+/*   Updated: 2026/11/12 18:15:22 by malaimo          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +70,8 @@ class Channel
 	
 		void		setName(std::string &name);
 		void		setPwd(std::string &pwd);
+		void		setmode(int mode);
+		void		setMaxMembers(int max);
 
 
 		void		addMember(Client &member);

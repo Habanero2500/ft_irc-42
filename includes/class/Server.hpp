@@ -6,7 +6,11 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2026/11/12 22:13:31 by jmetayer         ###   ########.fr       */
+=======
+/*   Updated: 2026/11/12 17:59:50 by malaimo          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +72,7 @@ class	Server
 		//***** Helper Functions for Commands *****//
 		const std::string	getPrefixForCommand(Client& client) const;
 		Channel* 			getChannelByNick(const std::string& name);
-		std::string			size_tToString(size_t &src) const;
+		std::string			size_tToString(size_t src) const;
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -104,7 +108,8 @@ class	Server
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);
 		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
-		void 		addChannelModes(Client &client, Channel &channel, const Parser &line);
+		void 		manageChannelModes(Client &client, Channel &channel, const Parser &line);
+		void 		addChannelMode(Channel &channel, char mode);
 		void		userMode(Client &client, const Parser &line);
 		
 		//Operator Commands	
