@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2026/11/12 22:13:31 by jmetayer         ###   ########.fr       */
-=======
-/*   Updated: 2026/11/12 17:59:50 by malaimo          ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2026/11/13 14:10:22 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

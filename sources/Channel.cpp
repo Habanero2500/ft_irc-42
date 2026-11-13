@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2026/11/12 18:36:35 by jmetayer         ###   ########.fr       */
-=======
-/*   Updated: 2026/11/12 18:15:32 by malaimo          ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2026/11/13 14:20:46 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +100,9 @@ void		Channel::setmode(int mode)
 	_modes.set(mode);
 }
 
-void		Channel::setMaxMembers(int max)
+void		Channel::setMaxMembers(std::string max)
 {
-	_maxMembers = max;
+	_maxMembers = std::atoi(max.c_str());
 }
 
 /****** MEMBERS MANAGEMENT *******/

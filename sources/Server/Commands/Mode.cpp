@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/13 14:09:19 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/13 14:26:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	Server::channelMode(Client &client, const Parser &line)
 		if (line.params.size() == 1)
 		{
 			printChannelModes(client, it->second, line.params[0]);
-		}
+		}  	
 		else
 		{
-			addChannelModes(client, it->second, line);
+			manageChannelModes(client, it->second, line);
 		}
 	}
 }
@@ -80,8 +80,16 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 			if (needParams.find(line.params[1][i]))
 			{
 				switch	(line.params[1][i])
+				{
 					case	'l':
-						channel.setMaxMembers()
+						channel.setMaxMembers(line.params[argument++]);
+						channel.setmode(static_cast<int>(line.params[1][i]));
+						break;
+					case	'b':
+						channel.setMaxMembers(line.params[argument++]);
+						channel.setmode(static_cast<int>(line.params[1][i]));
+						
+				}
 			}
 		}
 			
