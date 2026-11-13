@@ -113,7 +113,7 @@
 # define ERR_USERSDISABLED() ("localhost 446 :USERS has been disabled\r\n")
 
 // 451     ERR_NOTREGISTERED
-# define ERR_NOTREGISTERED() ("localhost 451 :You have not registered\r\n")
+# define ERR_NOTREGISTERED() (":localhost 451 * :You have not registered\r\n")
 
 // 461	   ERR_NEEDMOREPARAMS
 # define ERR_NEEDMOREPARAMS(command) ("localhost 461 : " + command + " :Not enough parameters\r\n")
