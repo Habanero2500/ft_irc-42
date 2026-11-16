@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/13 14:20:46 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 15:21:16 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ std::string	Channel::getPwd() const
 	return (_pwd);
 }
 
+std::vector<BannedMember>	Channel::getBanList() const 
+{
+	return (_banList);
+}
+
 void		Channel::setName(std::string &name)
 {
 	_name = name;
@@ -105,6 +110,7 @@ void		Channel::setMaxMembers(std::string max)
 	_maxMembers = std::atoi(max.c_str());
 }
 
+
 /****** MEMBERS MANAGEMENT *******/
 
 void		Channel::addMember(Client &member)
@@ -117,6 +123,18 @@ void		Channel::addMember(Client &member)
 void		Channel::setOperator(Client &member)
 {
 	_members[member.getFd()].op = true;
+}
+
+
+void		Channel::addtoBanList(std::string nick, std::string user, std::string host)
+{
+	BannedMember	newban;
+	
+	newban.nick = nick;
+	newban.user = user;
+	newban.host = host;
+	newban.banid = nick + user + host;
+	_banList.push_back(newban);
 }
 
 
@@ -137,10 +155,104 @@ bool	Channel::isMemberBanned(Client &member)
 {
 	for (std::vector<BannedMember>::iterator it = _banList.begin(); it != _banList.end(); it++)
 	{
-		if (it->nickname == member.getNickname() || it->username == member.getUsername() || it->hostname == member.getHostname())
+		if (checkNick(it->nick, member.getNickname()) && checkUser(it->user, member.getUsername()) && checkHost(it->host, member.getHostname()))
 			return (true);
 	}
 	return (false);
+}
+
+bool	Channel::checkNick(std::string bannedNick, std::string clientNick)
+{
+	if (bannedNick == "*")
+		return true;
+	
+	std::string temp;
+	std::string::iterator itClient = clientNick.begin();
+	for (std::string::iterator it = bannedNick.begin(); it != bannedNick.end(); it++)
+	{
+		if (*it == '*')
+			continue;
+		if (*it == '?')
+		{
+			if (itClient == clientNick.end())
+				return false;
+			itClient++;
+			continue;
+		}
+		size_t stop = bannedNick.find_first_of("*?", *it);
+		if (stop == std::string::npos)
+			temp = bannedNick.substr(*it);
+		else
+			temp = bannedNick.substr(*it, stop);
+		if (!clientNick.find(temp, *itClient))
+			return false;
+		itClient += temp.size();
+		it += temp.size();	
+	}
+	return true;
+}
+
+bool	Channel::checkUser(std::string bannedUser, std::string clientUser)
+{
+	if (bannedUser == "*")
+		return true;
+	
+	std::string temp;
+	std::string::iterator itClient = clientUser.begin();
+	for (std::string::iterator it = (bannedUser.begin() + 1); it != bannedUser.end(); it++)
+	{
+		if (*it == '*')
+			continue;
+		if (*it == '?')
+		{
+			if (itClient == clientUser.end())
+				return false;
+			itClient++;
+			continue;
+		}
+		size_t stop = bannedUser.find_first_of("*?", *it);
+		if (stop == std::string::npos)
+			temp = bannedUser.substr(*it);
+		else
+			temp = bannedUser.substr(*it, stop);
+		if (!clientUser.find(temp, *itClient))
+			return false;
+		itClient += temp.size();
+		it += temp.size();	
+	}
+	return true;
+}
+
+
+bool	Channel::checkHost(std::string bannedHost, std::string clientHost)
+{
+	if (bannedHost == "*")
+		return true;
+	
+	std::string temp;
+	std::string::iterator itClient = clientHost.begin();
+	for (std::string::iterator it = (bannedHost.begin() + 1); it != bannedHost.end(); it++)
+	{
+		if (*it == '*')
+			continue;
+		if (*it == '?')
+		{
+			if (itClient == clientHost.end())
+				return false;
+			itClient++;
+			continue;
+		}
+		size_t stop = bannedHost.find_first_of("*?", *it);
+		if (stop == std::string::npos)
+			temp = bannedHost.substr(*it);
+		else
+			temp = bannedHost.substr(*it, stop);
+		if (!clientHost.find(temp, *itClient))
+			return false;
+		itClient += temp.size();
+		it += temp.size();	
+	}
+	return true;
 }
 
 bool	Channel::isMember(Client &member)

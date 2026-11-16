@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/13 14:27:57 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 15:19:31 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,13 @@ struct	Member{
 	bool	voice;
 };
 
-struct	BannedMember{
-	std::string 			nickname;
-	std::string             username;
-	std::string             hostname;
-
-	BannedMember() : nickname(""), username(""), hostname(""){}
+struct	BannedMember
+{
+	std::string	nick;
+	std::string user;
+	std::string host;
+	std::string banid;
 };
-
 
 class Channel
 {
@@ -57,23 +56,27 @@ class Channel
 		Channel	&operator=(const Channel &copy);
 		~Channel();
 	
-		std::string	getName() const;
-		size_t		getNumberMember() const;	
-		Member*		getMemberByNick(const std::string& user);
-		std::string	getModes() const;
-		size_t		getMaxMember() const;
-		std::string	getPwd() const;
+		std::string					getName() const;
+		size_t						getNumberMember() const;	
+		Member*						getMemberByNick(const std::string& user);
+		std::string					getModes() const;
+		size_t						getMaxMember() const;
+		std::string					getPwd() const;
+		std::vector<BannedMember>	getBanList() const;
 	
 		void		setName(std::string &name);
 		void		setPwd(std::string &pwd);
 		void		setmode(int mode);
 		void		setMaxMembers(std::string max);
 
-
 		void		addMember(Client &member);
 		void		setOperator(Client &member);
-		void		addtoBanList(std::string )
+		void		addtoBanList(std::string nick, std::string user, std::string host);
 	
+		bool		checkNick(std::string bannedNick, std::string clientnick);
+		bool		checkUser(std::string bannedUser, std::string clientUser);
+		bool		checkHost(std::string bannedHost, std::string clientHost);
+		
 		bool		isModeActive(int mode) const;
 		bool		isMembersLimitReached() const;
 		bool		isMemberBanned(Client &member);

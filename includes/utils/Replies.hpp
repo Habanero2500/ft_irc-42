@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 19:27:51 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 12:57:57 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,23 @@
 					  <<  "================================================" RESET << std::endl << std::endl 
 
 
-/******* CHANNELS MESSAGE ********/
+/******* COMMANDS MESSAGE ********/
 
-# define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
+#define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
 
-# define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " + channel + " " + mode + " " + modeParams + " \r\n")
+// 324 RPL_CHANNELMODEIS
+#define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " + channel + " " + mode + " " + modeParams + "\r\n")
 
 // 341 RPL_INVITING
 #define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")
-					  
+
+// 367     RPL_BANLIST
+#define	RPL_BANLIST(channel, banid) ("localhost 367 " + channel + " " + banid + "\r\n")
+
+// 368     RPL_ENDOFBANLIST
+#define	RPL_ENDOFBANLIST(channel) ("localhost 367 " + channel + " :End of channel ban list\r\n")
+
+
 /******* ERRORS MESSAGES ********/
 
 // 341 RPL_INVITING

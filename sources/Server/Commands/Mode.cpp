@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/13 14:26:37 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 15:20:18 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ void	Server::printChannelModes(Client &client, Channel &channel, const std::stri
 
 void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
 {
-	std::string	needParams = "lbvok";
-	int			argument = 2;
+	std::string									needParams = "lbvok";
+	std::vector<std::string>::const_iterator	argument = line.params.begin();	
 	
-	if (line.params[1].find_first_not_of("+-psitnmovblk") != std::string::npos)
+	if (argument->find_first_not_of("+-psitnmovblk") != std::string::npos)
 		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
 	bool	add = true;
+	argument++;
 	for(size_t i = 0; i < line.params[1].size(); i++)
 	{
 		if (line.params[1][i] == '+')
@@ -81,19 +82,66 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 			{
 				switch	(line.params[1][i])
 				{
-					case	'l':
-						channel.setMaxMembers(line.params[argument++]);
-						channel.setmode(static_cast<int>(line.params[1][i]));
-						break;
+					// case	'l':
+					// 	if (argument != line.params.end())
+					// 	{
+					// 		channel.setMaxMembers(*argument);
+					// 		channel.setmode(static_cast<int>(line.params[1][i]));
+					// 	}
+					// 	break;
 					case	'b':
-						channel.setMaxMembers(line.params[argument++]);
-						channel.setmode(static_cast<int>(line.params[1][i]));
-						
+						if (argument == line.params.end())
+						{
+							displayBanList(client, channel);
+							break;
+						}
+						setbanmode(channel, *argument);
+						break;					
 				}
 			}
 		}
 			
 	}
+}
+
+void	Server::displayBanList(Client &client, Channel &channel)
+{
+	std::vector<BannedMember> list = channel.getBanList();
+
+	for (std::vector<BannedMember>::iterator it = list.begin(); it != list.end(); it++)
+		saveOrSend(client, RPL_BANLIST(channel.getName(), it->banid));
+	saveOrSend(client, RPL_ENDOFBANLIST(channel.getName()));
+}
+
+void	Server::setbanmode(Channel &channel, std::string argument)
+{
+	std::string	nick;
+	std::string user;
+	std::string host;
+	
+	size_t at = argument.rfind("@");
+	if (at == std::string::npos)
+		host = "@*";
+	else
+	{
+		host = argument.substr(at, (argument.size() - at));
+		argument = argument.substr(0, argument.size() - (argument.size() - at));
+	}
+	
+	size_t excla = argument.rfind("!");
+	if (excla == std::string::npos)
+		user = "!*";
+	else
+	{
+		user = argument.substr(excla, (argument.size() - excla));
+		argument = argument.substr(0, argument.size() - (argument.size() - excla));
+	}
+	
+	if (argument.empty())
+		nick = "*";
+	else
+		nick = argument;
+	channel.addtoBanList(nick, user, host);
 }
 
 // void	Server::addChannelMode(Channel &channel, const Parser &line, char mode, )

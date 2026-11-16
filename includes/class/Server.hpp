@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/13 14:10:22 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 14:37:58 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,18 @@ class	Server
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
+		
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);
 		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
 		void 		manageChannelModes(Client &client, Channel &channel, const Parser &line);
-		void 		addChannelMode(Channel &channel, char mode);
+		void		displayBanList(Client &client, Channel &channel);
+		void		setbanmode(Channel &channel, std::string argument);
+		// void 		addChannelMode(Channel &channel, char mode);
+
+
+		
 		void		userMode(Client &client, const Parser &line);
 		
 		//Operator Commands	
