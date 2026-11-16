@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 14:26:42 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 15:37:55 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,25 @@ void	Server::pollLoop()
 
 void	Server::checkEvents()
 {
-	for(size_t	i = 0; i < _listFd.size(); i++)
+	for (size_t i = 0; i < _listFd.size(); i++)
 	{
-		if (_listFd[i].revents & (POLLERR | POLLHUP | POLLNVAL))
+		int		fd = _listFd[i].fd;
+		short	revents = _listFd[i].revents;
+
+		if (fd == _fd)
 		{
-			deleteClient(_listFd[i].fd);
-			return ;
-		}
-		if (_listFd[i].revents & POLLIN)
-		{
-			if (_listFd[i].fd == _fd)
+			if (revents & POLLIN)
 				setNewClient();
-			else
-				receiveCommunication(_listFd[i].fd);
+			continue ;
 		}
-		if (i< _listFd.size() && (_listFd[i].revents & POLLOUT))
-			sendPendingData(_listFd[i].fd);
+		if (revents & POLLIN)
+			receiveCommunication(fd);
+		else if (revents & (POLLERR | POLLHUP | POLLNVAL))
+			deleteClient(fd);
+		if ((revents & POLLOUT) && _clients.find(fd) != _clients.end())
+			sendPendingData(fd);
+		if (_clients.find(fd) == _clients.end())
+			i--;
 	}
 }
 
@@ -96,6 +99,8 @@ void	Server::receiveCommunication(int fd)
 		if (_clients.find(fd) != _clients.end() && _clients[fd].shouldDisconnect())
 			deleteClient(fd);
 	}
+	else
+		deleteClient(fd);
 }
 
 void	Server::deleteClient(int fd)
@@ -138,7 +143,7 @@ void	Server::initCommands(void) {
 	_commandMap["NICK"] = &Server::handleNick;
 	_commandMap["USER"] = &Server::handleUser;
 	_commandMap["PING"] = &Server::handlePing;
-	_commandMap["PING"] = &Server::handlePong;
+	_commandMap["PONG"] = &Server::handlePong;
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;

@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 22:13:16 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 15:41:25 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ void	Server::handleNick(Client &client, const Message& msg)
 	client.setNickname(*(line.params.begin()));
 	client.setNick();
 	if (DEBUG)
-	{
-		std::string message = "Nick ok\r\n";
-    	send(client.getFd(), message.c_str(), message.size(), 0);
-	}
+		std::cout << "Nick ok" << std::endl;
 	isRegistered(client);
 }
 
