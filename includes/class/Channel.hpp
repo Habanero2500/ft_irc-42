@@ -85,6 +85,7 @@ class Channel
 		//Broadcast and shit
 		void	broadcast(Server& server, const std::string& msg) const;
 		void	broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const;
+		void	broadcastPrivmsg(Server& server, Client& client, const std::string& msg) const;
 		void	removeClientFromChannel(Client& client);
 
 	private:

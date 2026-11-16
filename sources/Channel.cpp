@@ -197,3 +197,11 @@ void	Channel::broadcastQuit(Server& server, Client& client, const std::string& m
 			server.saveOrSend(*target, msg);
 	}
 }
+
+void	Channel::broadcastPrivmsg(Server& server, Client& client, const std::string& msg) const {
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client* target = server.getClientByNick(it->second.client->getNickname());
+		if (target && target != &client)
+			server.saveOrSend(*target, msg);
+	}
+}

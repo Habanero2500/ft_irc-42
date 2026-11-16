@@ -20,7 +20,7 @@ RM = rm -rf
 SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server/Server.cpp ./sources/Client.cpp ./sources/Message.cpp ./sources/Channel.cpp \
 		./sources/Server/InitServerandPollLoop.cpp ./sources/Server/MessageTransmission.cpp ./sources/Server/SettersGetters.cpp \
 		./sources/Server/Utils.cpp ./sources/Server/Commands/Display.cpp ./sources/Server/Commands/Pass.cpp ./sources/Server/Commands/Nick.cpp \
-		./sources/Server/Commands/Join.cpp ./sources/Server/Commands/Kick.cpp ./sources/Server/Commands/Mode.cpp ./sources/Server/Commands/Quit.cpp \
+		./sources/Server/Commands/Join.cpp ./sources/Server/Commands/Kick.cpp ./sources/Server/Commands/Mode.cpp ./sources/Server/Commands/Quit.cpp ./sources/Server/Commands/Topic.cpp \
 		./sources/Server/Commands/Privmsg.cpp ./sources/Server/Commands/User.cpp \
 		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp 		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Cap.cpp \
 		./sources/Server/Commands/Ping.cpp \

@@ -154,6 +154,7 @@ void	Server::initCommands(void) {
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
 	_commandMap["CAP"] = &Server::handleCap;
+	_commandMap["TOPIC"] = &Server::handleTopic;
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }

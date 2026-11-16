@@ -80,8 +80,9 @@ void	Server::joinChannel(Client &client, Channel &channel)
 	{
 		joinVerification(client, channel);
 		channel.addMember(client);
-		std::string message = NEWMEMBERMESSAGE(client.getNickname());
-    	send(client.getFd(), message.c_str(), message.size(), 0);
+		/*std::string message = NEWMEMBERMESSAGE(client.getNickname());
+    		send(client.getFd(), message.c_str(), message.size(), 0);*/
+		return (channel.broadcast(*this, NEWMEMBERMESSAGE(client.getNickname())));
 		if (DEBUG)
 		{
 			std::cout << BLUE "channel: " << channel.getName() << " accepted new member: " << client.getNickname() << RESET << std::endl;
