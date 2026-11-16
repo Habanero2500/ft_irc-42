@@ -13,6 +13,8 @@
 #include "../../../includes/class/Server.hpp"
 #include "../../../includes/class/Client.hpp"
 #include "../../../includes/class/Channel.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 void Server::handleInvite(Client &client, const Message &msg)
 {

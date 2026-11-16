@@ -6,12 +6,13 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 16:14:58 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/16 19:59:37 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 20:06:06 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
 #include "../../../includes/utils/Replies.hpp"
+#include "../../../includes/class/Message.hpp"
 
 
 void	Server::handlePart(Client &client, const Message& msg)

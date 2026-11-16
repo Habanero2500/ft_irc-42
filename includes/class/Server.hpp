@@ -6,35 +6,24 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 16:17:50 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 20:03:00 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-#include "Channel.hpp"
-#include "Client.hpp"
-#include "Message.hpp"
-
-#include "../utils/Colors.hpp"
-#include "../utils/Replies.hpp"
-
 #include <string>
 #include <map>
 #include <vector>
 #include <netinet/in.h>
-#include <fcntl.h>
-#include <iostream>
-#include <unistd.h>
-#include <cstdlib>
-#include <cerrno>
-#include <sstream>
+#include <poll.h>
+#include "Client.hpp"
+#include "Channel.hpp"
 
 //Forward declarations
 class	Server;
 class	Message;
-class	Client;
 typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 struct Parser;
 
@@ -88,13 +77,17 @@ class	Server
 		void		handlePart(Client &client, const Message& msg);
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
-		// void	handleQuit(Client &client, const Message& msg);
-		// void	handlePart(Client &client, const Message& msg);
+		void		handleQuit(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
 		void		handleDisplay(Client &client, const Message& msg);
 		void 		handleInvite(Client& client, const Message& message);
 		void		handlePing(Client &client, const Message &msg);
 		void		handlePong(Client &client, const Message &msg);
+		// void	handlePart(Client &client, const Message& msg);
+
+		
+		//Command helpers
+		void		quitHelper(Client& client, const std::string& quitLine);
 
 		/******** JOIN AND CHANNELS ********/
 		void		handleJoin(Client &client, const Message& msg);
@@ -112,18 +105,19 @@ class	Server
 		//Operator Commands	
 		void		kickClient(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
+		void		handleTopic(Client& client, const Message& msg);
+		bool		topicValidation(Client& client, const Message& msg);
 
 		/******* UTILS *******/
-
 		
 	private:
-		int										_fd;
-		struct sockaddr_in 						_address;
-		std::map<int, Client>					_clients;
-		std::map<std::string, Channel>			_channels;
+		int					_fd;
+		struct sockaddr_in 			_address;
+		std::map<int, Client>			_clients;
+		std::map<std::string, Channel>		_channels;
 		std::map<std::string, CommandHandler> 	_commandMap;
-		std::vector<struct pollfd>				_listFd;
-		std::string								_pwd;
-		int										_port;
+		std::vector<struct pollfd>		_listFd;
+		std::string				_pwd;
+		int					_port;
 };
 #endif

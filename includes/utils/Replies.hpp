@@ -13,6 +13,8 @@
 #ifndef REPLIES_HPP
 # define REPLIES_HPP
 
+#include "Colors.hpp"
+
 /******* WELCOME MESSAGE ********/
 #define	WELCOME_MESSAGE GREEN <<  "================================================" << std::endl << std::endl \
 							<< "================== WELCOME TO ==================" << std::endl << std::endl \
@@ -30,6 +32,11 @@
 // 341 RPL_INVITING
 #define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")
 					  
+/******* SUCCESSFULL NUMERIC REPLIES ********/
+# define RPL_NOTOPIC(channelName) (":" + channelName + " :No topic is set\r\n")//a voir
+
+# define RPL_TOPIC(channelName, topicName) (":" + channelName + " :" + topicName + "\r\n")//a voir aussi
+
 /******* ERRORS MESSAGES ********/
 
 // 341 RPL_INVITING
@@ -111,7 +118,7 @@
 # define ERR_USERSDISABLED() ("localhost 446 :USERS has been disabled\r\n")
 
 // 451     ERR_NOTREGISTERED
-# define ERR_NOTREGISTERED() ("localhost 451 :You have not registered\r\n")
+# define ERR_NOTREGISTERED() (":localhost 451 * :You have not registered\r\n")
 
 // 461	   ERR_NEEDMOREPARAMS
 # define ERR_NEEDMOREPARAMS(command) ("localhost 461 : " + command + " :Not enough parameters\r\n")
