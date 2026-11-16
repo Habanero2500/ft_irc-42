@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 15:21:16 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 16:25:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,101 +158,125 @@ bool	Channel::isMemberBanned(Client &member)
 		if (checkNick(it->nick, member.getNickname()) && checkUser(it->user, member.getUsername()) && checkHost(it->host, member.getHostname()))
 			return (true);
 	}
+	if (DEBUG)
+	{
+		std::cout << GREEN "IS NOT BANNED" << std::endl;
+	}
 	return (false);
 }
 
 bool	Channel::checkNick(std::string bannedNick, std::string clientNick)
 {
+	if (DEBUG)
+		std::cout << RED "bannedNick = " RESET << bannedNick << RED " clientNick = " RESET << clientNick << std::endl;
 	if (bannedNick == "*")
 		return true;
 	
+	if (DEBUG)
+		std::cout << "aled" << std::endl;
 	std::string temp;
-	std::string::iterator itClient = clientNick.begin();
-	for (std::string::iterator it = bannedNick.begin(); it != bannedNick.end(); it++)
+	size_t		itClient = 0;
+	for (size_t i = 0; i < bannedNick.size(); i++)
 	{
-		if (*it == '*')
+		if (DEBUG)
+			std::cout << "entered boucle" << std::endl;
+		if (bannedNick[i] == '*')
 			continue;
-		if (*it == '?')
+		if (bannedNick[i] == '?')
 		{
-			if (itClient == clientNick.end())
-				return false;
+			if (itClient >= clientNick.size())
+				return true;
 			itClient++;
 			continue;
 		}
-		size_t stop = bannedNick.find_first_of("*?", *it);
+		if (DEBUG)
+			std::cout << "entered find" << std::endl;
+		size_t stop = bannedNick.find_first_of("*?", i);
 		if (stop == std::string::npos)
-			temp = bannedNick.substr(*it);
+			temp = bannedNick.substr(i);
 		else
-			temp = bannedNick.substr(*it, stop);
-		if (!clientNick.find(temp, *itClient))
-			return false;
+			temp = bannedNick.substr(i, stop);
+		if (!clientNick.find(temp, itClient))
+			return true;
+		if (DEBUG)
+			std::cout << "temp = " << temp << " clientnickfind = " << clientNick.find(temp, itClient) << " " << clientNick.compare(temp) << std::endl;
 		itClient += temp.size();
-		it += temp.size();	
+		i += temp.size();
 	}
-	return true;
+	if (DEBUG)
+		std::cout << GREEN "Nick not banned" RESET << std::endl;
+	return false;
 }
 
 bool	Channel::checkUser(std::string bannedUser, std::string clientUser)
 {
-	if (bannedUser == "*")
+	if (DEBUG)
+		std::cout << RED "bannedUser = " RESET << bannedUser << std::endl;
+	if (bannedUser == "!*")
 		return true;
 	
 	std::string temp;
-	std::string::iterator itClient = clientUser.begin();
-	for (std::string::iterator it = (bannedUser.begin() + 1); it != bannedUser.end(); it++)
+	size_t		itClient = 0;
+	for (size_t i = 1; i < bannedUser.size(); i++)
 	{
-		if (*it == '*')
+		if (bannedUser[i] == '*')
 			continue;
-		if (*it == '?')
+		if (bannedUser[i] == '?')
 		{
-			if (itClient == clientUser.end())
-				return false;
+			if (itClient >= clientUser.size())
+				return true;
 			itClient++;
 			continue;
 		}
-		size_t stop = bannedUser.find_first_of("*?", *it);
+		size_t stop = bannedUser.find_first_of("*?", i);
 		if (stop == std::string::npos)
-			temp = bannedUser.substr(*it);
+			temp = bannedUser.substr(i);
 		else
-			temp = bannedUser.substr(*it, stop);
-		if (!clientUser.find(temp, *itClient))
-			return false;
+			temp = bannedUser.substr(i, stop);
+		if (!clientUser.find(temp, itClient))
+			return true;
 		itClient += temp.size();
-		it += temp.size();	
+		i += temp.size();	
 	}
-	return true;
+	if (DEBUG)
+		std::cout << GREEN "User not banned" RESET << std::endl;
+	return false;
 }
 
 
 bool	Channel::checkHost(std::string bannedHost, std::string clientHost)
 {
-	if (bannedHost == "*")
+	if (DEBUG)
+		std::cout << RED "bannedHost = " RESET << bannedHost << std::endl;
+	if (bannedHost == "@*")
 		return true;
 	
 	std::string temp;
-	std::string::iterator itClient = clientHost.begin();
-	for (std::string::iterator it = (bannedHost.begin() + 1); it != bannedHost.end(); it++)
+	size_t		itClient = 0;
+	for (size_t i = 1; i < bannedHost.size(); i++)
 	{
-		if (*it == '*')
+		if (bannedHost[i] == '*')
 			continue;
-		if (*it == '?')
+		if (bannedHost[i] == '?')
 		{
-			if (itClient == clientHost.end())
-				return false;
+			if (itClient >= clientHost.size())
+				return true;
 			itClient++;
 			continue;
 		}
-		size_t stop = bannedHost.find_first_of("*?", *it);
+		size_t stop = bannedHost.find_first_of("*?", i);
 		if (stop == std::string::npos)
-			temp = bannedHost.substr(*it);
+			temp = bannedHost.substr(i);
 		else
-			temp = bannedHost.substr(*it, stop);
-		if (!clientHost.find(temp, *itClient))
-			return false;
+			temp = bannedHost.substr(i, stop);
+		if (!clientHost.find(temp, itClient))
+			return true;
 		itClient += temp.size();
-		it += temp.size();	
+		i += temp.size();	
 	}
-	return true;
+	if (DEBUG)
+		std::cout << GREEN "Host not banned" RESET << std::endl;
+	return false;
 }
 
 bool	Channel::isMember(Client &member)
