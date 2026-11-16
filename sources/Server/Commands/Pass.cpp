@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:33:18 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:52:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/12 22:18:13 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 
 void	Server::handlePass(Client &client, const Message& msg)
 {
-	Parser pars = msg.getParser();  
-	if(client.getAttempt() > 2) //Trop de tentatives
+	Parser pars = msg.getParser();
+  
+	if(client.getAttempt() > 2)
 	{
 		if(DEBUG)
 			std::cout << "Too much attempts" << std::endl;
@@ -27,37 +28,26 @@ void	Server::handlePass(Client &client, const Message& msg)
 		return;
 	}
 	if (pars.params.empty())
-    {
-		std::string cmd = "PASS";
-        std::string message = ERR_NEEDMOREPARAMS(cmd);
-        send(client.getFd(), message.c_str(), message.size(), 0);
-        return;
-    }
+        return(saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
+
 	if(client.getPass() == true) //pwd deja rentre
   	{
 		if(DEBUG)
 			std::cout << "Already registered" << std::endl;
-        std::string message = ERR_ALREADYREGISTRED();
-        send(client.getFd(), message.c_str(), message.size(), 0);
-    	return;
+    	return(saveOrSend(client, ERR_ALREADYREGISTRED()));
     }
 	if(pars.params[0] != _pwd)
 	{
 		if(DEBUG)
 			std::cout << "Wrong password" << std::endl;
-		std::string message = ERR_PASSWDMISMATCH();
-        send(client.getFd(), message.c_str(), message.size(), 0);
 		client.increaseAttempt();
-		return;	
+		return(saveOrSend(client, ERR_PASSWDMISMATCH()));	
 	}
 	if(pars.params.size() < 1) // pas d'arg
 	{
 		if(DEBUG)
 			std::cout << "Argument missing" << std::endl; 
-		std::string msg = "PASS";
-		std::string message = ERR_NEEDMOREPARAMS(msg);
-        send(client.getFd(), message.c_str(), message.size(), 0);
-		return;
+		return(saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
 	}
 	else if(pars.params[0] == _pwd)
 	{

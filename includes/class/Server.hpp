@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 17:21:37 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 17:27:06 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,22 @@ class	Server
 		//Command Handlers
 		void		handlePass(Client &client, const Message& msg);
 		void		handleNick(Client &client, const Message& msg);
-		std::string	parsingNick(Client &client, const Parser &line);
-		
+		int			parsingNick(Client &client, const Parser &line);
+
+		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
-		// void	handlePing(Client &client, const Message& msg);
 		void		handleQuit(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
 		void		handleDisplay(Client &client, const Message& msg);
+		void 		handleInvite(Client& client, const Message& message);
+		void		handlePing(Client &client, const Message &msg);
+		void		handlePong(Client &client, const Message &msg);
+		// void	handlePart(Client &client, const Message& msg);
+
 		
 		//Command helpers
 		void		quitHelper(Client& client, const std::string& quitLine);
+
 		/******** JOIN AND CHANNELS ********/
 		void		handleJoin(Client &client, const Message& msg);
 		std::string	parsingChannelName(Client &client, const Parser &line);

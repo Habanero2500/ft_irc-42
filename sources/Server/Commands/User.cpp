@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:55 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:52:27 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 17:28:25 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include "../../../includes/class/Client.hpp"
 #include "../../../includes/utils/Replies.hpp"
 #include <iostream>
-
-#define USERLEN 16      // longueur max conservée, valeur au choix
 
 static bool isValidUsername(const std::string &s)
 {
@@ -52,25 +50,17 @@ void	Server::handleUser(Client &client, const Message& msg)
 			std::cout << "Password has to be set before anything" << std::endl;
 		return;
 	}
+	
 	Parser pars = msg.getParser();
-	if (client.getUser() == true) {
-		if(DEBUG)
-			std::cout << "Already registered" << std::endl;
-		std::string msg = ERR_ALREADYREGISTRED();
-		send(client.getFd(), msg.c_str(), msg.size(), 0);
-		return;
-
-	}
-	else if (pars.params.size() < 4) {
-		if(DEBUG)
-			std::cout << "Need more params" << std::endl;
-		std::string cmd = "USER";
-		std::string msg = ERR_NEEDMOREPARAMS(cmd);
-		send(client.getFd(), msg.c_str(), msg.size(), 0);
-		return;
-	}
+	
+	if (client.getUser() == true) 
+		return(saveOrSend(client, ERR_ALREADYREGISTRED()));
+	if (pars.params.size() < 4) 
+		return(saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
+	
 	std::string			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
-	std::string	&realname = pars.params[3];              
+	const std::string	&realname = pars.params[3];              
+	
 	if (!isValidUsername(username) || !isValidRealname(realname))
 	{
 		if (DEBUG)
@@ -81,7 +71,6 @@ void	Server::handleUser(Client &client, const Message& msg)
 	client.setRealName(realname);
 	client.setHostname(pars.params[1]);
 	client.setServername(pars.params[2]);
-	if(DEBUG)
-			std::cout << "USER ok" << std::endl;
+	client.setUser();
 	isRegistered(client);
 }
