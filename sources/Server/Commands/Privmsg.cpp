@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
@@ -25,11 +28,14 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	
 	const std::string& target = params[0];
 	const std::string& textToSend = params[1];
-	if (!getClientByNick(target))//401
+	if (!getClientByNick(target) && !getChannelByNick(target))//401
 		return (saveOrSend(client, ERR_NOSUCHNICK(target)));
 
 	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
 	const std::string prefix = getPrefixForCommand(client);
 	const std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
-	saveOrSend(*getClientByNick(target), line);
+	if (getClientByNick(target))//Privmsg to a client
+		return (saveOrSend(*getClientByNick(target), line));
+	else//PRIVMSG to a channel
+		return (getChannelByNick(target)->broadcastPrivmsg(*this, client, line));
 }
