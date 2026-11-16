@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 14:57:11 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 16:17:50 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ class	Server
 		void		handlePass(Client &client, const Message& msg);
 		void		handleNick(Client &client, const Message& msg);
 		int			parsingNick(Client &client, const Parser &line);
-
+		void		handlePart(Client &client, const Message& msg);
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
 		// void	handleQuit(Client &client, const Message& msg);

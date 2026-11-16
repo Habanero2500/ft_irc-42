@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/12 19:05:39 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 18:11:00 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ class Client{
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
+    void            decreaseNumberChannels(void);
+
     
 	//Send Buffer Management
 	void			appendToSendBuffer(const std::string& data);
