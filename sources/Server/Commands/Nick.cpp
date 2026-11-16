@@ -14,6 +14,7 @@
 #include "../../../includes/class/Message.hpp"
 #include "../../../includes/class/Client.hpp"
 #include "../../../includes/utils/Replies.hpp"
+#include <iostream>
 
 int	Server::parsingNick(Client &client, const Parser &line)
 {

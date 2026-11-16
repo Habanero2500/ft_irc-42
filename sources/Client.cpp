@@ -50,7 +50,7 @@ void Client::setNickname(std::string& name){ _nickname = name;}
 void Client::setUsername(std::string& name){ _username = name;}
 void Client::setHostname(std::string& name){ _hostname = name;}
 void Client::setServername(std::string& name){ _serverName = name;}
-void Client::setRealName(std::string& name){ _realname = name;}
+void Client::setRealName(const std::string& name){ _realname = name;}
 void Client::setID(std::string& ID){_ID = ID;}
 void Client::setFd(int i){_fd = i;}
 

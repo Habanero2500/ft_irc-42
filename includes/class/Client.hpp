@@ -36,7 +36,7 @@ class Client{
 	void 		setNickname(std::string& name);
 	void 		setUsername(std::string& name);
 	void 		setHostname(std::string& name);
-	void 		setRealName(std::string& name);
+	void 		setRealName(const std::string& name);
 	void 		setID(std::string& ID);
 	void 		setFd(int i);
 	void 		setPollFd(void);
