@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 15:19:31 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 17:22:32 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,8 @@
 class	Server;
 
 enum modes{
-	P,
-	S,
 	I,
 	T,
-	N,
-	M,
 	L,
 	K,
 };
@@ -37,14 +33,6 @@ struct	Member{
 	Client	*client;
 	bool	op;
 	bool	voice;
-};
-
-struct	BannedMember
-{
-	std::string	nick;
-	std::string user;
-	std::string host;
-	std::string banid;
 };
 
 class Channel
@@ -62,7 +50,6 @@ class Channel
 		std::string					getModes() const;
 		size_t						getMaxMember() const;
 		std::string					getPwd() const;
-		std::vector<BannedMember>	getBanList() const;
 	
 		void		setName(std::string &name);
 		void		setPwd(std::string &pwd);
@@ -71,15 +58,9 @@ class Channel
 
 		void		addMember(Client &member);
 		void		setOperator(Client &member);
-		void		addtoBanList(std::string nick, std::string user, std::string host);
-	
-		bool		checkNick(std::string bannedNick, std::string clientnick);
-		bool		checkUser(std::string bannedUser, std::string clientUser);
-		bool		checkHost(std::string bannedHost, std::string clientHost);
 		
 		bool		isModeActive(int mode) const;
 		bool		isMembersLimitReached() const;
-		bool		isMemberBanned(Client &member);
 		bool		isMember(Client &member);
 		bool		isOperator(Client &member);
 
@@ -92,7 +73,6 @@ class Channel
 		std::string					_name;
 		std::map<int, Member>		_members;
 		std::vector<int>			_chouffins;
-		std::vector<BannedMember>	_banList;
 		std::bitset<8>				_modes;
 		size_t						_maxMembers;
 		std::string					_pwd;

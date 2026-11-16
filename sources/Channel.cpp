@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 16:25:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 17:21:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,19 +125,6 @@ void		Channel::setOperator(Client &member)
 	_members[member.getFd()].op = true;
 }
 
-
-void		Channel::addtoBanList(std::string nick, std::string user, std::string host)
-{
-	BannedMember	newban;
-	
-	newban.nick = nick;
-	newban.user = user;
-	newban.host = host;
-	newban.banid = nick + user + host;
-	_banList.push_back(newban);
-}
-
-
 /****** MODES *******/
 
 
@@ -149,134 +136,6 @@ bool	Channel::isModeActive(int mode) const
 bool	Channel::isMembersLimitReached() const
 {
 	return (_members.size() >= _maxMembers);
-}
-
-bool	Channel::isMemberBanned(Client &member)
-{
-	for (std::vector<BannedMember>::iterator it = _banList.begin(); it != _banList.end(); it++)
-	{
-		if (checkNick(it->nick, member.getNickname()) && checkUser(it->user, member.getUsername()) && checkHost(it->host, member.getHostname()))
-			return (true);
-	}
-	if (DEBUG)
-	{
-		std::cout << GREEN "IS NOT BANNED" << std::endl;
-	}
-	return (false);
-}
-
-bool	Channel::checkNick(std::string bannedNick, std::string clientNick)
-{
-	if (DEBUG)
-		std::cout << RED "bannedNick = " RESET << bannedNick << RED " clientNick = " RESET << clientNick << std::endl;
-	if (bannedNick == "*")
-		return true;
-	
-	if (DEBUG)
-		std::cout << "aled" << std::endl;
-	std::string temp;
-	size_t		itClient = 0;
-	for (size_t i = 0; i < bannedNick.size(); i++)
-	{
-		if (DEBUG)
-			std::cout << "entered boucle" << std::endl;
-		if (bannedNick[i] == '*')
-			continue;
-		if (bannedNick[i] == '?')
-		{
-			if (itClient >= clientNick.size())
-				return true;
-			itClient++;
-			continue;
-		}
-		if (DEBUG)
-			std::cout << "entered find" << std::endl;
-		size_t stop = bannedNick.find_first_of("*?", i);
-		if (stop == std::string::npos)
-			temp = bannedNick.substr(i);
-		else
-			temp = bannedNick.substr(i, stop);
-		if (!clientNick.find(temp, itClient))
-			return true;
-		if (DEBUG)
-			std::cout << "temp = " << temp << " clientnickfind = " << clientNick.find(temp, itClient) << " " << clientNick.compare(temp) << std::endl;
-		itClient += temp.size();
-		i += temp.size();
-	}
-	if (DEBUG)
-		std::cout << GREEN "Nick not banned" RESET << std::endl;
-	return false;
-}
-
-bool	Channel::checkUser(std::string bannedUser, std::string clientUser)
-{
-	if (DEBUG)
-		std::cout << RED "bannedUser = " RESET << bannedUser << std::endl;
-	if (bannedUser == "!*")
-		return true;
-	
-	std::string temp;
-	size_t		itClient = 0;
-	for (size_t i = 1; i < bannedUser.size(); i++)
-	{
-		if (bannedUser[i] == '*')
-			continue;
-		if (bannedUser[i] == '?')
-		{
-			if (itClient >= clientUser.size())
-				return true;
-			itClient++;
-			continue;
-		}
-		size_t stop = bannedUser.find_first_of("*?", i);
-		if (stop == std::string::npos)
-			temp = bannedUser.substr(i);
-		else
-			temp = bannedUser.substr(i, stop);
-		if (!clientUser.find(temp, itClient))
-			return true;
-		itClient += temp.size();
-		i += temp.size();	
-	}
-	if (DEBUG)
-		std::cout << GREEN "User not banned" RESET << std::endl;
-	return false;
-}
-
-
-bool	Channel::checkHost(std::string bannedHost, std::string clientHost)
-{
-	if (DEBUG)
-		std::cout << RED "bannedHost = " RESET << bannedHost << std::endl;
-	if (bannedHost == "@*")
-		return true;
-	
-	std::string temp;
-	size_t		itClient = 0;
-	for (size_t i = 1; i < bannedHost.size(); i++)
-	{
-		if (bannedHost[i] == '*')
-			continue;
-		if (bannedHost[i] == '?')
-		{
-			if (itClient >= clientHost.size())
-				return true;
-			itClient++;
-			continue;
-		}
-		size_t stop = bannedHost.find_first_of("*?", i);
-		if (stop == std::string::npos)
-			temp = bannedHost.substr(i);
-		else
-			temp = bannedHost.substr(i, stop);
-		if (!clientHost.find(temp, itClient))
-			return true;
-		itClient += temp.size();
-		i += temp.size();	
-	}
-	if (DEBUG)
-		std::cout << GREEN "Host not banned" RESET << std::endl;
-	return false;
 }
 
 bool	Channel::isMember(Client &member)

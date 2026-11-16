@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 15:23:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 17:22:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ class	Server
 
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
-		// void	handlePing(Client &client, const Message& msg);
 		// void	handleQuit(Client &client, const Message& msg);
+		// void	handlePart(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
 		void		handleDisplay(Client &client, const Message& msg);
 		void 		handleInvite(Client& client, const Message& message);
@@ -108,8 +108,6 @@ class	Server
 		void		channelMode(Client &client, const Parser &line);
 		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
 		void 		manageChannelModes(Client &client, Channel &channel, const Parser &line);
-		void		displayBanList(Client &client, Channel &channel);
-		void		setbanmode(Channel &channel, std::string argument);
 		// void 		addChannelMode(Channel &channel, char mode);
 
 

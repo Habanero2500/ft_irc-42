@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 15:43:49 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 17:21:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,7 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 					// 		channel.setMaxMembers(*argument);
 					// 		channel.setmode(static_cast<int>(line.params[1][i]));
 					// 	}
-					// 	break;
-					case	'b':
-						if (argument == line.params.end())
-						{
-							displayBanList(client, channel);
-							break;
-						}
-						setbanmode(channel, *argument);
-						break;					
+					// 	break;				
 				}
 			}
 		}
@@ -124,59 +116,6 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 	}
 }
 
-void	Server::displayBanList(Client &client, Channel &channel)
-{
-	std::vector<BannedMember> list = channel.getBanList();
-
-	for (std::vector<BannedMember>::iterator it = list.begin(); it != list.end(); it++)
-		saveOrSend(client, RPL_BANLIST(channel.getName(), it->banid));
-	saveOrSend(client, RPL_ENDOFBANLIST(channel.getName()));
-}
-
-void	Server::setbanmode(Channel &channel, std::string argument)
-{
-	std::string	nick;
-	std::string user;
-	std::string host;
-	
-	size_t at = argument.rfind("@");
-	if (at == std::string::npos)
-		host = "@*";
-	else
-	{
-		host = argument.substr(at, (argument.size() - at));
-		argument = argument.substr(0, argument.size() - (argument.size() - at));
-	}
-	
-	size_t excla = argument.rfind("!");
-	if (excla == std::string::npos)
-		user = "!*";
-	else
-	{
-		user = argument.substr(excla, (argument.size() - excla));
-		argument = argument.substr(0, argument.size() - (argument.size() - excla));
-	}
-	
-	if (argument.empty())
-		nick = "*";
-	else
-		nick = argument;
-	if (DEBUG)
-	{
-		std::cout << YELLOW "BANID = " << nick + user + host << RESET << std::endl;
-	}
-	channel.addtoBanList(nick, user, host);
-}
-
-// void	Server::addChannelMode(Channel &channel, const Parser &line, char mode, )
-// {
-// 	std::string	needParams
-// 	if (mode)
-		
-// 	channel.setmode(static_cast<int>(mode));
-// }
-
-// lbvok
 
 void	Server::userMode(Client &client, const Parser &line)
 {
