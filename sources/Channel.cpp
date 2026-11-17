@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:32:55 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 17:10:28 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,6 @@ void		Channel::addMember(Client &member)
 {
 	_members[member.getFd()].client = &member;
 	_members[member.getFd()].op = false;
-    _members[member.getFd()].voice = false;
 }
 
 bool		Channel::setOperator(Client &member)
