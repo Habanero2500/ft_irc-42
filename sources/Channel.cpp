@@ -6,12 +6,13 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:19:31 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:32:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
+#include <algorithm>
 
 Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
@@ -60,6 +61,25 @@ Member*		Channel::getMemberByNick(const std::string& client) {
 			return (&(it->second));
 	}
 	return	(NULL);
+}
+
+bool	Channel::isTopicSet(void) const {
+	if (!_topic.empty())
+		return (true);
+	return (false);
+}
+
+std::string	Channel::getTopic(void) const {
+	return (_topic);
+}
+
+void	Channel::setTopic(const std::string& topicName) {
+	_topic = topicName;
+}
+
+bool	Channel::isClientAnOperator(const Client& client) const {
+	std::vector<int>::const_iterator it = std::find(_chouffins.begin(), _chouffins.end(), client.getFd());
+	return (it != _chouffins.end());
 }
 
 std::string	Channel::getModes() const
@@ -175,4 +195,19 @@ bool	Channel::isEmpty(void)
 	if(_members.size() == 0)
 		return true;
 	return false;
+}
+void	Channel::broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const {
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client* target = server.getClientByNick(it->second.client->getNickname());
+		if (target && target != &client && !client.isIncluded(notifiedFds))
+			server.saveOrSend(*target, msg);
+	}
+}
+
+void	Channel::broadcastPrivmsg(Server& server, Client& client, const std::string& msg) const {
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client* target = server.getClientByNick(it->second.client->getNickname());
+		if (target && target != &client)
+			server.saveOrSend(*target, msg);
+	}
 }

@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:36:32 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:52:24 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 18:05:36 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {
@@ -25,11 +28,20 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	
 	const std::string& target = params[0];
 	const std::string& textToSend = params[1];
-	if (!getClientByNick(target))//401
+	if (!getClientByNick(target) && !getChannelByNick(target))//401
 		return (saveOrSend(client, ERR_NOSUCHNICK(target)));
 
 	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
 	const std::string prefix = getPrefixForCommand(client);
 	const std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
-	saveOrSend(*getClientByNick(target), line);
+	if (getClientByNick(target))//Privmsg to a client
+		return (saveOrSend(*getClientByNick(target), line));
+	
+	else if( getChannelByNick(target)!= NULL)//PRIVMSG to a channel
+	{
+		Channel *chan = getChannelByNick(target);
+		if(!chan->isMember(client))
+			return (saveOrSend(client, ERR_CANNOTSENDTOCHAN(target)));
+		return (getChannelByNick(target)->broadcastPrivmsg(*this, client, line));
+	}
 }

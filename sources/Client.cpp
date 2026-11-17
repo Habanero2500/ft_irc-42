@@ -6,11 +6,12 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/16 22:24:55 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:34:14 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Client.hpp"
+#include <iostream>
 
 // **** ORTHODOX CANONICAL FORM ****
 
@@ -30,9 +31,9 @@ Client& Client::operator=(const Client& copy)
         _realname = copy._realname;
         _ID = copy._ID;
         _fd = copy._fd;
-		_adress = copy._adress;
-		_pollFd = copy._pollFd;
-		_buffer = copy._buffer;
+	_adress = copy._adress;
+	_pollFd = copy._pollFd;
+	_buffer = copy._buffer;
         _pass = false;
         _nick = false;
         _user = false;
@@ -45,12 +46,12 @@ Client::~Client(){}
 
 //********** SETTERS AND GETTERS ************
 
-void Client::setNickname(std::string name){ _nickname = name;}
-void Client::setUsername(std::string name){ _username = name;}
-void Client::setHostname(std::string name){ _hostname = name;}
-void Client::setServername(std::string name){ _serverName = name;}
-void Client::setRealName(std::string name){ _realname = name;}
-void Client::setID(std::string ID){_ID = ID;}
+void Client::setNickname(std::string& name){ _nickname = name;}
+void Client::setUsername(std::string& name){ _username = name;}
+void Client::setHostname(std::string& name){ _hostname = name;}
+void Client::setServername(std::string& name){ _serverName = name;}
+void Client::setRealName(const std::string& name){ _realname = name;}
+void Client::setID(std::string& ID){_ID = ID;}
 void Client::setFd(int i){_fd = i;}
 
 void Client::setPollFd()
@@ -75,7 +76,7 @@ void    Client::setUser(void)
         _user = true;
 }
 
-void    		Client::setBuffer(std::string Newbuffer){_buffer = Newbuffer;}
+void    		Client::setBuffer(std::string& Newbuffer){_buffer = Newbuffer;}
 void			Client::addBuffer(char buffer[1024]){_buffer.append(buffer);}
 
 std::string		Client::getID(void) const {return _ID;}
@@ -118,6 +119,15 @@ void    Client::displayClient(void)
     std::cout << "To disconnect : " << _toDisconnect << std::endl;
     std::cout << "Channels joined : " << _channelsJoined << std::endl;
 }
+
+bool	Client::isIncluded(std::set<int>& notifiedFds) const {
+	for (std::set<int>::const_iterator it = notifiedFds.begin(); it != notifiedFds.end(); ++it) {
+		if (*it == getFd())
+			return (true);
+	}
+	return (false);
+}
+
 //**********INITIALISATION ************
 
 void	Client::initClientAdress(int port)
@@ -130,6 +140,11 @@ void	Client::initClientAdress(int port)
 /****** CHANNELS *********/
 void 	Client::increaseNumberChannels(void){_channelsJoined++;}
 
+void    Client::decreaseNumberChannels(void)
+{
+    if (_channelsJoined > 0)
+        _channelsJoined--;
+}
 //Buffer Management
 void	Client::appendToSendBuffer(const std::string& data) {
 	_sendBuffer += data;
@@ -143,10 +158,3 @@ bool	Client::isSendBufferEmpty(void) const {
 	return (_sendBuffer.empty());
 }
 
-void	Client::decreaseNumberChannels(void)
-{
-    if(_channelsJoined > 1)
-    {
-        _channelsJoined-=1;
-    }
-}

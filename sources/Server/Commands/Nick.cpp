@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 15:41:25 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 17:27:50 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
+#include <iostream>
 
 int	Server::parsingNick(Client &client, const Parser &line)
 {
