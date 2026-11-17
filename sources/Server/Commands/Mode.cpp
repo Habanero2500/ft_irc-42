@@ -6,13 +6,15 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 14:54:08 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 15:07:09 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
 #include "../../../includes/class/Message.hpp"
 #include "../../../includes/utils/Replies.hpp"
+#include "../../../includes/utils/Colors.hpp"
+#include <iostream>
 
 void	Server::handleMode(Client &client, const Message& msg)
 {
@@ -45,7 +47,7 @@ void	Server::channelMode(Client &client, const Parser &line)
 		saveOrSend(client, ERR_NOSUCHCHANNEL(line.params[0]));
 	else if (!it->second.isMember(client))
 		saveOrSend(client, ERR_NOTONCHANNEL(line.params[0]));
-	else if (!it->second.isOperator(client))
+	else if (!it->second.isClientAnOperator(client))
 		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
 	else
 	{
@@ -127,7 +129,7 @@ void Server::addMode(Client &client, Channel &channel, char mode, std::vector<st
 			Client* targetClient = getClientByNick(*it);
 			if (targetClient == NULL)
 				saveOrSend(client, ERR_NOSUCHNICK(*it));
-			else if (!channel.isOperator(*targetClient))
+			else if (!channel.isClientAnOperator(*targetClient))
 				saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel.getName()));
 			else if (channel.setOperator(*targetClient))
 				saveOrSend(client, ERR_USERNOTINCHANNEL(targetClient->getNickname(), channel.getName()));
@@ -170,7 +172,7 @@ void Server::removeMode(Client &client, Channel &channel, char mode, std::vector
 			Client* targetClient = getClientByNick(*it);
 			if (targetClient == NULL)
 				saveOrSend(client, ERR_NOSUCHNICK(*it));
-			else if (!channel.isOperator(*targetClient))
+			else if (!channel.isClientAnOperator(*targetClient))
 				saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel.getName()));
 			else if (channel.removeOperator(*targetClient))
 				saveOrSend(client, ERR_USERNOTINCHANNEL(targetClient->getNickname(), channel.getName()));

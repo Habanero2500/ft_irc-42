@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 14:54:25 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 15:03:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ void	Channel::setTopic(const std::string& topicName) {
 	_topic = topicName;
 }
 
-bool	Channel::isClientAnOperator(const Client& client) const {
+bool	Channel::isClientAnOperator(const Client& client) const 
+{
+	if (!isMember(client))
+		return false;
 	std::vector<int>::const_iterator it = std::find(_chouffins.begin(), _chouffins.end(), client.getFd());
 	return (it != _chouffins.end());
 }
@@ -180,18 +183,6 @@ bool	Channel::isMember(const Client &member) const
 		if (it->second.client->getNickname() == member.getNickname())
 			return true;
 	}
-	return false;
-}
-
-bool	Channel::isOperator(const Client &member) const
-{
-	if (!isMember(member))
-		return false;
-	std::map<int, Member>::const_iterator it = _members.find(member.getFd());
-	if (it == _members.end())
-		return false;
-	if (it->second.op)
-		return true;
 	return false;
 }
 
