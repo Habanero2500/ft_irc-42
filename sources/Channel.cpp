@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 18:36:35 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:19:31 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,4 +168,11 @@ void	Channel::removeClientFromChannel(Client& client) {
 			_chouffins.erase(it);
 			return ;//Voir si il faut modifier plus de trucs
 		}
+}
+
+bool	Channel::isEmpty(void)
+{
+	if(_members.size() == 0)
+		return true;
+	return false;
 }

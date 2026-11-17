@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 19:11:32 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:16:56 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ class Channel
 		bool		isMemberBanned(Client &member);
 		bool		isMember(Client &member);
 		bool		isOperator(Client &member);
+		bool		isEmpty(void);
+
 
 
 		//Broadcast and shit

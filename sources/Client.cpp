@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/12 19:11:30 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/16 22:24:55 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,4 +141,12 @@ std::string&	Client::getSendBuffer(void) {
 
 bool	Client::isSendBufferEmpty(void) const {
 	return (_sendBuffer.empty());
+}
+
+void	Client::decreaseNumberChannels(void)
+{
+    if(_channelsJoined > 1)
+    {
+        _channelsJoined-=1;
+    }
 }

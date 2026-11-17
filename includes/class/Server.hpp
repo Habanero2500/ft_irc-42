@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 14:57:11 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:02:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ class	Server
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
 		// void	handleQuit(Client &client, const Message& msg);
-		// void	handlePart(Client &client, const Message& msg);
+		void		handlePart(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
 		void		handleDisplay(Client &client, const Message& msg);
 		void 		handleInvite(Client& client, const Message& message);
@@ -112,6 +112,7 @@ class	Server
 		//Operator Commands	
 		void		kickClient(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
+		void		partChannel(Client &client, const std::string &name, const std::string &reason);
 
 		/******* UTILS *******/
 
