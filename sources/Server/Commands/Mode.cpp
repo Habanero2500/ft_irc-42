@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:07:09 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 15:17:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	Server::handleMode(Client &client, const Message& msg)
 	}
 	if (line.params[0][0] == '&' || line.params[0][0] == '#')
 		channelMode(client, line);
-	else
-		saveOrSend(client, ERR_NOSUCHSERVER(line.params[0]));
 }
 
 void	Server::channelMode(Client &client, const Parser &line)
@@ -79,6 +77,10 @@ void	Server::printChannelModes(Client &client, Channel &channel, const std::stri
 
 void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
 {
+	if (DEBUG)
+	{
+		std::cout << YELLOW "MANAGING CHANNEL MODE" RESET << std::endl;
+	}
 	std::string allowedcharacters = "+-itkol";
 	std::vector<std::string>::const_iterator	it = line.params.begin() + 2;
 	std::vector<std::string>::const_iterator	end = line.params.end();
