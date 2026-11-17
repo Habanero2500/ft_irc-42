@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:41:19 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 19:41:05 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ class Channel
 		bool		isTopicSet(void) const;
 		bool		isMembersLimitReached() const;
 		bool		isClientAnOperator(const Client& client) const;
-		bool		isOperator(Client &member);
 		bool		isEmpty(void);
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 19:04:20 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/17 19:26:33 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,6 @@
 
 /******* ERRORS MESSAGES ********/
 
-// 341 RPL_INVITING
-#define RPL_INVITING(nickname, invitee, chan)    (":localhost 341 " + nickname + " " + (invitee) + " " + (chan) + "\r\n")
-
 // 401 ERR_NOSUCHNICK
 # define ERR_NOSUCHNICK(client, target) (":localhost 401 " + client.nick() + " " + target + " :No such nick/channel\r\n")
 
@@ -63,7 +60,7 @@
 # define ERR_NOSUCHCHANNEL(client, chan) (":localhost 403 " + client.nick() + " " + chan + " :No such channel\r\n")
 
 // 404     ERR_CANNOTSENDTOCHAN
-# define ERR_CANNOTSENDTOCHAN(client, chan) (":localhost 404 " + client.nick() + " " + chan " :Cannot send to channel\r\n")
+# define ERR_CANNOTSENDTOCHAN(client, chan) (":localhost 404 " + client.nick() + " " + chan + " :Cannot send to channel\r\n")
 
 // 405     ERR_TOOMANYCHANNELS
 # define ERR_TOOMANYCHANNELS(client, chan) (":localhost 405 " + client.nick() + " " + chan + " :You have joined too many channels\r\n")
