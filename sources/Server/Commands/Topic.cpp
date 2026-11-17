@@ -35,9 +35,12 @@ void	Server::handleTopic(Client& client, const Message& msg) {
 		if (channel.isModeActive(T) && !channel.isClientAnOperator(client))
 			return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channelName)));//482
 		channel.setTopic(params[1]);
-		return (channel.broadcast(*this, RPL_TOPIC(client, channelName, params[1])));//332
+		const std::string line = ":" + getPrefixForCommand(client) + " TOPIC " + channelName + " :" + params[1] + "\r\n";
+		return (channel.broadcast(*this, line));//332
 	}
 }
+//We need to be careful when params[1] == ""
+//When we change the topic we broadcast it on everyone in the channel
 
 bool	Server::topicValidation(Client& client, const Message& msg) {
 	if (!client.isRegistered())//451
