@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:24:35 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/17 18:41:19 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include "Client.hpp"
 #include <map>
-#include <set>
 #include <bitset>
 #include <vector>
 #include <set>
@@ -24,12 +23,8 @@
 class	Server;
 
 enum modes{
-	P,
-	S,
 	I,
 	T,
-	N,
-	M,
 	L,
 	K,
 };
@@ -37,17 +32,7 @@ enum modes{
 struct	Member{
 	Client	*client;
 	bool	op;
-	bool	voice;
 };
-
-struct	BannedMember{
-	std::string 			nickname;
-	std::string             username;
-	std::string             hostname;
-
-	BannedMember() : nickname(""), username(""), hostname(""){}
-};
-
 
 class Channel
 {
@@ -65,39 +50,44 @@ class Channel
 		std::string	getModes() const;
 		size_t		getMaxMember() const;
 		std::string	getPwd() const;
-	
+
 		void		setName(std::string &name);
 		void		setTopic(const std::string& topicName);
-		void		setPwd(std::string &pwd);
-		void		setOperator(Client &member);
+		void		setPwd(const std::string &pwd);
+		void		setmode(const int &mode);
+		void		removemode(const int &mode);
+		void		setMaxMembers(std::string max);
 
 		void		addMember(Client &member);
-	
+		bool		setOperator(Client &member);
+		bool		removeOperator(Client &member);
+		
 		bool		isModeActive(int mode) const;
 		bool		isTopicSet(void) const;
 		bool		isMembersLimitReached() const;
 		bool		isClientAnOperator(const Client& client) const;
-		bool		isMemberBanned(Client &member);
-		bool		isMember(Client &member);
-		bool		isOperator(Client &member);//a effacer
+		bool		isOperator(Client &member);
+		bool		isEmpty(void);
 
+
+		bool		isMember(const Client &member) const;
+		bool		isPwdCorrect(const std::string &pwd) const;
 
 		//Broadcast and shit
 		void	broadcast(Server& server, const std::string& msg) const;
 		void	broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const;
 		void	broadcastPrivmsg(Server& server, Client& client, const std::string& msg) const;
 		void	removeClientFromChannel(Client& client);
-
+		
 	private:
 		std::string					_name;
 		std::map<int, Member>		_members;
 		std::vector<int>			_chouffins;
-		std::vector<BannedMember>	_banList;
 		std::bitset<8>				_modes;
 		size_t						_maxMembers;
 		std::string					_pwd;
 		std::string					_topic;
 
 };
-
+	
 #endif

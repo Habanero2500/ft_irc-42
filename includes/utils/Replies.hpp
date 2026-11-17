@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 19:27:51 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 19:04:20 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,23 @@
 					  <<  "================================================" RESET << std::endl << std::endl 
 
 
-/******* CHANNELS MESSAGE ********/
+/******* COMMANDS MESSAGE ********/
 
-# define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
+#define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
 
-# define RPL_CHANNELMODEIS(channel, mode, modeParams) (":localhost 324 " + channel + " " + mode + " " + modeParams + " \r\n")
+// 324 RPL_CHANNELMODEIS
+#define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " + channel + " " + mode + " " + modeParams + "\r\n")
 
+// 341 RPL_INVITING
+#define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")
+
+// 367     RPL_BANLIST
+#define	RPL_BANLIST(channel, banid) ("localhost 367 " + channel + " " + banid + "\r\n")
+
+// 368     RPL_ENDOFBANLIST
+#define	RPL_ENDOFBANLIST(channel) ("localhost 367 " + channel + " :End of channel ban list\r\n")
+
+					  
 /******* SUCCESSFULL NUMERIC REPLIES ********/
 // 331 RPL_NOTOPIC
 # define RPL_NOTOPIC(client, chan) (":localhost 331 " + client.nick() + " " + chan + " :No topic is set\r\n")
@@ -142,7 +153,7 @@
 # define ERR_CHANNELISFULL(client, chan) (":localhost 471 " + client.nick() + " " + chan + " :Cannot join channel (+l)\r\n")
 
 // 472     ERR_UNKNOWNMODE
-# define ERR_UNKNOWNMODE(client, char) (":localhost 472 " + client.nick() + " " + char + " :is unknown mode char to me\r\n")
+# define ERR_UNKNOWNMODE(client, character) (":localhost 472 " + client.nick() + " " + character + " :is unknown mode char to me\r\n")
 
 // 473     ERR_INVITEONLYCHAN
 # define ERR_INVITEONLYCHAN(client, chan) (":localhost 473 " + client.nick() + " " + chan + " :Cannot join channel (+i)\r\n")

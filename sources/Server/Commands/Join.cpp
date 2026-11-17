@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 14:18:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 19:07:47 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	Server::joinChannel(Client &client, Channel &channel)
 	}
 	catch (int e)
 	{
+		if (DEBUG)
+			std::cout << RED "catch : " RESET << e << std::endl;
 		return ;
 	}
 }
@@ -116,10 +118,10 @@ void	Server::joinVerification(Client &client, Channel &channel)
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
-	if (channel.isMemberBanned(client))
+	/*if (channel.isMemberBanned(client))
 	{
 		std::string message = ERR_BANNEDFROMCHAN(client, channel.getName());
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
-	}
+	}Voir avec Marius pour effacer ou pas*/
 }
