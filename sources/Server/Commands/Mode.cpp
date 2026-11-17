@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:21:07 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:52:33 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	Server::handleMode(Client &client, const Message& msg)
 	if (line.params[0][0] == '&' || line.params[0][0] == '#')
 		channelMode(client, line);
 	else
-		userMode(client, line);
+		saveOrSend(client, ERR_NOSUCHSERVER(line.params[0]));
 }
 
 void	Server::channelMode(Client &client, const Parser &line)
@@ -75,50 +75,110 @@ void	Server::printChannelModes(Client &client, Channel &channel, const std::stri
 
 void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
 {
-	std::string									needParams = "lbvok";
-	std::vector<std::string>::const_iterator	argument = line.params.begin() + 1;	
-	
-	if (argument->find_first_not_of("+-psitnmovblk") != std::string::npos)
-		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
+	std::string allowedcharacters = "+-itkol";
+	std::vector<std::string>::const_iterator	it = line.params.begin() + 2;
+	std::vector<std::string>::const_iterator	end = line.params.end();
 	bool	add = true;
-	if (DEBUG)
-	{
-		std::cout << *argument << std::endl;
-	}
-	argument++;
-	if (DEBUG && argument != line.params.end())
-	{
-		std::cout << *argument << std::endl;
-	}
+
 	for(size_t i = 0; i < line.params[1].size(); i++)
 	{
-		if (line.params[1][i] == '+')
+		if (allowedcharacters.find(line.params[1][i]) == std::string::npos)
+			saveOrSend(client, ERR_UNKNOWNMODE(line.params[1][i]));
+		else if (line.params[1][i] == '+')
 			add = true;
 		else if (line.params[1][i] == '-')
 			add = false;
 		else if (add)
-		{
-			if (needParams.find(line.params[1][i]))
-			{
-				switch	(line.params[1][i])
-				{
-					// case	'l':
-					// 	if (argument != line.params.end())
-					// 	{
-					// 		channel.setMaxMembers(*argument);
-					// 		channel.setmode(static_cast<int>(line.params[1][i]));
-					// 	}
-					// 	break;				
-				}
-			}
-		}
-			
+			addMode(client, channel, line.params[1][i], it, end);
+		else 
+			removeMode(client, channel, line.params[1][i], it, end);	
 	}
 }
 
 
-void	Server::userMode(Client &client, const Parser &line)
+void Server::addMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end)
 {
-	(void)client;
-	(void)line;
+	switch	(mode)
+	{
+		case	'i':
+			channel.setmode(I);
+			break;
+		case	't':
+			channel.setmode(T);
+			break;
+		case	'k':
+			if (it == end)
+				break;
+			if (channel.isModeActive(K))
+				saveOrSend(client, ERR_KEYSET(channel.getName()));
+			else
+			{
+				channel.setPwd(*it);
+				channel.setmode(K);
+			}
+			it++;
+			break;
+		case	'o':
+		{
+			if (it == end)
+				break;
+			Client* targetClient = getClientByNick(*it);
+			if (targetClient == NULL)
+				saveOrSend(client, ERR_NOSUCHNICK(*it));
+			else if (!channel.isOperator(*targetClient))
+				saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel.getName()));
+			else if (channel.setOperator(*targetClient))
+				saveOrSend(client, ERR_USERNOTINCHANNEL(targetClient->getNickname(), channel.getName()));
+			it++;
+			break;
+		}
+		case	'l':
+			if (it == end)
+				break;
+			channel.setMaxMembers(*it);
+			channel.setmode(L);
+			it++;
+			break;
+	}
 }
+
+void Server::removeMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end)
+{
+	switch	(mode)
+	{
+		case	'i':
+			channel.removemode(I);
+			break;
+		case	't':
+			channel.removemode(T);
+			break;
+		case	'k':
+			if (it == end)
+				break;
+			if (!channel.isModeActive(K))
+				break;
+			if (channel.isPwdCorrect(*it))
+				channel.removemode(K);
+			it++;
+			break;
+		case	'o':
+		{
+			if (it == end)
+				break;
+			Client* targetClient = getClientByNick(*it);
+			if (targetClient == NULL)
+				saveOrSend(client, ERR_NOSUCHNICK(*it));
+			else if (!channel.isOperator(*targetClient))
+				saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel.getName()));
+			else if (channel.removeOperator(*targetClient))
+				saveOrSend(client, ERR_USERNOTINCHANNEL(targetClient->getNickname(), channel.getName()));
+			it++;
+			break;
+		}
+		case	'l':
+			channel.removemode(L);
+			break;
+	}
+	
+}
+

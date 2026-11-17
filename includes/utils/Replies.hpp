@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 12:57:57 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 12:16:32 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@
 # define ERR_CHANNELISFULL(channel) ("localhost 471 " + channel + " :Cannot join channel (+l)\r\n")
 
 // 472     ERR_UNKNOWNMODE
-# define ERR_UNKNOWNMODE(char) ("localhost 472 " + char + ":is unknown mode char to me\r\n")
+# define ERR_UNKNOWNMODE(character) (std::string("localhost 472 ") + (character) + ":is unknown mode char to me\r\n")
 
 // 473     ERR_INVITEONLYCHAN
 # define ERR_INVITEONLYCHAN(channel) ("localhost 473 " + channel + " :Cannot join channel (+i)\r\n")

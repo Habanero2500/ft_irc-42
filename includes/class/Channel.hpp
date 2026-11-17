@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:22:32 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:26:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,20 @@ class Channel
 		std::string					getPwd() const;
 	
 		void		setName(std::string &name);
-		void		setPwd(std::string &pwd);
-		void		setmode(int mode);
+		void		setPwd(const std::string &pwd);
+		void		setmode(const int &mode);
+		void		removemode(const int &mode);
 		void		setMaxMembers(std::string max);
 
 		void		addMember(Client &member);
-		void		setOperator(Client &member);
+		bool		setOperator(Client &member);
+		bool		removeOperator(Client &member);
 		
 		bool		isModeActive(int mode) const;
 		bool		isMembersLimitReached() const;
-		bool		isMember(Client &member);
-		bool		isOperator(Client &member);
+		bool		isMember(const Client &member) const;
+		bool		isOperator(const Client &member) const;
+		bool		isPwdCorrect(const std::string &pwd) const;
 
 
 		//Broadcast and shit

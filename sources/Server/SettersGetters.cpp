@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setters&getters.cpp                                :+:      :+:    :+:   */
+/*   SettersGetters.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:26:06 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:27:34 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 13:47:49 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	Server::setNewClient(void) {
 	_clients[newClient.getFd()] = newClient;
 }
 
-Client*	Server::getClientByNick(const std::string& nick) {
+Client*	Server::getClientByNick(const std::string& nick) 
+{
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
 		if (it->second.getNickname() == nick)
 			return (&(it->second));

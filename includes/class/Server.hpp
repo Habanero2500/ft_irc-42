@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:22:07 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:49:22 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,9 @@ class	Server
 		void		channelMode(Client &client, const Parser &line);
 		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
 		void 		manageChannelModes(Client &client, Channel &channel, const Parser &line);
-		// void 		addChannelMode(Channel &channel, char mode);
+		void 		addMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
+		void 		removeMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
+
 
 
 		

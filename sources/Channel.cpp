@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:21:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:27:04 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Channel::Channel(std::string name) : _name(name), _maxMembers(1000), _pwd("")
 {
 }
 
-Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _banList(copy._banList), _maxMembers(copy._maxMembers), _pwd(copy._pwd)
+Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _maxMembers(copy._maxMembers), _pwd(copy._pwd)
 {
 }
 
@@ -85,24 +85,24 @@ std::string	Channel::getPwd() const
 	return (_pwd);
 }
 
-std::vector<BannedMember>	Channel::getBanList() const 
-{
-	return (_banList);
-}
-
 void		Channel::setName(std::string &name)
 {
 	_name = name;
 }
 
-void		Channel::setPwd(std::string &pwd)
+void		Channel::setPwd(const std::string &pwd)
 {
 	_pwd = pwd;
 }
 
-void		Channel::setmode(int mode)
+void		Channel::setmode(const int &mode) 
 {
 	_modes.set(mode);
+}
+
+void		Channel::removemode(const int &mode) 
+{
+	_modes.reset(mode);
 }
 
 void		Channel::setMaxMembers(std::string max)
@@ -120,9 +120,24 @@ void		Channel::addMember(Client &member)
     _members[member.getFd()].voice = false;
 }
 
-void		Channel::setOperator(Client &member)
+bool		Channel::setOperator(Client &member)
 {
-	_members[member.getFd()].op = true;
+	std::map<int, Member>::iterator it = _members.find(member.getFd());
+	if (it == _members.end())
+		return true;
+	else
+		_members[member.getFd()].op = true;
+	return false;
+}
+
+bool		Channel::removeOperator(Client &member)
+{
+	std::map<int, Member>::iterator it = _members.find(member.getFd());
+	if (it == _members.end())
+		return true;
+	else
+		_members[member.getFd()].op = false;
+	return false;
 }
 
 /****** MODES *******/
@@ -138,9 +153,9 @@ bool	Channel::isMembersLimitReached() const
 	return (_members.size() >= _maxMembers);
 }
 
-bool	Channel::isMember(Client &member)
+bool	Channel::isMember(const Client &member) const
 {
-	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); it++)
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); it++)
 	{
 		if (it->second.client->getNickname() == member.getNickname())
 			return true;
@@ -148,14 +163,25 @@ bool	Channel::isMember(Client &member)
 	return false;
 }
 
-bool	Channel::isOperator(Client &member)
+bool	Channel::isOperator(const Client &member) const
 {
 	if (!isMember(member))
 		return false;
-	if (_members[member.getFd()].op)
+	std::map<int, Member>::const_iterator it = _members.find(member.getFd());
+	if (it == _members.end())
+		return false;
+	if (it->second.op)
 		return true;
 	return false;
 }
+
+bool	Channel::isPwdCorrect(const std::string &pwd) const
+{
+	if (_pwd.compare(pwd))
+		return false;
+	return true;
+}
+
 
 //Broadcast and shit
 void	Channel::broadcast(Server& server, const std::string& msg) const {
