@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 16:52:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 18:31:44 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,44 @@
 void	Server::handleJoin(Client &client, const Message& msg)
 {
 	Parser	line = msg.getParser();
-	std::string	channelName = parsingChannelName(client, line);
-	if ((channelName.empty()))
-		return;
-	
-	if (client.getNumberChannels() >= 10)
-		saveOrSend(client, ERR_TOOMANYCHANNELS(channelName));
-	std::map<std::string, Channel>::iterator it = _channels.find(channelName);
-	if (it != _channels.end())
-		return (joinChannel(client, it->second, line));
-	createChannel(client, channelName);
-}
-
-std::string	Server::parsingChannelName(Client &client, const Parser &line)
-{
 	if (line.params.size() == 0)
 	{
 		std::string command = "JOIN";
 		saveOrSend(client, ERR_NEEDMOREPARAMS(command));
-		return "";
+		return ;
 	}
-	std::string	ChannelName = *(line.params.begin());
-
-	if ((ChannelName[0] != '&' && ChannelName[0] != '#') || ChannelName.size() > 200
-		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
+	
+	std::vector<std::string>	channels = splitComma(line.params[0]);
+	std::vector<std::string>	pwd;
+	if (line.params.size() > 1)
+		pwd = splitComma(line.params[1]);
+	for (size_t	i = 0; i < channels.size(); i++)
 	{
-		saveOrSend(client, ERR_NOSUCHCHANNEL(ChannelName));
-		return "";
+		try 
+		{
+			parsingChannelName(client, channels[i]);
+			if (client.getNumberChannels() >= 10)
+				saveOrSend(client, ERR_TOOMANYCHANNELS(channels[i]));
+			std::map<std::string, Channel>::iterator itChannel = _channels.find(channels[i]);
+			if (itChannel != _channels.end())
+				return (joinChannel(client, itChannel->second, getArgument(pwd, i)));
+			createChannel(client, channels[i]);
+		}
+		catch (int e)
+		{
+			continue ;
+		}
 	}
-	return (ChannelName);
+}
+
+void	Server::parsingChannelName(Client &client, std::string channelName)
+{
+	if ((channelName[0] != '&' && channelName[0] != '#') || channelName.size() > 200
+		|| channelName.size() < 2 || channelName.find_first_of("\a, ") != std::string::npos)
+	{
+		saveOrSend(client, ERR_NOSUCHCHANNEL(channelName));
+		throw -1;
+	}
 }
 
 void	Server::createChannel(Client &client, std::string channelName)
@@ -68,11 +77,11 @@ void	Server::createChannel(Client &client, std::string channelName)
 	}
 }
 
-void	Server::joinChannel(Client &client, Channel &channel, const Parser &line)
+void	Server::joinChannel(Client &client, Channel &channel, std::string pwd)
 {
 	try
 	{
-		joinVerification(client, channel, line);
+		joinVerification(client, channel, pwd);
 		channel.addMember(client);
 		/*std::string message = NEWMEMBERMESSAGE(client.getNickname());
     		send(client.getFd(), message.c_str(), message.size(), 0);*/
@@ -84,10 +93,14 @@ void	Server::joinChannel(Client &client, Channel &channel, const Parser &line)
 	}
 }
 
-void	Server::joinVerification(Client &client, Channel &channel, const Parser &line)
+void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
 {
 	if (channel.isMember(client))
 	{
+		if (DEBUG)
+		{
+			std::cout << "already joined" << std::endl;
+		}
 		throw -1;
 	}
 	if (channel.isModeActive(I)) // check if channel is in invite only
@@ -95,8 +108,12 @@ void	Server::joinVerification(Client &client, Channel &channel, const Parser &li
 		saveOrSend(client, ERR_INVITEONLYCHAN(channel.getName()));
 		throw -1;
 	}
-	if (channel.isModeActive(K) && (!line.params.size() <= 1 || !channel.isPwdCorrect(line.params[1])))
+	if (channel.isModeActive(K) && !(channel.isPwdCorrect(pwd)))
 	{
+		if (DEBUG)
+		{
+			std::cout << "wrong pwd" << std::endl;
+		}
 		saveOrSend(client, ERR_BADCHANNELKEY(channel.getName()));
 		throw -1;
 	}
