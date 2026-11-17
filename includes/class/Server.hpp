@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 14:54:18 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 16:03:03 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ class	Server
 		void		handleJoin(Client &client, const Message& msg);
 		std::string	parsingChannelName(Client &client, const Parser &line);
 		void		createChannel(Client &client, std::string channelName);
-		void		joinChannel(Client &client, Channel &channel);
-		void		joinVerification(Client &client, Channel &channel);
+		void		joinChannel(Client &client, Channel &channel, const Parser &line);
+		void		joinVerification(Client &client, Channel &channel, const Parser &line);
 		
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
