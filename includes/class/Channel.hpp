@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:05:38 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 15:35:11 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ enum modes{
 struct	Member{
 	Client	*client;
 	bool	op;
-	bool	voice;
 };
 
 class Channel
