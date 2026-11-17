@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
 
 void	Server::handlePing(Client &client, const Message &msg)
 {

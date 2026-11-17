@@ -6,11 +6,13 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 14:52:33 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:54:08 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/utils/Replies.hpp"
 
 void	Server::handleMode(Client &client, const Message& msg)
 {

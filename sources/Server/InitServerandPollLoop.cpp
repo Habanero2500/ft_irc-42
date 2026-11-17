@@ -6,11 +6,17 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 16:41:13 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:56:03 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/class/Client.hpp"
+#include "../../includes/class/Message.hpp"
+#include "../../includes/utils/Replies.hpp"
+#include <iostream>
+#include <unistd.h>
+#include <cstdlib>
 
 void	Server::initServerAdress(int port, std::string pwd)
 {
@@ -142,13 +148,16 @@ void	Server::initCommands(void) {
 	_commandMap["PASS"] = &Server::handlePass;
 	_commandMap["NICK"] = &Server::handleNick;
 	_commandMap["USER"] = &Server::handleUser;
+	_commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PING"] = &Server::handlePing;
 	_commandMap["PONG"] = &Server::handlePong;
+	_commandMap["PART"] = &Server::handlePart;
 	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
 	_commandMap["CAP"] = &Server::handleCap;
 	_commandMap["MODE"] = &Server::handleMode;
+	_commandMap["TOPIC"] = &Server::handleTopic;
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }

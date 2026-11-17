@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/utils/Replies.hpp"
+#include <iostream>
 
 void	Server::handlePass(Client &client, const Message& msg)
 {

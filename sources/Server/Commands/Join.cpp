@@ -6,11 +6,17 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 12:08:11 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:55:17 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/class/Server.hpp"
+#include "../../../includes/class/Message.hpp"
+#include "../../../includes/class/Client.hpp"
+#include "../../../includes/class/Channel.hpp"
+#include "../../../includes/utils/Replies.hpp"
+#include "../../../includes/utils/Colors.hpp"
+#include <iostream>
 
 void	Server::handleJoin(Client &client, const Message& msg)
 {
@@ -74,8 +80,9 @@ void	Server::joinChannel(Client &client, Channel &channel)
 	{
 		joinVerification(client, channel);
 		channel.addMember(client);
-		std::string message = NEWMEMBERMESSAGE(client.getNickname());
-    	send(client.getFd(), message.c_str(), message.size(), 0);
+		/*std::string message = NEWMEMBERMESSAGE(client.getNickname());
+    		send(client.getFd(), message.c_str(), message.size(), 0);*/
+		return (channel.broadcast(*this, NEWMEMBERMESSAGE(client.getNickname())));
 		if (DEBUG)
 		{
 			std::cout << BLUE "channel: " << channel.getName() << " accepted new member: " << client.getNickname() << RESET << std::endl;

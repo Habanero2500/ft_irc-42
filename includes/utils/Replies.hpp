@@ -6,12 +6,14 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 12:16:32 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:55:24 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REPLIES_HPP
 # define REPLIES_HPP
+
+#include "Colors.hpp"
 
 /******* WELCOME MESSAGE ********/
 #define	WELCOME_MESSAGE GREEN <<  "================================================" << std::endl << std::endl \
@@ -37,6 +39,11 @@
 // 368     RPL_ENDOFBANLIST
 #define	RPL_ENDOFBANLIST(channel) ("localhost 367 " + channel + " :End of channel ban list\r\n")
 
+					  
+/******* SUCCESSFULL NUMERIC REPLIES ********/
+# define RPL_NOTOPIC(channelName) (":" + channelName + " :No topic is set\r\n")//a voir
+
+# define RPL_TOPIC(channelName, topicName) (":" + channelName + " :" + topicName + "\r\n")//a voir aussi
 
 /******* ERRORS MESSAGES ********/
 
@@ -119,7 +126,7 @@
 # define ERR_USERSDISABLED() ("localhost 446 :USERS has been disabled\r\n")
 
 // 451     ERR_NOTREGISTERED
-# define ERR_NOTREGISTERED() ("localhost 451 :You have not registered\r\n")
+# define ERR_NOTREGISTERED() (":localhost 451 * :You have not registered\r\n")
 
 // 461	   ERR_NEEDMOREPARAMS
 # define ERR_NEEDMOREPARAMS(command) ("localhost 461 : " + command + " :Not enough parameters\r\n")

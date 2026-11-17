@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/class/Client.hpp"
+#include "../../includes/utils/Colors.hpp"
+#include <iostream>
 
 void Server::isRegistered(Client &client)
 {
