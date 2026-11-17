@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 18:45:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/12 20:01:58 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:07:23 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void Server::handleInvite(Client &client, const Message &msg)
 
     if (!channel.isMember(client))
         return (saveOrSend(client, ERR_NOTONCHANNEL(channelName)));
-    if (!channel.isOperator(client))
+    if (!channel.isClientAnOperator(client))
         return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(channelName)));
 
     Client *target = getClientByNick(targetNick);

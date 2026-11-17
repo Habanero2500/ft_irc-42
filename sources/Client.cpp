@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/16 20:05:03 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:34:14 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,3 +157,4 @@ std::string&	Client::getSendBuffer(void) {
 bool	Client::isSendBufferEmpty(void) const {
 	return (_sendBuffer.empty());
 }
+

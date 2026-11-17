@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 20:03:37 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 18:34:46 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	Server::pollLoop()
 	while (true)
 	{
 		if (poll(&_listFd[0], _listFd.size(), -1) == -1)
-		{
+		{	
 			if (errno == EINTR)
 				continue ;
 			else
@@ -156,6 +156,7 @@ void	Server::initCommands(void) {
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
 	_commandMap["CAP"] = &Server::handleCap;
+	_commandMap["MODE"] = &Server::handleMode;
 	_commandMap["TOPIC"] = &Server::handleTopic;
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
