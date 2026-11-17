@@ -21,7 +21,7 @@ void	Server::handleMode(Client &client, const Message& msg)
 	if (line.params.size() == 0)
 	{
 		std::string command = "MODE";
-		saveOrSend(client, ERR_NEEDMOREPARAMS(command));
+		saveOrSend(client, ERR_NEEDMOREPARAMS(client, command));
 		return ;
 	}
 // 	if (line.params[0][0] == '&' || line.params[0][0] == '#')

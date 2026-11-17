@@ -18,20 +18,20 @@
 void	Server::handlePart(Client &client, const Message& msg)
 {
     if (!client.isRegistered())
-        return (saveOrSend(client, ERR_NOTREGISTERED()));
+        return (saveOrSend(client, ERR_NOTREGISTERED(client)));
     
     Parser pars = msg.getParser();
     if (pars.params.empty()) // No parameter
-        return (saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
+        return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
         
     std::map<std::string, Channel>::iterator chanIt =
         _channels.find(pars.params[0]);
 
     if (chanIt == _channels.end()) // Impossible to find
-        return (saveOrSend(client, ERR_NOSUCHCHANNEL(pars.params[0])));
+        return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, pars.params[0])));
     Channel &channel = chanIt->second;
     if (!channel.isMember(client)) // Client is not a member of the channel
-        return (saveOrSend(client, ERR_NOTONCHANNEL(channel.getName())));
+        return (saveOrSend(client, ERR_NOTONCHANNEL(client, channel.getName())));
 
     // if (params.size() >= 2)
     //     reason = params[1];

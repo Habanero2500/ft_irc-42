@@ -26,10 +26,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 		return;
 	
 	if (client.getNumberChannels() >= 10)
-	{
-		std::string message = ERR_TOOMANYCHANNELS(channelName);
-        	send(client.getFd(), message.c_str(), message.size(), 0);
-	}
+		return (saveOrSend(client, ERR_TOOMANYCHANNELS(client, channelName)));//???
 	std::map<std::string, Channel>::iterator it = _channels.find(channelName);
 	if (it != _channels.end())
 		return (joinChannel(client, it->second));
@@ -41,7 +38,7 @@ std::string	Server::parsingChannelName(Client &client, const Parser &line)
 	if (line.params.size() == 0)
 	{
 		std::string command = "JOIN";
-		std::string message = ERR_NEEDMOREPARAMS(command);
+		std::string message = ERR_NEEDMOREPARAMS(client, command);
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		return "";
 	}
@@ -49,11 +46,7 @@ std::string	Server::parsingChannelName(Client &client, const Parser &line)
 
 	if ((ChannelName[0] != '&' && ChannelName[0] != '#') || ChannelName.size() > 200
 		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
-	{
-		std::string message = ERR_NOSUCHCHANNEL(ChannelName);
-        	send(client.getFd(), message.c_str(), message.size(), 0);
-		return "";
-	}
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, ChannelName)), "");
 	return (ChannelName);
 }
 
@@ -107,25 +100,25 @@ void	Server::joinVerification(Client &client, Channel &channel)
 	}
 	if (channel.isModeActive(I)) // check if channel is in invite only
 	{
-		std::string message = ERR_INVITEONLYCHAN(channel.getName());
+		std::string message = ERR_INVITEONLYCHAN(client, channel.getName());
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isModeActive(K)) // check du mot de pass du channel a rajouter
 	{
-		std::string message = ERR_BADCHANNELKEY(channel.getName());
+		std::string message = ERR_BADCHANNELKEY(client, channel.getName());
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isModeActive(L) && channel.isMembersLimitReached()) // check if channel got to its limit
 	{
-		std::string message = ERR_CHANNELISFULL(channel.getName());
+		std::string message = ERR_CHANNELISFULL(client, channel.getName());
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}
 	if (channel.isMemberBanned(client))
 	{
-		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
+		std::string message = ERR_BANNEDFROMCHAN(client, channel.getName());
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}

@@ -17,6 +17,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstdlib>
+#include <cerrno>
 
 void	Server::initServerAdress(int port, std::string pwd)
 {
@@ -152,7 +153,6 @@ void	Server::initCommands(void) {
 	_commandMap["PING"] = &Server::handlePing;
 	_commandMap["PONG"] = &Server::handlePong;
 	_commandMap["PART"] = &Server::handlePart;
-	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
 	_commandMap["CAP"] = &Server::handleCap;
@@ -174,5 +174,5 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	if (it != _commandMap.end())
 		(this->*(it->second))(client, msg);
 	else
-		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(command)));//No match found
+		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(client, command)));//No match found
 }

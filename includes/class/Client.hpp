@@ -53,6 +53,7 @@ class Client{
 	struct pollfd 	getPollFd(void) const; 
 	std::string	getBuffer(void) const;
 	std::string 	getNickname(void) const; 
+	std::string	nick(void) const;//Necessary for Replies.hpp
 	std::string 	getUsername(void) const;
 	std::string 	getHostname(void) const;
 	std::string 	getRealName(void) const;
