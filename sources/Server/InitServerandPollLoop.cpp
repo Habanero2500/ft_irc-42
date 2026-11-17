@@ -89,7 +89,7 @@ void	Server::receiveCommunication(int fd)
 	char	buffer[1024] = { 0 };
     
 	bits = recv(fd, buffer, sizeof(buffer) - 1, 0);
-	if (bits > 0)
+	if (bits > 0)//Il faut ajouter le cas ou (bits <=0) pour eviter les leaks
 	{
 		_clients[fd].addBuffer(buffer);
 		if (DEBUG)
@@ -158,6 +158,7 @@ void	Server::initCommands(void) {
 	_commandMap["CAP"] = &Server::handleCap;
 	_commandMap["MODE"] = &Server::handleMode;
 	_commandMap["TOPIC"] = &Server::handleTopic;
+	_commandMap["KICK"] = &Server::kickClient;
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }

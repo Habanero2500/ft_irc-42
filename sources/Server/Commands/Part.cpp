@@ -17,7 +17,7 @@
 
 
 
-static std::vector<std::string>	splitComma(const std::string &s)
+std::vector<std::string>	splitComma(const std::string &s)
 {
 	std::vector<std::string>	res;
 	size_t						start = 0, pos;

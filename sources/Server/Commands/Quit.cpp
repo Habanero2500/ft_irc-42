@@ -37,7 +37,8 @@ void	Server::handleQuit(Client& client, const Message& msg) {
 		std::string quitLine = ":" + getPrefixForCommand(client) + " QUIT :" + quitMsg + "\r\n";
 		quitHelper(client, quitLine);
 		}
-	std::string errorReply = "ERROR :Closing Link: " + client.getHostname() + " (" + quitMsg + ")\r\n";
+	std::string host = client.getHostname().empty() ? "hostname" : client.getHostname();//Case where no hostname
+	std::string errorReply = "ERROR :Closing Link: " + host + " (" + quitMsg + ")\r\n";
 	send(client.getFd(), errorReply.c_str(), errorReply.size(), 0);
 
 	client.setToDisconnect();

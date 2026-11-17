@@ -58,6 +58,7 @@ class	Server
 		const std::string	getPrefixForCommand(Client& client) const;
 		Channel* 			getChannelByNick(const std::string& name);
 		std::string			size_tToString(size_t src) const;
+		std::vector<std::string>	splitComma(const std::string& s) const;
 
 		//Command Map Functions
 		void	initCommands(void);

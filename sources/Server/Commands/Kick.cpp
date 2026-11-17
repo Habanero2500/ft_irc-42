@@ -23,8 +23,9 @@ void	Server::kickClient(Client& client, const Message& msg) {
 	//Execution + Broadcast
 	//:<clientNickname>!<clientUsername>@<clientHostname> KICK <channame> <targetNickname> :\r\n
 	const std::vector<std::string>& params = msg.getParser().params;
+	std::string reason = (params.size() >= 3 && !params[2].empty()) ? params[2] : client.getNickname();
 	const std::string prefix = getPrefixForCommand(client);
-	const std::string line = ":" + prefix + " KICK " + params[0] + " " + params[1] + "\r\n";
+	const std::string line = ":" + prefix + " KICK " + params[0] + " " + params[1] + " :" + reason + "\r\n";
 
 	Channel* channel = getChannelByNick(params[0]);
 	Client* target = getClientByNick(params[1]);
@@ -34,7 +35,7 @@ void	Server::kickClient(Client& client, const Message& msg) {
 		_channels.erase(params[0]);
 }
 
-//peut etre ajouter ca dans la map avec les commandes
+//KICK #42,#35 bob,John One-to-One Pairing
 bool	Server::kickValidation(Client& client, const Message& msg) {
 	if (!client.isRegistered())//451
 		return (saveOrSend(client, ERR_NOTREGISTERED(client)), false);
@@ -44,7 +45,9 @@ bool	Server::kickValidation(Client& client, const Message& msg) {
 		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))), false);//461
 								     
 	const std::string& channel = params[0];
-	const std::string& user = params[1];
+	if (channel.find(',')!= std::string::npos) {//Multiple channels
+	//Il faut split les channels ici et les sauvegarder qqpart, ou on va repeter le meme taff plusiers fois
+		return true;}
 
 	std::map<std::string, Channel>::iterator it = _channels.find(channel);
 	if (it == _channels.end())
@@ -55,7 +58,9 @@ bool	Server::kickValidation(Client& client, const Message& msg) {
 		return (saveOrSend(client, ERR_NOTONCHANNEL(client, channel)), false);//442
 	if (!member->op)
 		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel)), false);//482
+
+	const std::string& user = params[1];
 	if (!it->second.getMemberByNick(user))
 		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, user, channel)), false);//441
 	return (true);
-}
+}//Should I add multiple channels and users????
