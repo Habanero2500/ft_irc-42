@@ -28,26 +28,26 @@ void	Server::handlePass(Client &client, const Message& msg)
 		return;
 	}
 	if (pars.params.empty())
-        return(saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
+        return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
 
 	if(client.getPass() == true) //pwd deja rentre
   	{
 		if(DEBUG)
 			std::cout << "Already registered" << std::endl;
-    	return(saveOrSend(client, ERR_ALREADYREGISTRED()));
+    	return(saveOrSend(client, ERR_ALREADYREGISTRED(client)));
     }
 	if(pars.params[0] != _pwd)
 	{
 		if(DEBUG)
 			std::cout << "Wrong password" << std::endl;
 		client.increaseAttempt();
-		return(saveOrSend(client, ERR_PASSWDMISMATCH()));	
+		return(saveOrSend(client, ERR_PASSWDMISMATCH(client)));	
 	}
 	if(pars.params.size() < 1) // pas d'arg
 	{
 		if(DEBUG)
 			std::cout << "Argument missing" << std::endl; 
-		return(saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
+		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
 	}
 	else if(pars.params[0] == _pwd)
 	{

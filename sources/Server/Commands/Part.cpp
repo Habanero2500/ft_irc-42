@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 16:14:58 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/17 15:50:12 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 19:36:10 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ static std::vector<std::string>	splitComma(const std::string &s)
 void	Server::handlePart(Client &client, const Message &msg)
 {
 	if (!client.isRegistered())
-		return (saveOrSend(client, ERR_NOTREGISTERED()));
+		return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 
     const Parser &cmd = msg.getParser();
 	const std::vector<std::string>	&params = cmd.params;
 	if (params.empty())
-		return (saveOrSend(client, ERR_NEEDMOREPARAMS(cmd.command)));
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, cmd.command)));
 
 	std::vector<std::string>	names = splitComma(params[0]);
 	std::string					reason = (params.size() > 1) ? params[1] : "";
@@ -54,10 +54,10 @@ void	Server::partChannel(Client &client, const std::string &name, const std::str
 {
 	std::map<std::string, Channel>::iterator it = _channels.find(name);
 	if (it == _channels.end())
-		return (saveOrSend(client, ERR_NOSUCHCHANNEL(name))); // inexisting channel
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, name))); // inexisting channel
 	Channel	&channel = it->second;
 	if (!channel.isMember(client))
-		return (saveOrSend(client, ERR_NOTONCHANNEL(name))); // not a member on the channel
+		return (saveOrSend(client, ERR_NOTONCHANNEL(client, name))); // not a member on the channel
 
 	std::string	line = ":" + client.getNickname() + "!" + client.getUsername() + "@"
 		+ client.getHostname() + " PART " + name;
