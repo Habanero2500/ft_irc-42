@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:36:32 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:05:36 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 18:39:40 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../../includes/class/Message.hpp"
 #include "../../../includes/class/Client.hpp"
 #include "../../../includes/utils/Replies.hpp"
+#include "../../../includes/class/Channel.hpp"
 
 //PRIVMSG <receiver> :<text to be sent>
 void	Server::handlePrivmsg(Client &client, const Message& msg) {

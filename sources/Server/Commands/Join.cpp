@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 14:18:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 14:55:17 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	Server::joinChannel(Client &client, Channel &channel)
 	}
 	catch (int e)
 	{
+		if (DEBUG)
+			std::cout << RED "catch : " RESET << e << std::endl;
 		return ;
 	}
 }
@@ -120,12 +122,6 @@ void	Server::joinVerification(Client &client, Channel &channel)
 	if (channel.isModeActive(L) && channel.isMembersLimitReached()) // check if channel got to its limit
 	{
 		std::string message = ERR_CHANNELISFULL(channel.getName());
-        	send(client.getFd(), message.c_str(), message.size(), 0);
-		throw -1;
-	}
-	if (channel.isMemberBanned(client))
-	{
-		std::string message = ERR_BANNEDFROMCHAN(channel.getName());
         	send(client.getFd(), message.c_str(), message.size(), 0);
 		throw -1;
 	}

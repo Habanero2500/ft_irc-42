@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:33:42 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 18:35:43 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ class	Server
 		//***** Helper Functions for Commands *****//
 		const std::string	getPrefixForCommand(Client& client) const;
 		Channel* 			getChannelByNick(const std::string& name);
-		std::string			size_tToString(size_t &src) const;
+		std::string			size_tToString(size_t src) const;
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -96,11 +96,18 @@ class	Server
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel);
 		void		joinVerification(Client &client, Channel &channel);
+		
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);
 		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
-		void 		addChannelModes(Client &client, Channel &channel, const Parser &line);
+		void 		manageChannelModes(Client &client, Channel &channel, const Parser &line);
+		void 		addMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
+		void 		removeMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
+
+
+
+		
 		void		userMode(Client &client, const Parser &line);
 		
 		//Operator Commands	
