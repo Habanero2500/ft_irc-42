@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 19:07:47 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/18 19:51:36 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,48 @@
 
 void	Server::handleJoin(Client &client, const Message& msg)
 {
+	if(!client.isRegistered())
+		return(saveOrSend(client, ERR_NOTREGISTERED(client)));
 	Parser	line = msg.getParser();
-	std::string	channelName = parsingChannelName(client, line);
-	if ((channelName.empty()))
-		return;
+	if (line.params.size() == 0)
+		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, line.command)));
+
+	std::vector<std::string>	channels = splitComma(line.params[0]);
+	std::vector<std::string>	pwd;
 	
-	if (client.getNumberChannels() >= 10)
-		return (saveOrSend(client, ERR_TOOMANYCHANNELS(client, channelName)));//???
-	std::map<std::string, Channel>::iterator it = _channels.find(channelName);
-	if (it != _channels.end())
-		return (joinChannel(client, it->second));
-	createChannel(client, channelName);
+	if (line.params.size() > 1)
+		pwd = splitComma(line.params[1]);
+	for (size_t	i = 0; i < channels.size(); i++)
+	{
+		try 
+		{
+			parsingChannelName(client, channels[i]);
+			if (client.getNumberChannels() >= 10)
+			{
+				saveOrSend(client, ERR_TOOMANYCHANNELS(client, channels[i]));
+				throw -1;
+			}
+			std::map<std::string, Channel>::iterator itChannel = _channels.find(channels[i]);
+			if (itChannel != _channels.end())
+				joinChannel(client, itChannel->second, getArgument(pwd, i));
+			else
+				createChannel(client, channels[i]);
+		}
+		catch (int e)
+		{
+			continue ;
+		}
+	}
 }
 
-std::string	Server::parsingChannelName(Client &client, const Parser &line)
+void	Server::parsingChannelName(Client &client, std::string channelName)
 {
-	if (line.params.size() == 0)
+	if ((channelName[0] != '&' && channelName[0] != '#') || channelName.size() > 200
+		|| channelName.size() < 2 || channelName.find_first_of("\a, ") != std::string::npos)
 	{
-		std::string command = "JOIN";
-		std::string message = ERR_NEEDMOREPARAMS(client, command);
-        	send(client.getFd(), message.c_str(), message.size(), 0);
-		return "";
+		saveOrSend(client, ERR_NOSUCHCHANNEL(client, channelName));
+		throw -1;
 	}
-	std::string	ChannelName = *(line.params.begin());
-
-	if ((ChannelName[0] != '&' && ChannelName[0] != '#') || ChannelName.size() > 200
-		|| ChannelName.size() < 2 || ChannelName.find_first_of("\a, ") != std::string::npos)
-		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, ChannelName)), "");
-	return (ChannelName);
 }
 
 void	Server::createChannel(Client &client, std::string channelName)
@@ -57,8 +71,8 @@ void	Server::createChannel(Client &client, std::string channelName)
 	newChannel.addMember(client);
 	newChannel.setOperator(client);
 	_channels[channelName] = newChannel;
-	std::string message = NEWMEMBERMESSAGE(client.getNickname());
-    send(client.getFd(), message.c_str(), message.size(), 0);
+	announceJoin(client, newChannel);
+	// saveOrSend(client, NEWMEMBERMESSAGE(client.getNickname()));
 	if (DEBUG)
 	{
 		std::cout << "current channels :" << std::endl;
@@ -67,61 +81,52 @@ void	Server::createChannel(Client &client, std::string channelName)
 	}
 }
 
-void	Server::joinChannel(Client &client, Channel &channel)
+void	Server::joinChannel(Client &client, Channel &channel, std::string pwd)
 {
 	try
 	{
-		joinVerification(client, channel);
+		joinVerification(client, channel, pwd);
 		channel.addMember(client);
 		/*std::string message = NEWMEMBERMESSAGE(client.getNickname());
     		send(client.getFd(), message.c_str(), message.size(), 0);*/
-		return (channel.broadcast(*this, NEWMEMBERMESSAGE(client.getNickname())));
-		if (DEBUG)
-		{
-			std::cout << BLUE "channel: " << channel.getName() << " accepted new member: " << client.getNickname() << RESET << std::endl;
-			// std::cout << "current members :" << std::endl;
-			// for (size_t i = 0; i < channel.getNumberMember(); i++)
-			// {
-			// 	std::cout << channel.getMember().client.getNickname() << std::endl;
-			// }
-		}
+		//return (channel.broadcast(*this, NEWMEMBERMESSAGE(client.getNickname())));
+		return(announceJoin(client, channel));
 	}
 	catch (int e)
 	{
-		if (DEBUG)
-			std::cout << RED "catch : " RESET << e << std::endl;
 		return ;
 	}
 }
 
-void	Server::joinVerification(Client &client, Channel &channel)
+void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
 {
 	if (channel.isMember(client))
-	{
 		throw -1;
-	}
 	if (channel.isModeActive(I)) // check if channel is in invite only
 	{
-		std::string message = ERR_INVITEONLYCHAN(client, channel.getName());
-        	send(client.getFd(), message.c_str(), message.size(), 0);
+		saveOrSend(client,ERR_INVITEONLYCHAN(client, channel.getName()));
 		throw -1;
 	}
-	if (channel.isModeActive(K)) // check du mot de pass du channel a rajouter
+	if (channel.isModeActive(K) && !(channel.isPwdCorrect(pwd)))
 	{
-		std::string message = ERR_BADCHANNELKEY(client, channel.getName());
-        	send(client.getFd(), message.c_str(), message.size(), 0);
+		saveOrSend(client,ERR_BADCHANNELKEY(client, channel.getName()));
 		throw -1;
 	}
 	if (channel.isModeActive(L) && channel.isMembersLimitReached()) // check if channel got to its limit
 	{
-		std::string message = ERR_CHANNELISFULL(client, channel.getName());
-        	send(client.getFd(), message.c_str(), message.size(), 0);
+		saveOrSend(client,ERR_CHANNELISFULL(client, channel.getName()));
 		throw -1;
 	}
-	/*if (channel.isMemberBanned(client))
-	{
-		std::string message = ERR_BANNEDFROMCHAN(client, channel.getName());
-        	send(client.getFd(), message.c_str(), message.size(), 0);
-		throw -1;
-	}Voir avec Marius pour effacer ou pas*/
+}
+
+void	Server::announceJoin(Client &client, Channel &channel)
+{
+	std::string	name = channel.getName();
+	channel.broadcast(*this, ":" + client.getPrefix() + " JOIN " + name + "\r\n"); // All the present member on the channel receuve this
+	if (channel.getTopic().empty())// Topic is displayed, only for the new member
+		saveOrSend(client, RPL_NOTOPIC(client, name));
+	else
+		saveOrSend(client, RPL_TOPIC(client, name, channel.getTopic()));
+	saveOrSend(client, RPL_NAMREPLY(client, name, channel.getNamesList())); //All the members name are displayed
+	saveOrSend(client, RPL_ENDOFNAMES(client, name));
 }

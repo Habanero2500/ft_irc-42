@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   InitServerandPollLoop.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:34:46 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 16:01:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,24 @@ void	Server::initServerAdress(int port, std::string pwd)
 	_address.sin_family = AF_INET;
 	_address.sin_addr.s_addr = INADDR_ANY;
 	_address.sin_port = htons(port);
-
-	_pwd = pwd;
-
 	if (bind(_fd, (const sockaddr *)&_address, sizeof(_address)) == -1)
 		throw std::runtime_error("SERVER: Bind failure");
 	if (listen(_fd, 128) == -1)
 		throw std::runtime_error("SERVER: Listen failure");
+
+	_pwd = pwd;
+	initSignals();
 	
 	struct pollfd	serverPollFd;
 	serverPollFd.fd = _fd;
 	serverPollFd.events = POLLIN;
 	serverPollFd.revents = 0;
-	
 	_listFd.push_back(serverPollFd);
 }
 
 void	Server::pollLoop()
 {
-	while (true)
+	while (!interruptFlag)
 	{
 		if (poll(&_listFd[0], _listFd.size(), -1) == -1)
 		{	

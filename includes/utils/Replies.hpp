@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 19:26:33 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 20:03:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,26 @@
 
 #define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
 
+#define MODESMODIFICATIONMESSAGE(client, channel, modes, arg) (client.nick() + "!" + client.getUsername() + "@" + client.getHostname() + " MODE " + channel + " " + modes + " " + arg + "\r\n" )
+
 // 324 RPL_CHANNELMODEIS
-#define RPL_CHANNELMODEIS(channel, mode, modeParams) ("localhost 324 " + channel + " " + mode + " " + modeParams + "\r\n")
+#define RPL_CHANNELMODEIS(client, channel, mode, modeParams) (":localhost 324 " + client.nick() + " " + channel + " " + mode + " " + modeParams + "\r\n")
 
 // 341 RPL_INVITING
 #define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")
-
-// 367     RPL_BANLIST
-#define	RPL_BANLIST(channel, banid) ("localhost 367 " + channel + " " + banid + "\r\n")
-
-// 368     RPL_ENDOFBANLIST
-#define	RPL_ENDOFBANLIST(channel) ("localhost 367 " + channel + " :End of channel ban list\r\n")
-
 					  
 /******* SUCCESSFULL NUMERIC REPLIES ********/
 // 331 RPL_NOTOPIC
-# define RPL_NOTOPIC(client, chan) (":localhost 331 " + client.nick() + " " + chan + " :No topic is set\r\n")
+# define RPL_NOTOPIC(client, chan) (":localhost 331 " + (client).getNickname() + " " + chan + " :No topic is set\r\n")
 
 // 332 RPL_TOPIC
-# define RPL_TOPIC(client, chan, topic) (":localhost 332 " + client.nick() + " " + chan + " :" + topic + "\r\n")
+# define RPL_TOPIC(client, chan, topic) (":localhost 332 " + (client).getNickname() + " " + chan + " :" + topic + "\r\n")
 
+// 353 RPL_NAMREPLY
+# define RPL_NAMREPLY(client, chan, names)  (":localhost 353 " + (client).getNickname() + " = " + (chan) + " :" + (names) + "\r\n")
+
+// 366 RPL_ENDOFNAMES
+# define RPL_ENDOFNAMES(client, chan)       (":localhost 366 " + (client).getNickname() + " " + (chan) + " :End of /NAMES list.\r\n")
 /******* ERRORS MESSAGES ********/
 
 // 401 ERR_NOSUCHNICK
@@ -143,7 +143,7 @@
 # define ERR_YOUREBANNEDCREEP() (":localhost 465 You are banned from this server\r\n")
 
 // 467     ERR_KEYSET
-# define ERR_KEYSET(channel) (":localhost 467 " + channel + " :Channel key already set\r\n")
+# define ERR_KEYSET(client, chan) (":localhost 467 " + client.nick() + " " + chan + " :Channel key already set\r\n")
 
 // 471     ERR_CHANNELISFULL
 # define ERR_CHANNELISFULL(client, chan) (":localhost 471 " + client.nick() + " " + chan + " :Cannot join channel (+l)\r\n")
@@ -158,7 +158,7 @@
 # define ERR_BANNEDFROMCHAN(client, chan) (":localhost 474 " + client.nick() + " " + chan + " :Cannot join channel (+b)\r\n")
 
 // 475     ERR_BADCHANNELKEY
-# define ERR_BADCHANNELKEY(client, chan) ("localhost 475 " + client.nick() + " " + chan + " :Cannot join channel (+k)\r\n")
+# define ERR_BADCHANNELKEY(client, chan) (":localhost 475 " + client.nick() + " " + chan + " :Cannot join channel (+k)\r\n")
 
 // 481     ERR_NOPRIVILEGES
 # define ERR_NOPRIVILEGES() (":localhost 481 Permission Denied- You're not an IRC operator\r\n")

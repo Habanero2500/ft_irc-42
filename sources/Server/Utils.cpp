@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:28:53 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 17:41:36 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 18:58:03 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,25 @@ Channel*	Server::getChannelByNick(const std::string& name) {
 	return (&(it->second));
 }
 
-std::string	Server::size_tToString(size_t src) const
+std::vector<std::string>    Server::splitComma(const std::string &s)
 {
-	std::stringstream	temp;
-	temp << src;
-	
-	std ::string 		result = temp.str(); 
-	return result;
+    std::vector<std::string>	res;
+    size_t						start = 0, pos;
+
+    while ((pos = s.find(',', start)) != std::string::npos)
+    {
+        res.push_back(s.substr(start, pos - start));
+        start = pos + 1;
+    }
+    res.push_back(s.substr(start));
+    return res;
+}
+
+std::string    Server::getArgument(std::vector<std::string> array, size_t index)
+{
+	if (index < array.size())
+		return (array[index]);
+	return ("");
 }
 
 KickUtil::KickUtil(constRef chan, constRef user, constRef comment) : channel(chan), user(user), comment(comment) {
