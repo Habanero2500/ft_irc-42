@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 14:35:13 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:14:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ class Channel
 	private:
 		std::string					_name;
 		std::map<int, Member>		_members;
-		std::vector<int>			_chouffins;
 		std::bitset<8>				_modes;
 		size_t						_maxMembers;
 		std::string					_pwd;

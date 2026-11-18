@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/18 15:33:52 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:12:29 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:24:55 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	Server::initSignals(void)
 void	Server::signal_handler(int signum)
 {
 	(void)signum;
-	interruptFlag = false;
+	interruptFlag = true;
 }
