@@ -35,3 +35,7 @@ std::string	Server::size_tToString(size_t src) const
 	std ::string 		result = temp.str(); 
 	return result;
 }
+
+KickUtil::KickUtil(constRef chan, constRef user, constRef comment) : channel(chan), user(user), comment(comment) {
+	return ;
+}

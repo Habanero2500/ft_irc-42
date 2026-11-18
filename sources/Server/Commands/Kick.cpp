@@ -17,51 +17,57 @@
 
 /*************KICK <channel> <user> ********************/
 void	Server::kickClient(Client& client, const Message& msg) {
-	if (!kickValidation(client, msg))
-		return ;
+	if (!client.isRegistered())//451
+		return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 
-	//Execution + Broadcast
-	//:<clientNickname>!<clientUsername>@<clientHostname> KICK <channame> <targetNickname> :\r\n
 	const std::vector<std::string>& params = msg.getParser().params;
-	std::string reason = (params.size() >= 3 && !params[2].empty()) ? params[2] : client.getNickname();
-	const std::string prefix = getPrefixForCommand(client);
-	const std::string line = ":" + prefix + " KICK " + params[0] + " " + params[1] + " :" + reason + "\r\n";
+	if (params.size() < 2)
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))));//461
+	std::vector<std::string> channels = splitComma(params[0]);
+	std::vector<std::string> users = splitComma(params[1]);
+	std::string comment = (params.size() >= 3 && !params[2].empty()) ? params[2] : client.getNickname();
 
-	Channel* channel = getChannelByNick(params[0]);
-	Client* target = getClientByNick(params[1]);
-	channel->broadcast(*this, line);
-	channel->removeClientFromChannel(*target);
-	if (!channel->getNumberMember())
-		_channels.erase(params[0]);
+	if (channels.size() == 1) {
+		for (unsigned int i(0); i < users.size(); ++i) {
+			KickUtil util(channels[0], users[i], comment);
+			singleKick(client, util);
+		}
+	}
+	else if (channels.size() == users.size()) {
+		for (unsigned int i(0); i < users.size(); ++i) {
+			KickUtil util(channels[i], users[i], comment);
+			singleKick(client, util);
+		}
+	}
+	else
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))));
 }
 
 //KICK #42,#35 bob,John One-to-One Pairing
-bool	Server::kickValidation(Client& client, const Message& msg) {
-	if (!client.isRegistered())//451
-		return (saveOrSend(client, ERR_NOTREGISTERED(client)), false);
-	return (true);
-}							     
-
 //Il nous faut une fonction pour singleKick, une pour valider le single kick et le maestro apres(kickClient)
-
-void	Server::singleKick(Client& client, const Message& msg) {
-	const std::vector<std::string>& params = msg.getParser().params;
-
-	if (params.size() < 2)
-		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))));//461
-
-	const std::string& channel = params[0];
-	std::map<std::string, Channel>::iterator it = _channels.find(channel);
+void	Server::singleKick(Client& client, const KickUtil& util) {
+	std::map<std::string, Channel>::iterator it = _channels.find(util.channel);
 	if (it == _channels.end())
-		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, channel)));//403
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, util.channel)));//403
 
 	const Member* member = it->second.getMemberByNick(client.getNickname());
 	if (!member)
-		return (saveOrSend(client, ERR_NOTONCHANNEL(client, channel)));//442
+		return (saveOrSend(client, ERR_NOTONCHANNEL(client, util.channel)));//442
 	if (!member->op)
-		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel)));//482
+		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, util.channel)));//482
 
-	const std::string& user = params[1];
-	if (!it->second.getMemberByNick(user))
-		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, user, channel)));//441
+	if (!it->second.getMemberByNick(util.user))
+		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, util.user, util.channel)));//441
+
+	//Execution + Broadcast
+	//:<clientNickname>!<clientUsername>@<clientHostname> KICK <channame> <targetNickname> :\r\n
+	const std::string prefix = getPrefixForCommand(client);
+	const std::string line = ":" + prefix + " KICK " + util.channel + " " + util.user + " :" + util.comment + "\r\n";
+
+	Channel* channel = getChannelByNick(util.channel);
+	Client* target = getClientByNick(util.user);
+	channel->broadcast(*this, line);
+	channel->removeClientFromChannel(*target);
+	if (!channel->getNumberMember())
+		_channels.erase(util.channel);
 }

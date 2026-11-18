@@ -14,7 +14,6 @@
 # define REPLIES_HPP
 
 #include "Colors.hpp"
-#include "../class/Client.hpp"
 
 /******* WELCOME MESSAGE ********/
 #define	WELCOME_MESSAGE GREEN <<  "================================================" << std::endl << std::endl \

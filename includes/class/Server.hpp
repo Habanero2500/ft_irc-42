@@ -29,6 +29,18 @@ struct Parser;
 
 extern bool DEBUG;
 
+//Aliases to save space
+typedef	const std::string& constRef;
+typedef	const std::string constStr;
+
+struct	KickUtil {//Helpful for the kickClient
+	constStr	channel;
+	constStr	user;
+	constStr	comment;
+
+	KickUtil(constRef chan, constRef user, constRef comment);
+};
+
 #define NUMBERS "0123456789"
 #define LETTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #define SPECIAL_IRC "[]\\_^{|}-"
@@ -58,7 +70,7 @@ class	Server
 		const std::string	getPrefixForCommand(Client& client) const;
 		Channel* 			getChannelByNick(const std::string& name);
 		std::string			size_tToString(size_t src) const;
-		std::vector<std::string>	splitComma(const std::string& s) const;
+		std::vector<std::string>	splitComma(const std::string &s) const;
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -113,8 +125,7 @@ class	Server
 		
 		//Operator Commands
 		void		kickClient(Client& client, const Message& msg);
-		void		singleKick(Client& client, const Message& msg);
-		bool		kickValidation(Client& client, const Message& msg);
+		void		singleKick(Client& client, const KickUtil& util);
 		void		partChannel(Client &client, const std::string &name, const std::string &reason);
 		void		handleTopic(Client& client, const Message& msg);
 		bool		topicValidation(Client& client, const Message& msg);
