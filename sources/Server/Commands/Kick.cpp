@@ -39,28 +39,29 @@ void	Server::kickClient(Client& client, const Message& msg) {
 bool	Server::kickValidation(Client& client, const Message& msg) {
 	if (!client.isRegistered())//451
 		return (saveOrSend(client, ERR_NOTREGISTERED(client)), false);
+	return (true);
+}							     
 
+//Il nous faut une fonction pour singleKick, une pour valider le single kick et le maestro apres(kickClient)
+
+void	Server::singleKick(Client& client, const Message& msg) {
 	const std::vector<std::string>& params = msg.getParser().params;
-	if (params.size() < 2)
-		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))), false);//461
-								     
-	const std::string& channel = params[0];
-	if (channel.find(',')!= std::string::npos) {//Multiple channels
-	//Il faut split les channels ici et les sauvegarder qqpart, ou on va repeter le meme taff plusiers fois
-		return true;}
 
+	if (params.size() < 2)
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))));//461
+
+	const std::string& channel = params[0];
 	std::map<std::string, Channel>::iterator it = _channels.find(channel);
 	if (it == _channels.end())
-		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, channel)), false);//403
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, channel)));//403
 
 	const Member* member = it->second.getMemberByNick(client.getNickname());
 	if (!member)
-		return (saveOrSend(client, ERR_NOTONCHANNEL(client, channel)), false);//442
+		return (saveOrSend(client, ERR_NOTONCHANNEL(client, channel)));//442
 	if (!member->op)
-		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel)), false);//482
+		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel)));//482
 
 	const std::string& user = params[1];
 	if (!it->second.getMemberByNick(user))
-		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, user, channel)), false);//441
-	return (true);
-}//Should I add multiple channels and users????
+		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, user, channel)));//441
+}

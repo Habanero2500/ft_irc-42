@@ -111,8 +111,9 @@ class	Server
 		
 		void		userMode(Client &client, const Parser &line);
 		
-		//Operator Commands	
+		//Operator Commands
 		void		kickClient(Client& client, const Message& msg);
+		void		singleKick(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
 		void		partChannel(Client &client, const std::string &name, const std::string &reason);
 		void		handleTopic(Client& client, const Message& msg);
