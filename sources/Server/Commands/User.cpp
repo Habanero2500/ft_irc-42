@@ -54,9 +54,9 @@ void	Server::handleUser(Client &client, const Message& msg)
 	Parser pars = msg.getParser();
 	
 	if (client.getUser() == true) 
-		return(saveOrSend(client, ERR_ALREADYREGISTRED()));
+		return(saveOrSend(client, ERR_ALREADYREGISTRED(client)));
 	if (pars.params.size() < 4) 
-		return(saveOrSend(client, ERR_NEEDMOREPARAMS(pars.command)));
+		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
 	
 	std::string			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
 	const std::string	&realname = pars.params[3];              

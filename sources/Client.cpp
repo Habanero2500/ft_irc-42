@@ -84,6 +84,7 @@ int				Client::getFd(void) const {return _fd;}
 struct pollfd	Client::getPollFd(void) const {return _pollFd;}
 std::string		Client::getBuffer(void) const{return (_buffer);}
 std::string 	Client::getNickname(void) const {return _nickname;}
+std::string	Client::nick(void) const {return (_nickname.empty() ? "*" : _nickname);}
 std::string 	Client::getUsername(void) const {return _username;}
 std::string 	Client::getHostname(void) const {return _hostname;}
 std::string 	Client::getServername(void) const{return _serverName;}

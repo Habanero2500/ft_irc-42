@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:33:42 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 14:31:51 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,11 @@ class	Server
 		Client*	getClientByNick(const std::string& nick);
 
 		//***** Helper Functions for Commands *****//
-		const std::string	getPrefixForCommand(Client& client) const;
-		Channel* 			getChannelByNick(const std::string& name);
-		std::string			size_tToString(size_t &src) const;
+		const std::string			getPrefixForCommand(Client& client) const;
+		Channel* 					getChannelByNick(const std::string& name);
+		std::string					size_tToString(size_t src) const;
+		std::vector<std::string>    splitComma(const std::string &s);
+		std::string					getArgument(std::vector<std::string> array, size_t index);
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -92,15 +94,19 @@ class	Server
 
 		/******** JOIN AND CHANNELS ********/
 		void		handleJoin(Client &client, const Message& msg);
-		std::string	parsingChannelName(Client &client, const Parser &line);
+		void		parsingChannelName(Client &client, std::string channelName);
 		void		createChannel(Client &client, std::string channelName);
-		void		joinChannel(Client &client, Channel &channel);
-		void		joinVerification(Client &client, Channel &channel);
+		void		joinChannel(Client &client, Channel &channel, std::string pwd);
+		void		joinVerification(Client &client, Channel &channel, std::string pwd);
+		
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);
 		void		printChannelModes(Client &client, Channel &channel, const std::string &channelName);
-		void 		addChannelModes(Client &client, Channel &channel, const Parser &line);
+		void 		manageChannelModes(Client &client, Channel &channel, const Parser &line);
+		void 		addMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
+		void 		removeMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
+
 		void		userMode(Client &client, const Parser &line);
 		
 		//Operator Commands	

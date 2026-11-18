@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 15:32:39 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 15:05:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
 #include <algorithm>
+#include <iostream>
 
 Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
@@ -22,7 +23,7 @@ Channel::Channel(std::string name) : _name(name), _maxMembers(1000), _pwd("")
 {
 }
 
-Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _banList(copy._banList), _maxMembers(copy._maxMembers), _pwd(copy._pwd)
+Channel::Channel(const Channel &copy) : _name(copy._name), _members(copy._members), _maxMembers(copy._maxMembers), _pwd(copy._pwd)
 {
 }
 
@@ -77,17 +78,22 @@ void	Channel::setTopic(const std::string& topicName) {
 	_topic = topicName;
 }
 
-bool	Channel::isClientAnOperator(const Client& client) const {
-	std::vector<int>::const_iterator it = std::find(_chouffins.begin(), _chouffins.end(), client.getFd());
-	return (it != _chouffins.end());
+bool	Channel::isClientAnOperator(const Client& client) const 
+{
+	// std::vector<int>::const_iterator it = std::find(_chouffins.begin(), _chouffins.end(), client.getFd());
+	// return (it != _chouffins.end());
+	std::map<int, Member>::const_iterator it = _members.find(client.getFd());
+	if (it != _members.end() && (it->second.op))
+		return true;
+	return false;
 }
 
 std::string	Channel::getModes() const
 {
-	std::string	levels[8] = {"P", "S", "I", "T", "N", "M", "L", "K"};
+	std::string	levels[8] = {"i", "t", "l", "k"};
 	std::string	activeModes = "+";
 
-	for (size_t i = 0; i < 8; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		if (_modes.test(i))
 			activeModes.append(levels[i]);
@@ -110,10 +116,26 @@ void		Channel::setName(std::string &name)
 	_name = name;
 }
 
-void		Channel::setPwd(std::string &pwd)
+void		Channel::setPwd(const std::string &pwd)
 {
 	_pwd = pwd;
 }
+
+void		Channel::setmode(const int &mode) 
+{
+	_modes.set(mode);
+}
+
+void		Channel::removemode(const int &mode) 
+{
+	_modes.reset(mode);
+}
+
+void		Channel::setMaxMembers(std::string max)
+{
+	_maxMembers = std::atoi(max.c_str());
+}
+
 
 /****** MEMBERS MANAGEMENT *******/
 
@@ -121,14 +143,29 @@ void		Channel::addMember(Client &member)
 {
 	_members[member.getFd()].client = &member;
 	_members[member.getFd()].op = false;
-    _members[member.getFd()].voice = false;
 }
 
-void		Channel::setOperator(Client &member)
+bool		Channel::setOperator(Client &member)
 {
-	_members[member.getFd()].op = true;
+	std::map<int, Member>::iterator it = _members.find(member.getFd());
+	if (it == _members.end())
+	{
+		return true;
+	}
+	else
+		_members[member.getFd()].op = true;
+	return false;
 }
 
+bool		Channel::removeOperator(Client &member)
+{
+	std::map<int, Member>::iterator it = _members.find(member.getFd());
+	if (it == _members.end())
+		return true;
+	else
+		_members[member.getFd()].op = false;
+	return false;
+}
 
 /****** MODES *******/
 
@@ -143,34 +180,23 @@ bool	Channel::isMembersLimitReached() const
 	return (_members.size() >= _maxMembers);
 }
 
-bool	Channel::isMemberBanned(Client &member)
+bool	Channel::isMember(const Client &member) const
 {
-	for (std::vector<BannedMember>::iterator it = _banList.begin(); it != _banList.end(); it++)
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); it++)
 	{
-		if (it->nickname == member.getNickname() || it->username == member.getUsername() || it->hostname == member.getHostname())
-			return (true);
-	}
-	return (false);
-}
-
-bool	Channel::isMember(Client &member)
-{
-	for (std::map<int, Member>::iterator it = _members.begin(); it != _members.end(); it++)
-	{
-		if (it->second.client->getNickname() == member.getNickname())
+		if (it->second.client->getFd() == member.getFd())
 			return true;
 	}
 	return false;
 }
 
-bool	Channel::isOperator(Client &member)
+bool	Channel::isPwdCorrect(const std::string &pwd) const
 {
-	if (!isMember(member))
+	if (_pwd.compare(pwd))
 		return false;
-	if (_members[member.getFd()].op)
-		return true;
-	return false;
+	return true;
 }
+
 
 //Broadcast and shit
 void	Channel::broadcast(Server& server, const std::string& msg) const {
@@ -183,11 +209,11 @@ void	Channel::broadcast(Server& server, const std::string& msg) const {
 
 void	Channel::removeClientFromChannel(Client& client) {
 	_members.erase(client.getFd());
-	for (std::vector<int>::iterator it = _chouffins.begin(); it != _chouffins.end(); ++it)
-		if (*it == client.getFd()) {
-			_chouffins.erase(it);
-			return ;//Voir si il faut modifier plus de trucs
-		}
+	// for (std::vector<int>::iterator it = _chouffins.begin(); it != _chouffins.end(); ++it)
+	// 	if (*it == client.getFd()) {
+	// 		_chouffins.erase(it);
+	// 		return ;//Voir si il faut modifier plus de trucs
+	// 	}
 }
 
 bool	Channel::isEmpty(void)

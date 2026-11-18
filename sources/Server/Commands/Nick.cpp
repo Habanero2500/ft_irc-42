@@ -46,11 +46,11 @@ void	Server::handleNick(Client &client, const Message& msg)
 		case 0 : 
 			break;
 		case 1 :
-			return(saveOrSend(client, ERR_NONICKNAMEGIVEN()));
+			return(saveOrSend(client, ERR_NONICKNAMEGIVEN(client)));
 		case 2 : 
-			return(saveOrSend(client, ERR_ERRONEUSNICKNAME(*(line.params.begin()))));
+			return(saveOrSend(client, ERR_ERRONEUSNICKNAME(client, *(line.params.begin()))));
 		case 3 :
-			return(saveOrSend(client, ERR_NICKNAMEINUSE(line.params[0])));
+			return(saveOrSend(client, ERR_NICKNAMEINUSE(client, line.params[0])));
 	}
 
 	if ((line.params[0].empty()))
