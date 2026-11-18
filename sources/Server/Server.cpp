@@ -6,12 +6,14 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:35:58 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 20:04:25 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
 #include "../../includes/utils/Replies.hpp"
+#include "../../includes/utils/Colors.hpp"
+
 #include <iostream>
 #include <unistd.h>
 
@@ -30,12 +32,15 @@ Server	&Server::operator=(const Server &copy)//A regler
     if(this != &copy)
     {
         _fd = copy._fd;
-}
+	}
     return *this;
 }
 
 Server::~Server()
 {
-	std::cout << "destructor called" << std::endl;
+	if (DEBUG)
+	{
+		std::cout << GREEN "\nServer destructor called" RESET << std::endl;
+	}
 	close(_fd);
 }

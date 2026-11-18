@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:17:02 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 20:03:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@
 
 #define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
 
+#define MODESMODIFICATIONMESSAGE(client, channel, modes, arg) (client.nick() + "!" + client.getUsername() + "@" + client.getHostname() + " MODE " + channel + " " + modes + " " + arg + "\r\n" )
+
 // 324 RPL_CHANNELMODEIS
-#define RPL_CHANNELMODEIS(channel, mode, modeParams) (":localhost 324 " + channel + " " + mode + " " + modeParams + "\r\n")
+#define RPL_CHANNELMODEIS(client, channel, mode, modeParams) (":localhost 324 " + client.nick() + " " + channel + " " + mode + " " + modeParams + "\r\n")
 
 // 341 RPL_INVITING
 #define RPL_INVITING(nick, invitee, chan)    (std::string(":localhost 341 ") + (nick) + " " + (invitee) + " " + (chan) + "\r\n")

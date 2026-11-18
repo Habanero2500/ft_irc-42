@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/18 16:52:17 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 20:03:26 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,20 @@ class Client{
 	void 		setID(std::string& ID);
 	void 		setFd(int i);
 	void 		setPollFd(void);
-	void            setPass(void);
-	void            setNick(void);
-	void            setUser(void);
+	void		setPass(void);
+	void		setNick(void);
+	void		setUser(void);
 	void    	setBuffer(std::string& Newbuffer);
 	void    	setServername(std::string& name);
-	void 		addBuffer(char buffer[1024]);
+	void 			addBuffer(char buffer[1024]);
 	std::string 	getServername(void) const;
 	std::string 	getName(void) const;
 	std::string 	getID(void) const;
-	int 		getFd(void) const;
+	int 			getFd(void) const;
 	struct pollfd 	getPollFd(void) const; 
-	std::string	getBuffer(void) const;
+	std::string		getBuffer(void) const;
 	std::string 	getNickname(void) const; 
-	std::string	nick(void) const;//Necessary for Replies.hpp
+	std::string		nick(void) const;//Necessary for Replies.hpp
 	std::string 	getUsername(void) const;
 	std::string 	getHostname(void) const;
 	std::string 	getRealName(void) const;
@@ -88,7 +88,7 @@ class Client{
 	std::string 			_nickname;
 	std::string				_username;
 	std::string				_hostname;
-	std::string				_serverName;    
+	std::string				_servername;    
 	std::string				_realname;
     
 	std::string				_ID;

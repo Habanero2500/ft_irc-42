@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+         #
+#    By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/11/17 19:37:00 by jmetayer         ###   ########.fr        #
+#    Updated: 2026/11/18 16:46:40 by malaimo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,16 +14,17 @@ OBJ_DIR = objects
 OBJ_DIR_DEBUG = objects_debug
 
 CC = c++ 
-FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
+FLAGS = -Wall -Werror -Wextra -g -MMD -MP -std=c++98 -Iincludes
 RM = rm -rf
 
 SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server/Server.cpp ./sources/Client.cpp ./sources/Message.cpp ./sources/Channel.cpp \
 		./sources/Server/InitServerandPollLoop.cpp ./sources/Server/MessageTransmission.cpp ./sources/Server/SettersGetters.cpp \
-		./sources/Server/Utils.cpp ./sources/Server/Commands/Display.cpp ./sources/Server/Commands/Pass.cpp ./sources/Server/Commands/Nick.cpp \
+		./sources/Server/Utils.cpp ./sources/Server/SignalHandlers.cpp \
+		./sources/Server/Commands/Display.cpp ./sources/Server/Commands/Pass.cpp ./sources/Server/Commands/Nick.cpp \
 		./sources/Server/Commands/Join.cpp ./sources/Server/Commands/Kick.cpp ./sources/Server/Commands/Mode.cpp ./sources/Server/Commands/Quit.cpp ./sources/Server/Commands/Topic.cpp \
-		./sources/Server/Commands/Privmsg.cpp ./sources/Server/Commands/User.cpp \
+		./sources/Server/Commands/Privmsg.cpp ./sources/Server/Commands/User.cpp ./sources/Server/Commands/Ping.cpp \
 		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Cap.cpp \
-		./sources/Server/Commands/Ping.cpp ./sources/Server/Commands/Part.cpp  \
+		 ./sources/Server/Commands/Part.cpp 
 
 OBJ = $(patsubst ./sources/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(OBJ:.o=.d)

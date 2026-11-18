@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:23:53 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 20:03:18 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ class Channel
 		size_t		getMaxMember() const;
 		std::string	getPwd() const;
 		std::string	getNamesList() const;
+		std::string getModesArg() const;
+
 		void		setName(std::string &name);
 		void		setTopic(const std::string& topicName);
 		void		setPwd(const std::string &pwd);
@@ -77,11 +79,12 @@ class Channel
 		void	broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const;
 		void	broadcastPrivmsg(Server& server, Client& client, const std::string& msg) const;
 		void	removeClientFromChannel(Client& client);
+
+		std::string	size_tToString(size_t src) const;
 		
 	private:
 		std::string					_name;
 		std::map<int, Member>		_members;
-		std::vector<int>			_chouffins;
 		std::bitset<8>				_modes;
 		size_t						_maxMembers;
 		std::string					_pwd;

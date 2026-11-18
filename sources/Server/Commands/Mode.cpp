@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:17:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 19:09:05 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,69 +20,45 @@ void	Server::handleMode(Client &client, const Message& msg)
 {
 	Parser	line = msg.getParser();
 
-	if (DEBUG)
-	{
-		std::cout << YELLOW "HANDLING MODE" RESET << std::endl;
-	}
 	if (line.params.size() == 0)
 	{
 		std::string command = "MODE";
 		saveOrSend(client, ERR_NEEDMOREPARAMS(client, command));
 		return ;
 	}
-	if (line.params[0][0] == '&' || line.params[0][0] == '#')
+	if ((line.params[0][0] == '&' || line.params[0][0] == '#'))
 		channelMode(client, line);
-	else
+	else if (client.getNickname().compare(line.params[0]))
 		saveOrSend(client, ERR_NOSUCHCHANNEL(client, line.params[0]));
 }
 
 void	Server::channelMode(Client &client, const Parser &line)
 {
-	if (DEBUG)
-	{
-		std::cout << YELLOW "HANDLING CHANNEL MODE" RESET << std::endl;
-	}
 	std::map<std::string, Channel>::iterator it = _channels.find(line.params[0]);
 	if (it == _channels.end())
 		saveOrSend(client, ERR_NOSUCHCHANNEL(client, line.params[0]));
+	else if (line.params.size() == 1)
+		printChannelModes(client, it->second, line.params[0]);
 	else if (!it->second.isMember(client))
-		saveOrSend(client, ERR_NOTONCHANNEL(client, line.params[0]));
+		saveOrSend(client, ERR_NOTONCHANNEL(client, line.params[0]));	
 	else if (!it->second.isClientAnOperator(client))
 		saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, line.params[0]));
 	else
-	{
-		if (line.params.size() == 1)
-		{
-			printChannelModes(client, it->second, line.params[0]);
-		}  	
-		else
-		{
-			manageChannelModes(client, it->second, line);
-		}
-	}
+		manageChannelModes(client, it->second, line);
 }
 
 void	Server::printChannelModes(Client &client, Channel &channel, const std::string &channelName)
 {
-	if (DEBUG)
-	{
-		std::cout << YELLOW "PRINTING MODE" RESET << std::endl;
-	}
-	std::string mode = channel.getModes();
 	std::string modeParams = "";
 	if (channel.isModeActive(L))
-		modeParams.append(size_tToString(channel.getMaxMember()) + " ");
-	if (channel.isModeActive(K))
+		modeParams.append(channel.size_tToString(channel.getMaxMember()) + " ");
+	if (channel.isMember(client) && channel.isModeActive(K))
 		modeParams.append(channel.getPwd());
-	saveOrSend(client, RPL_CHANNELMODEIS(channelName, mode, modeParams));
+	saveOrSend(client, RPL_CHANNELMODEIS(client, channelName, channel.getModes(), modeParams));
 }
 
 void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
 {
-	if (DEBUG)
-	{
-		std::cout << YELLOW "MANAGING CHANNEL MODE" RESET << std::endl;
-	}
 	std::string allowedcharacters = "+-itkol";
 	std::vector<std::string>::const_iterator	it = line.params.begin() + 2;
 	std::vector<std::string>::const_iterator	end = line.params.end();
@@ -101,6 +77,7 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 		else
 			removeMode(client, channel, line.params[1][i], it, end);
 	}
+	// channel.broadcast(*this, MODESMODIFICATIONMESSAGE(client, line.params[0], channel.getModes(), channel.getModesArg()));
 }
 
 
@@ -133,8 +110,6 @@ void Server::addMode(Client &client, Channel &channel, char mode, std::vector<st
 			Client* targetClient = getClientByNick(*it);
 			if (targetClient == NULL)
 				saveOrSend(client, ERR_NOSUCHNICK(client, *it));
-			else if (!channel.isClientAnOperator(*targetClient))
-				saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel.getName()));
 			else if (channel.setOperator(*targetClient))
 				saveOrSend(client, ERR_USERNOTINCHANNEL(client, targetClient->getNickname(), channel.getName()));
 			it++;
@@ -163,9 +138,7 @@ void Server::removeMode(Client &client, Channel &channel, char mode, std::vector
 		case	'k':
 			if (it == end)
 				break;
-			if (!channel.isModeActive(K))
-				break;
-			if (channel.isPwdCorrect(*it))
+			if (channel.isModeActive(K) && channel.isPwdCorrect(*it))
 				channel.removemode(K);
 			it++;
 			break;
@@ -176,8 +149,6 @@ void Server::removeMode(Client &client, Channel &channel, char mode, std::vector
 			Client* targetClient = getClientByNick(*it);
 			if (targetClient == NULL)
 				saveOrSend(client, ERR_NOSUCHNICK(client, *it));
-			else if (!channel.isClientAnOperator(*targetClient))
-				saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel.getName()));
 			else if (channel.removeOperator(*targetClient))
 				saveOrSend(client, ERR_USERNOTINCHANNEL(client, targetClient->getNickname(), channel.getName()));
 			it++;

@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:28:53 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:20:51 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 18:58:03 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,6 @@ Channel*	Server::getChannelByNick(const std::string& name) {
 	if (it == _channels.end())
 		return (NULL);
 	return (&(it->second));
-}
-
-std::string	Server::size_tToString(size_t src) const
-{
-	std::stringstream	temp;
-	temp << src;
-	
-	std ::string 		result = temp.str(); 
-	return result;
 }
 
 std::vector<std::string>    Server::splitComma(const std::string &s)
