@@ -56,7 +56,8 @@ void	Server::singleKick(Client& client, const KickUtil& util) {
 	if (!member->op)
 		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, util.channel)));//482
 
-	if (!it->second.getMemberByNick(util.user))
+	const Member* target = it->second.getMemberByNick(util.user);
+	if (!target)
 		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, util.user, util.channel)));//441
 
 	//Execution + Broadcast
@@ -64,10 +65,8 @@ void	Server::singleKick(Client& client, const KickUtil& util) {
 	const std::string prefix = getPrefixForCommand(client);
 	const std::string line = ":" + prefix + " KICK " + util.channel + " " + util.user + " :" + util.comment + "\r\n";
 
-	Channel* channel = getChannelByNick(util.channel);
-	Client* target = getClientByNick(util.user);
-	channel->broadcast(*this, line);
-	channel->removeClientFromChannel(*target);
-	if (!channel->getNumberMember())
-		_channels.erase(util.channel);
+	it->second.broadcast(*this, line);
+	it->second.removeClientFromChannel(*target->client);
+	if (!it->second.getNumberMember())
+		_channels.erase(it);
 }

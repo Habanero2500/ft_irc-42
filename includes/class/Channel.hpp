@@ -16,7 +16,6 @@
 #include "Client.hpp"
 #include <map>
 #include <bitset>
-#include <vector>
 #include <set>
 
 //Forwards declarations
