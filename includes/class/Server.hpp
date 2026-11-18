@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 14:31:51 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 15:57:27 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <vector>
 #include <netinet/in.h>
 #include <poll.h>
+#include <csignal>
 #include "Client.hpp"
 #include "Channel.hpp"
 
@@ -116,16 +117,22 @@ class	Server
 		void		handleTopic(Client& client, const Message& msg);
 		bool		topicValidation(Client& client, const Message& msg);
 
+		/**** SIGNALS HANDLERS *******/
+		void		initSignals(void);
+		static void	signal_handler(int signum);
+
 		/******* UTILS *******/
 		
 	private:
-		int					_fd;
-		struct sockaddr_in 			_address;
-		std::map<int, Client>			_clients;
-		std::map<std::string, Channel>		_channels;
+		int										_fd;
+		struct sockaddr_in 						_address;
+		std::map<int, Client>					_clients;
+		std::map<std::string, Channel>			_channels;
 		std::map<std::string, CommandHandler> 	_commandMap;
-		std::vector<struct pollfd>		_listFd;
-		std::string				_pwd;
-		int					_port;
+		std::vector<struct pollfd>				_listFd;
+		std::string								_pwd;
+		int										_port;
+		struct sigaction						sigIntAct;
+		static bool								interruptFlag;
 };
 #endif

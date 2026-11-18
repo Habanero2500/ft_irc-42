@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:38:32 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:04:11 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ Server	&Server::operator=(const Server &copy)//A regler
     if(this != &copy)
     {
         _fd = copy._fd;
-}
+	}
     return *this;
 }
 
 Server::~Server()
 {
-	std::cout << "destructor called" << std::endl;
+	std::cout << "Server destructor called" << std::endl;
 	close(_fd);
 }
 

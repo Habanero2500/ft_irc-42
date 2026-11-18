@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:05:37 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:02:21 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ Channel	&Channel::operator=(const Channel &copy)
 
 Channel::~Channel()
 {
+	std::cout << "destructor called" << std::endl;
 }
 
 
