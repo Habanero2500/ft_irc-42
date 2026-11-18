@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:57:27 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:10:51 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ class	Server
 		std::string								_pwd;
 		int										_port;
 		struct sigaction						sigIntAct;
+		struct sigaction						sigPipeAct;
 		static bool								interruptFlag;
 };
 #endif

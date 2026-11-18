@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/18 15:33:52 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:04:31 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:12:29 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@ void	Server::initSignals(void)
 	sigIntAct.sa_handler = signal_handler;
 	sigemptyset(&sigIntAct.sa_mask);
 	sigIntAct.sa_flags = 0;
+	
+	sigPipeAct.sa_handler = SIG_IGN;
+	sigemptyset(&sigPipeAct.sa_mask);
+	sigPipeAct.sa_flags = 0;
+
 	sigaction(SIGINT, &sigIntAct, NULL);
+	sigaction(SIGPIPE, &sigPipeAct, NULL);
+	
 }
 
 void	Server::signal_handler(int signum)
