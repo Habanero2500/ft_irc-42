@@ -6,7 +6,7 @@
 #    By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/20 13:03:28 by jmetayer          #+#    #+#              #
-#    Updated: 2026/11/18 15:56:19 by malaimo          ###   ########.fr        #
+#    Updated: 2026/11/18 16:46:40 by malaimo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ OBJ_DIR = objects
 OBJ_DIR_DEBUG = objects_debug
 
 CC = c++ 
-FLAGS = -Wall -Werror -Wextra -MMD -MP -std=c++98 -Iincludes
+FLAGS = -Wall -Werror -Wextra -g -MMD -MP -std=c++98 -Iincludes
 RM = rm -rf
 
 SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server/Server.cpp ./sources/Client.cpp ./sources/Message.cpp ./sources/Channel.cpp \

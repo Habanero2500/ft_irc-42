@@ -6,12 +6,13 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:02:21 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:44:49 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
+#include "../includes/utils/Colors.hpp"
 #include <algorithm>
 #include <iostream>
 
@@ -41,7 +42,10 @@ Channel	&Channel::operator=(const Channel &copy)
 
 Channel::~Channel()
 {
-	std::cout << "destructor called" << std::endl;
+	if (DEBUG)
+	{
+		std::cout << YELLOW "channel :" << _name << " destructor called" RESET << std::endl;
+	}
 }
 
 

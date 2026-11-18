@@ -6,11 +6,13 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:04:11 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:48:07 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/utils/Colors.hpp"
+
 #include <iostream>
 #include <unistd.h>
 
@@ -35,7 +37,10 @@ Server	&Server::operator=(const Server &copy)//A regler
 
 Server::~Server()
 {
-	std::cout << "Server destructor called" << std::endl;
+	if (DEBUG)
+	{
+		std::cout << GREEN "\nServer destructor called" RESET << std::endl;
+	}
 	close(_fd);
 }
 

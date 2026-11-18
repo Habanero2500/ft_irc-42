@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:17:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:49:29 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@ void	Server::handleMode(Client &client, const Message& msg)
 {
 	Parser	line = msg.getParser();
 
-	if (DEBUG)
-	{
-		std::cout << YELLOW "HANDLING MODE" RESET << std::endl;
-	}
 	if (line.params.size() == 0)
 	{
 		std::string command = "MODE";
@@ -38,10 +34,6 @@ void	Server::handleMode(Client &client, const Message& msg)
 
 void	Server::channelMode(Client &client, const Parser &line)
 {
-	if (DEBUG)
-	{
-		std::cout << YELLOW "HANDLING CHANNEL MODE" RESET << std::endl;
-	}
 	std::map<std::string, Channel>::iterator it = _channels.find(line.params[0]);
 	if (it == _channels.end())
 		saveOrSend(client, ERR_NOSUCHCHANNEL(client, line.params[0]));
@@ -64,10 +56,6 @@ void	Server::channelMode(Client &client, const Parser &line)
 
 void	Server::printChannelModes(Client &client, Channel &channel, const std::string &channelName)
 {
-	if (DEBUG)
-	{
-		std::cout << YELLOW "PRINTING MODE" RESET << std::endl;
-	}
 	std::string mode = channel.getModes();
 	std::string modeParams = "";
 	if (channel.isModeActive(L))
@@ -79,10 +67,6 @@ void	Server::printChannelModes(Client &client, Channel &channel, const std::stri
 
 void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
 {
-	if (DEBUG)
-	{
-		std::cout << YELLOW "MANAGING CHANNEL MODE" RESET << std::endl;
-	}
 	std::string allowedcharacters = "+-itkol";
 	std::vector<std::string>::const_iterator	it = line.params.begin() + 2;
 	std::vector<std::string>::const_iterator	end = line.params.end();

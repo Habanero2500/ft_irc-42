@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/17 15:34:14 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 16:42:58 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Client.hpp"
+#include "../includes/utils/Colors.hpp"
 #include <iostream>
 
 // **** ORTHODOX CANONICAL FORM ****
 
-Client::Client(void) : _nickname(""), _username(""), _hostname(""), _realname(""), _ID(""), _fd(-1), _buffer(""), _pass(false), _nick(false), _user(false), _attempt(0) {}
+Client::Client(void) : _fd(-1), _adress(), _pollFd() , _pass(false), _nick(false), _user(false), _attempt(0), _registered(false), _toDisconnect(false), _channelsJoined(0){}
 
-Client::Client(const Client& copy) : _nickname(copy._nickname), _username(copy._username), _hostname(copy._hostname), _realname(copy._realname), _ID(copy._ID), _fd(copy._fd), _adress(copy._adress), _pollFd(copy._pollFd), _buffer(copy._buffer), _pass(false), _nick(false), _user(false), _attempt(0) {}
-
+Client::Client(const Client& copy) : _nickname(copy._nickname), _username(copy._username), _hostname(copy._hostname), _servername(copy._servername), _realname(copy._realname), _ID(copy._ID), _fd(copy._fd), _adress(copy._adress), _pollFd(copy._pollFd), _buffer(copy._buffer), _pass(false), _nick(false), _user(false), _attempt(0), _registered(false), _toDisconnect(copy._toDisconnect), _channelsJoined(copy._channelsJoined), _sendBuffer(copy._sendBuffer) {}
+//plutot copier _pass _nick _user au lieu de les mettre a false ?
 Client& Client::operator=(const Client& copy)
 {
     if(this == &copy)
@@ -28,28 +29,33 @@ Client& Client::operator=(const Client& copy)
         _nickname = copy._nickname;
         _username = copy._username;
         _hostname = copy._hostname;
+		_servername = copy._servername;
         _realname = copy._realname;
         _ID = copy._ID;
         _fd = copy._fd;
 	_adress = copy._adress;
 	_pollFd = copy._pollFd;
 	_buffer = copy._buffer;
-        _pass = false;
-        _nick = false;
-        _user = false;
-        _attempt = 0;
+	_channelsJoined = copy._channelsJoined;
+	_sendBuffer = copy._sendBuffer;
     }
     return *this;
 }
 
-Client::~Client(){}
+Client::~Client()
+{
+	if (DEBUG)
+	{
+		std::cout << PINK "client : " << _fd << " : " << getNick() << " destructor called" RESET << std::endl;
+	}
+}
 
 //********** SETTERS AND GETTERS ************
 
 void Client::setNickname(std::string& name){ _nickname = name;}
 void Client::setUsername(std::string& name){ _username = name;}
 void Client::setHostname(std::string& name){ _hostname = name;}
-void Client::setServername(std::string& name){ _serverName = name;}
+void Client::setServername(std::string& name){ _servername = name;}
 void Client::setRealName(const std::string& name){ _realname = name;}
 void Client::setID(std::string& ID){_ID = ID;}
 void Client::setFd(int i){_fd = i;}
@@ -87,7 +93,7 @@ std::string 	Client::getNickname(void) const {return _nickname;}
 std::string	Client::nick(void) const {return (_nickname.empty() ? "*" : _nickname);}
 std::string 	Client::getUsername(void) const {return _username;}
 std::string 	Client::getHostname(void) const {return _hostname;}
-std::string 	Client::getServername(void) const{return _serverName;}
+std::string 	Client::getServername(void) const{return _servername;}
 std::string 	Client::getRealName(void) const {return _realname;}
 int             Client::getAttempt(void) const {return _attempt;}
 bool            Client::getPass(void) const{return _pass;}
