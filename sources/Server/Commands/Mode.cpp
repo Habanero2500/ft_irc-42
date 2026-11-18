@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 14:55:30 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 15:17:06 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	Server::handleMode(Client &client, const Message& msg)
 	}
 	if (line.params[0][0] == '&' || line.params[0][0] == '#')
 		channelMode(client, line);
+	else
+		saveOrSend(client, ERR_NOSUCHCHANNEL(client, line.params[0]));
 }
 
 void	Server::channelMode(Client &client, const Parser &line)
