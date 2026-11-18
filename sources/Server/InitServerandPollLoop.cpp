@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   InitServerandPollLoop.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 14:56:03 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 18:34:46 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstdlib>
+#include <cerrno>
 
 void	Server::initServerAdress(int port, std::string pwd)
 {
@@ -48,7 +49,7 @@ void	Server::pollLoop()
 	while (true)
 	{
 		if (poll(&_listFd[0], _listFd.size(), -1) == -1)
-		{
+		{	
 			if (errno == EINTR)
 				continue ;
 			else
@@ -152,7 +153,6 @@ void	Server::initCommands(void) {
 	_commandMap["PING"] = &Server::handlePing;
 	_commandMap["PONG"] = &Server::handlePong;
 	_commandMap["PART"] = &Server::handlePart;
-	// _commandMap["QUIT"] = &Server::handleQuit;
 	_commandMap["PRIVMSG"] = &Server::handlePrivmsg;
 	_commandMap["JOIN"] = &Server::handleJoin;
 	_commandMap["CAP"] = &Server::handleCap;
@@ -175,5 +175,5 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	if (it != _commandMap.end())
 		(this->*(it->second))(client, msg);
 	else
-		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(command)));//No match found
+		return(saveOrSend(client, ERR_UNKNOWNCOMMAND(client, command)));//No match found
 }

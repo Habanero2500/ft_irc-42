@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 17:55:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 14:55:30 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	Server::handleMode(Client &client, const Message& msg)
 	if (line.params.size() == 0)
 	{
 		std::string command = "MODE";
-		saveOrSend(client, ERR_NEEDMOREPARAMS(command));
+		saveOrSend(client, ERR_NEEDMOREPARAMS(client, command));
 		return ;
 	}
 	if (line.params[0][0] == '&' || line.params[0][0] == '#')
@@ -42,11 +42,11 @@ void	Server::channelMode(Client &client, const Parser &line)
 	}
 	std::map<std::string, Channel>::iterator it = _channels.find(line.params[0]);
 	if (it == _channels.end())
-		saveOrSend(client, ERR_NOSUCHCHANNEL(line.params[0]));
+		saveOrSend(client, ERR_NOSUCHCHANNEL(client, line.params[0]));
 	else if (!it->second.isMember(client))
-		saveOrSend(client, ERR_NOTONCHANNEL(line.params[0]));
+		saveOrSend(client, ERR_NOTONCHANNEL(client, line.params[0]));
 	else if (!it->second.isClientAnOperator(client))
-		saveOrSend(client, ERR_CHANOPRIVSNEEDED(line.params[0]));
+		saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, line.params[0]));
 	else
 	{
 		if (line.params.size() == 1)
@@ -69,7 +69,7 @@ void	Server::printChannelModes(Client &client, Channel &channel, const std::stri
 	std::string mode = channel.getModes();
 	std::string modeParams = "";
 	if (channel.isModeActive(L))
-		modeParams.append(size_tToString(channel.getMaxMember()));
+		modeParams.append(size_tToString(channel.getMaxMember()) + " ");
 	if (channel.isModeActive(K))
 		modeParams.append(channel.getPwd());
 	saveOrSend(client, RPL_CHANNELMODEIS(channelName, mode, modeParams));
@@ -89,7 +89,7 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 	for(size_t i = 0; i < line.params[1].size(); i++)
 	{
 		if (allowedcharacters.find(line.params[1][i]) == std::string::npos)
-			saveOrSend(client, ERR_UNKNOWNMODE(line.params[1][i]));
+			saveOrSend(client, ERR_UNKNOWNMODE(client, line.params[1][i]));
 		else if (line.params[1][i] == '+')
 			add = true;
 		else if (line.params[1][i] == '-')
@@ -116,7 +116,7 @@ void Server::addMode(Client &client, Channel &channel, char mode, std::vector<st
 			if (it == end)
 				break;
 			if (channel.isModeActive(K))
-				saveOrSend(client, ERR_KEYSET(channel.getName()));
+				saveOrSend(client, ERR_KEYSET(client, channel.getName()));
 			else
 			{
 				channel.setPwd(*it);
@@ -130,11 +130,11 @@ void Server::addMode(Client &client, Channel &channel, char mode, std::vector<st
 				break;
 			Client* targetClient = getClientByNick(*it);
 			if (targetClient == NULL)
-				saveOrSend(client, ERR_NOSUCHNICK(*it));
+				saveOrSend(client, ERR_NOSUCHNICK(client, *it));
 			else if (!channel.isClientAnOperator(*targetClient))
-				saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel.getName()));
+				saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel.getName()));
 			else if (channel.setOperator(*targetClient))
-				saveOrSend(client, ERR_USERNOTINCHANNEL(targetClient->getNickname(), channel.getName()));
+				saveOrSend(client, ERR_USERNOTINCHANNEL(client, targetClient->getNickname(), channel.getName()));
 			it++;
 			break;
 		}
@@ -173,11 +173,11 @@ void Server::removeMode(Client &client, Channel &channel, char mode, std::vector
 				break;
 			Client* targetClient = getClientByNick(*it);
 			if (targetClient == NULL)
-				saveOrSend(client, ERR_NOSUCHNICK(*it));
+				saveOrSend(client, ERR_NOSUCHNICK(client, *it));
 			else if (!channel.isClientAnOperator(*targetClient))
-				saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel.getName()));
+				saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel.getName()));
 			else if (channel.removeOperator(*targetClient))
-				saveOrSend(client, ERR_USERNOTINCHANNEL(targetClient->getNickname(), channel.getName()));
+				saveOrSend(client, ERR_USERNOTINCHANNEL(client, targetClient->getNickname(), channel.getName()));
 			it++;
 			break;
 		}

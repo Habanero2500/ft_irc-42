@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:21:46 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 14:31:51 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ class	Server
 		void		handlePass(Client &client, const Message& msg);
 		void		handleNick(Client &client, const Message& msg);
 		int			parsingNick(Client &client, const Parser &line);
-		void		handlePart(Client &client, const Message& msg);
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
+		// void	handleQuit(Client &client, const Message& msg);
+		void		handlePart(Client &client, const Message& msg);
 		void		handleQuit(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
 		void		handleDisplay(Client &client, const Message& msg);
@@ -111,6 +112,7 @@ class	Server
 		//Operator Commands	
 		void		kickClient(Client& client, const Message& msg);
 		bool		kickValidation(Client& client, const Message& msg);
+		void		partChannel(Client &client, const std::string &name, const std::string &reason);
 		void		handleTopic(Client& client, const Message& msg);
 		bool		topicValidation(Client& client, const Message& msg);
 

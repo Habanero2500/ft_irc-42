@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/16 20:02:54 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/17 15:30:24 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class Client{
 	struct pollfd 	getPollFd(void) const; 
 	std::string	getBuffer(void) const;
 	std::string 	getNickname(void) const; 
+	std::string	nick(void) const;//Necessary for Replies.hpp
 	std::string 	getUsername(void) const;
 	std::string 	getHostname(void) const;
 	std::string 	getRealName(void) const;
@@ -74,8 +75,7 @@ class Client{
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
-    void            decreaseNumberChannels(void);
-
+	void			decreaseNumberChannels(void);
     
 	//Send Buffer Management
 	void			appendToSendBuffer(const std::string& data);

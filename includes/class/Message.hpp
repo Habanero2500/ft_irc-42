@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 16:54:51 by opapouts          #+#    #+#             */
-/*   Updated: 2026/11/04 15:59:06 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/16 21:54:20 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,12 @@ class	Message {
 		~Message(void);
 
 		//Exception Classes
-
+	
 		//Helper Functions
-		void		clearParser(void);
 		void		deleteSpaces(std::string& input) const;
 		//Parsing Functions
 		void		parsing(std::string& input);
 		void		stripCRLF(std::string& input) const;
-		void		extractTrailing(std::string& input);
 		void		parsePrefix(std::string& input);
 		void		parseCommand(std::string& input);
 		void		parseParams(std::string& input);

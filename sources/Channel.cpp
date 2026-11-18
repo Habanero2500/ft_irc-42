@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:26:54 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 15:05:37 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,12 @@ void	Channel::removeClientFromChannel(Client& client) {
 	// 	}
 }
 
+bool	Channel::isEmpty(void)
+{
+	if(_members.size() == 0)
+		return true;
+	return false;
+}
 void	Channel::broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const {
 	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it) {
 		Client* target = server.getClientByNick(it->second.client->getNickname());

@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 18:31:44 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 15:05:51 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	if (line.params.size() == 0)
 	{
 		std::string command = "JOIN";
-		saveOrSend(client, ERR_NEEDMOREPARAMS(command));
+		saveOrSend(client, ERR_NEEDMOREPARAMS(client, command));
 		return ;
 	}
 	
@@ -38,7 +38,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 		{
 			parsingChannelName(client, channels[i]);
 			if (client.getNumberChannels() >= 10)
-				saveOrSend(client, ERR_TOOMANYCHANNELS(channels[i]));
+				saveOrSend(client, ERR_TOOMANYCHANNELS(client, channels[i]));
 			std::map<std::string, Channel>::iterator itChannel = _channels.find(channels[i]);
 			if (itChannel != _channels.end())
 				return (joinChannel(client, itChannel->second, getArgument(pwd, i)));
@@ -56,7 +56,7 @@ void	Server::parsingChannelName(Client &client, std::string channelName)
 	if ((channelName[0] != '&' && channelName[0] != '#') || channelName.size() > 200
 		|| channelName.size() < 2 || channelName.find_first_of("\a, ") != std::string::npos)
 	{
-		saveOrSend(client, ERR_NOSUCHCHANNEL(channelName));
+		saveOrSend(client, ERR_NOSUCHCHANNEL(client, channelName));
 		throw -1;
 	}
 }
@@ -96,30 +96,20 @@ void	Server::joinChannel(Client &client, Channel &channel, std::string pwd)
 void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
 {
 	if (channel.isMember(client))
-	{
-		if (DEBUG)
-		{
-			std::cout << "already joined" << std::endl;
-		}
 		throw -1;
-	}
 	if (channel.isModeActive(I)) // check if channel is in invite only
 	{
-		saveOrSend(client, ERR_INVITEONLYCHAN(channel.getName()));
+		saveOrSend(client,ERR_INVITEONLYCHAN(client, channel.getName()));
 		throw -1;
 	}
 	if (channel.isModeActive(K) && !(channel.isPwdCorrect(pwd)))
 	{
-		if (DEBUG)
-		{
-			std::cout << "wrong pwd" << std::endl;
-		}
-		saveOrSend(client, ERR_BADCHANNELKEY(channel.getName()));
+		saveOrSend(client,ERR_BADCHANNELKEY(client, channel.getName()));
 		throw -1;
 	}
 	if (channel.isModeActive(L) && channel.isMembersLimitReached()) // check if channel got to its limit
 	{
-		saveOrSend(client, ERR_CHANNELISFULL(channel.getName()));
+		saveOrSend(client,ERR_CHANNELISFULL(client, channel.getName()));
 		throw -1;
 	}
 }

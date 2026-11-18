@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 18:45:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/17 15:07:23 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/17 19:41:26 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 void Server::handleInvite(Client &client, const Message &msg)
 {
     if (!client.isRegistered())
-        return (saveOrSend(client, ERR_NOTREGISTERED()));
+        return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 
     const std::vector<std::string> &params = msg.getParser().params;
     if (params.size() < 2)
-        return (saveOrSend(client, ERR_NEEDMOREPARAMS(msg.getParser().command)));
+        return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, msg.getParser().command)));
 
     const std::string targetNick = params[0];
     const std::string channelName = params[1];
@@ -31,20 +31,20 @@ void Server::handleInvite(Client &client, const Message &msg)
 
     std::map<std::string, Channel>::iterator chanIt = _channels.find(channelName);
     if (chanIt == _channels.end())
-        return (saveOrSend(client, ERR_NOSUCHCHANNEL(channelName)));
+        return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, channelName)));
 
     Channel &channel = chanIt->second;
 
     if (!channel.isMember(client))
-        return (saveOrSend(client, ERR_NOTONCHANNEL(channelName)));
+        return (saveOrSend(client, ERR_NOTONCHANNEL(client, channelName)));
     if (!channel.isClientAnOperator(client))
-        return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(channelName)));
+        return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channelName)));
 
     Client *target = getClientByNick(targetNick);
     if (!target)
-        return (saveOrSend(client, ERR_NOSUCHNICK(targetNick)));
+        return (saveOrSend(client, ERR_NOSUCHNICK(client, targetNick)));
     if (channel.isMember(*target))
-        return (saveOrSend(client, ERR_USERONCHANNEL(targetNick, channelName)));
+        return (saveOrSend(client, ERR_USERONCHANNEL(client, targetNick, channelName)));
 
     channel.addMember(*target);
     saveOrSend(client, RPL_INVITING(me, targetNick, channelName));

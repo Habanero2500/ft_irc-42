@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/17 17:44:48 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 14:35:13 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,14 @@ class Channel
 		void		addMember(Client &member);
 		bool		setOperator(Client &member);
 		bool		removeOperator(Client &member);
-		
+	
 		bool		isModeActive(int mode) const;
 		bool		isTopicSet(void) const;
 		bool		isMembersLimitReached() const;
 		bool		isClientAnOperator(const Client& client) const;
+		bool		isEmpty(void);
+
+
 		bool		isMember(const Client &member) const;
 		bool		isPwdCorrect(const std::string &pwd) const;
 

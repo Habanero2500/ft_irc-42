@@ -37,25 +37,25 @@ void	Server::kickClient(Client& client, const Message& msg) {
 //peut etre ajouter ca dans la map avec les commandes
 bool	Server::kickValidation(Client& client, const Message& msg) {
 	if (!client.isRegistered())//451
-		return (saveOrSend(client, ERR_NOTREGISTERED()), false);
+		return (saveOrSend(client, ERR_NOTREGISTERED(client)), false);
 
 	const std::vector<std::string>& params = msg.getParser().params;
 	if (params.size() < 2)
-		return (saveOrSend(client, ERR_NEEDMOREPARAMS(std::string("KICK"))), false);//461
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("KICK"))), false);//461
 								     
 	const std::string& channel = params[0];
 	const std::string& user = params[1];
 
 	std::map<std::string, Channel>::iterator it = _channels.find(channel);
-	if (it == _channels.end())//maybe I can add getChannelByNick ici
-		return (saveOrSend(client, ERR_NOSUCHCHANNEL(channel)), false);//403
+	if (it == _channels.end())
+		return (saveOrSend(client, ERR_NOSUCHCHANNEL(client, channel)), false);//403
 
 	const Member* member = it->second.getMemberByNick(client.getNickname());
 	if (!member)
-		return (saveOrSend(client, ERR_NOTONCHANNEL(channel)), false);//442
+		return (saveOrSend(client, ERR_NOTONCHANNEL(client, channel)), false);//442
 	if (!member->op)
-		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(channel)), false);//482
+		return (saveOrSend(client, ERR_CHANOPRIVSNEEDED(client, channel)), false);//482
 	if (!it->second.getMemberByNick(user))
-		return (saveOrSend(client, ERR_USERNOTINCHANNEL(user, channel)), false);//441
+		return (saveOrSend(client, ERR_USERNOTINCHANNEL(client, user, channel)), false);//441
 	return (true);
 }
