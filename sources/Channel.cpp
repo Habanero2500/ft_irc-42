@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:05:37 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:52:39 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void		Channel::addMember(Client &member)
 {
 	_members[member.getFd()].client = &member;
 	_members[member.getFd()].op = false;
+	member.increaseNumberChannels();
 }
 
 bool		Channel::setOperator(Client &member)
@@ -236,4 +237,18 @@ void	Channel::broadcastPrivmsg(Server& server, Client& client, const std::string
 		if (target && target != &client)
 			server.saveOrSend(*target, msg);
 	}
+}
+
+std::string	Channel::getNamesList() const
+{
+	std::string	names;
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it)
+	{
+		if (!names.empty())
+			names += " ";
+		if (it->second.op)
+			names += "@";
+		names += it->second.client->getNickname();
+	}
+	return names;
 }

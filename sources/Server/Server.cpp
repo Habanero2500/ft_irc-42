@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/11 18:38:32 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:35:58 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/utils/Replies.hpp"
 #include <iostream>
 #include <unistd.h>
 
@@ -38,4 +39,3 @@ Server::~Server()
 	std::cout << "destructor called" << std::endl;
 	close(_fd);
 }
-

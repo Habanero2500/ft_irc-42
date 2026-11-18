@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:11:04 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:17:02 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@
 					  
 /******* SUCCESSFULL NUMERIC REPLIES ********/
 // 331 RPL_NOTOPIC
-# define RPL_NOTOPIC(client, chan) (":localhost 331 " + client.nick() + " " + chan + " :No topic is set\r\n")
+# define RPL_NOTOPIC(client, chan) (":localhost 331 " + (client).getNickname() + " " + chan + " :No topic is set\r\n")
 
 // 332 RPL_TOPIC
-# define RPL_TOPIC(client, chan, topic) (":localhost 332 " + client.nick() + " " + chan + " :" + topic + "\r\n")
+# define RPL_TOPIC(client, chan, topic) (":localhost 332 " + (client).getNickname() + " " + chan + " :" + topic + "\r\n")
 
+// 353 RPL_NAMREPLY
+# define RPL_NAMREPLY(client, chan, names)  (":localhost 353 " + (client).getNickname() + " = " + (chan) + " :" + (names) + "\r\n")
+
+// 366 RPL_ENDOFNAMES
+# define RPL_ENDOFNAMES(client, chan)       (":localhost 366 " + (client).getNickname() + " " + (chan) + " :End of /NAMES list.\r\n")
 /******* ERRORS MESSAGES ********/
 
 // 401 ERR_NOSUCHNICK

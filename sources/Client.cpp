@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/17 15:34:14 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 19:34:17 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,10 @@ void	Client::initClientAdress(int port)
 }
 
 /****** CHANNELS *********/
-void 	Client::increaseNumberChannels(void){_channelsJoined++;}
+void 	Client::increaseNumberChannels(void)
+{
+    _channelsJoined++;
+}
 
 void    Client::decreaseNumberChannels(void)
 {
@@ -158,4 +161,13 @@ std::string&	Client::getSendBuffer(void) {
 bool	Client::isSendBufferEmpty(void) const {
 	return (_sendBuffer.empty());
 }
+
+std::string	Client::getPrefix(void)
+{ 
+    return _nickname + "!" + _username + "@" + _hostname; 
+}
+
+
+
+
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 14:31:51 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 16:30:25 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ class	Server
 		void		createChannel(Client &client, std::string channelName);
 		void		joinChannel(Client &client, Channel &channel, std::string pwd);
 		void		joinVerification(Client &client, Channel &channel, std::string pwd);
-		
+		void		announceJoin(Client &client, Channel &channel);
+
 		/******* MODE *******/
 		void		handleMode(Client &client, const Message& msg);
 		void		channelMode(Client &client, const Parser &line);

@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 15:28:47 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 16:23:53 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ class Channel
 		std::string	getModes() const;
 		size_t		getMaxMember() const;
 		std::string	getPwd() const;
-
+		std::string	getNamesList() const;
 		void		setName(std::string &name);
 		void		setTopic(const std::string& topicName);
 		void		setPwd(const std::string &pwd);

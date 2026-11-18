@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/17 15:30:24 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/18 16:52:17 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,14 @@ class Client{
 
     //**** OTHERS ****
     
-    void	increaseAttempt(void);
-    bool	isRegistered(void);
-    void	setRegistered(void);
-    bool	shouldDisconnect(void);
-    void	setToDisconnect(void);
-    void	displayClient(void);
-    bool	isIncluded(std::set<int>& notifiedFds) const;
+    void		increaseAttempt(void);
+    bool		isRegistered(void);
+    void		setRegistered(void);
+    bool		shouldDisconnect(void);
+    void		setToDisconnect(void);
+    void		displayClient(void);
+    bool		isIncluded(std::set<int>& notifiedFds) const;
+	std::string	getPrefix(void);
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
