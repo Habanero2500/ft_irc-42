@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:44:49 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 18:59:18 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "../includes/utils/Colors.hpp"
 #include <algorithm>
 #include <iostream>
+#include <climits>
+#include <sstream>
 
 Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
@@ -116,6 +118,16 @@ std::string	Channel::getPwd() const
 	return (_pwd);
 }
 
+std::string	Channel::getModesArg() const 
+{
+	std::string modeParams = "";
+	if (isModeActive(L))
+		modeParams.append(size_tToString(getMaxMember()) + " ");
+	if (isModeActive(K))
+		modeParams.append(getPwd());
+	return (_pwd);
+}
+
 void		Channel::setName(std::string &name)
 {
 	_name = name;
@@ -138,6 +150,9 @@ void		Channel::removemode(const int &mode)
 
 void		Channel::setMaxMembers(std::string max)
 {
+	long long temp = std::atoll(max.c_str());
+	if (max.find_first_not_of("0123456789") != std::string::npos || temp > INT_MAX || temp < INT_MIN)
+		return ;
 	_maxMembers = std::atoi(max.c_str());
 }
 
@@ -241,4 +256,16 @@ void	Channel::broadcastPrivmsg(Server& server, Client& client, const std::string
 		if (target && target != &client)
 			server.saveOrSend(*target, msg);
 	}
+}
+
+
+/********* UTILS **********/
+
+std::string	Channel::size_tToString(size_t src) const
+{
+	std::stringstream	temp;
+	temp << src;
+	
+	std ::string 		result = temp.str(); 
+	return result;
 }

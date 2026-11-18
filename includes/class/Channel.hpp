@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:14:37 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 18:58:44 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class Channel
 		std::string	getModes() const;
 		size_t		getMaxMember() const;
 		std::string	getPwd() const;
+		std::string getModesArg() const;
 
 		void		setName(std::string &name);
 		void		setTopic(const std::string& topicName);
@@ -77,6 +78,8 @@ class Channel
 		void	broadcastQuit(Server& server, Client& client, const std::string& msg, std::set<int>& notifiedFds) const;
 		void	broadcastPrivmsg(Server& server, Client& client, const std::string& msg) const;
 		void	removeClientFromChannel(Client& client);
+
+		std::string	size_tToString(size_t src) const;
 		
 	private:
 		std::string					_name;
