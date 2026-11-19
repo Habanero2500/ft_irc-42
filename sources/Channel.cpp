@@ -16,6 +16,7 @@
 #include <iostream>
 #include <climits>
 #include <sstream>
+#include <cstdlib>
 
 Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {

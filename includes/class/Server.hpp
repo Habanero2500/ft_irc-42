@@ -30,16 +30,13 @@ struct Parser;
 
 extern bool DEBUG;
 
-//Aliases to save space
-typedef	const std::string& constRef;
-typedef	const std::string constStr;
 
 struct	KickUtil {//Helpful for the kickClient
-	constStr	channel;
-	constStr	user;
-	constStr	comment;
+	const std::string	channel;
+	const std::string	user;
+	const std::string	comment;
 
-	KickUtil(constRef chan, constRef user, constRef comment);
+	KickUtil(const std::string& chan, const std::string& user, const std::string& comment);
 };
 
 #define NUMBERS "0123456789"
