@@ -45,15 +45,15 @@ class Client{
 	void		setUser(void);
 	void    	setBuffer(std::string& Newbuffer);
 	void    	setServername(std::string& name);
-	void 			addBuffer(char buffer[1024]);
+	void 		addBuffer(char buffer[1024]);
 	std::string 	getServername(void) const;
 	std::string 	getName(void) const;
 	std::string 	getID(void) const;
-	int 			getFd(void) const;
+	int 		getFd(void) const;
 	struct pollfd 	getPollFd(void) const; 
-	std::string		getBuffer(void) const;
+	std::string	getBuffer(void) const;
 	std::string 	getNickname(void) const; 
-	std::string		nick(void) const;//Necessary for Replies.hpp
+	std::string	nick(void) const;//Necessary for Replies.hpp
 	std::string 	getUsername(void) const;
 	std::string 	getHostname(void) const;
 	std::string 	getRealName(void) const;
@@ -66,12 +66,12 @@ class Client{
     //**** OTHERS ****
     
     void		increaseAttempt(void);
-    bool		isRegistered(void);
+    bool		isRegistered(void) const;
     void		setRegistered(void);
     bool		shouldDisconnect(void);
     void		setToDisconnect(void);
     void		displayClient(void);
-    bool		isIncluded(std::set<int>& notifiedFds) const;
+    bool		isIncluded(const std::set<int>& notifiedFds) const;
 	std::string	getPrefix(void);
 
 	/****** CHANNELS *********/

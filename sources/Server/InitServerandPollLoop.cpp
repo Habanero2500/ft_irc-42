@@ -19,7 +19,7 @@
 #include <cstdlib>
 #include <cerrno>
 
-void	Server::initServerAdress(int port, std::string pwd)
+void	Server::initServerAdress(int port, const std::string& pwd)
 {
 	int	opt = 1;
 

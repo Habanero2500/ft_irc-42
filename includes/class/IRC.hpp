@@ -29,15 +29,15 @@ class irc {
 	irc(const char* port, const char* pwd);
 
     //**** GETTERS AND SETTERS ****
-    int getPort(void);
-    std::string getPwd();
+    int getPort(void) const;
+    std::string getPwd() const;
   
     // **** PARSING ****
-	int parsingPort(const std::string str) ;
-	int parsingPwd(const std::string str) ;
+	int parsingPort(const std::string& str) ;
+	int parsingPwd(const std::string& str) ;
 
     //**** EXEC ****
-	void exec(int val, std::string pwd);
+	void exec(int val, std::string& pwd);
     
     //****EXCEPTIONS ****
 	class	pwdEmptyException : public std::exception { 

@@ -40,11 +40,37 @@ void	Server::setNewClient(void) {
 	_clients[newClient.getFd()] = newClient;
 }
 
-Client*	Server::getClientByNick(const std::string& nick) 
-{
+Client*	Server::getClientByNick(const std::string& nick) {
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
 		if (it->second.getNickname() == nick)
 			return (&(it->second));
 	}
 	return (NULL);
+}
+
+const Client*	Server::getClientByNick(const std::string& nick) const {
+	for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); ++it) {
+		if (it->second.getNickname() == nick)
+			return (&(it->second));
+	}
+	return (NULL);
+}
+
+const std::string	Server::getPrefixForCommand(Client& client) const {
+	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
+	return (prefix);
+}
+
+Channel*	Server::getChannelByNick(const std::string& name) {
+	std::map<std::string, Channel>::iterator it = _channels.find(name);
+	if (it == _channels.end())
+		return (NULL);
+	return (&(it->second));
+}
+
+std::string    Server::getArgument(std::vector<std::string>& array, size_t& index)
+{
+	if (index < array.size())
+		return (array[index]);
+	return ("");
 }

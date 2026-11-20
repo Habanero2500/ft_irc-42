@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/class/IRC.hpp"
-#include <iostream>
 #include <cstdlib>
 
 /**** ORTHODOX CANONICAL FORM AND CONSTRUCTORS ****/
@@ -33,7 +32,7 @@ irc &irc::operator=(const irc& copy)
 irc::~irc(void){}
 
 /**** PARSING ****/
-int irc::parsingPort(const std::string str) 
+int irc::parsingPort(const std::string& str) 
 {
     for(int i(0) ; str[i] ; i++)
     {
@@ -51,10 +50,10 @@ int irc::parsingPort(const std::string str)
 }
 
 
-int irc::getPort(void){return _port;}
-std::string irc::getPwd(){return _pwd;}
+int irc::getPort(void) const{return _port;}
+std::string irc::getPwd() const{return _pwd;}
 
-int irc::parsingPwd(const std::string str) 
+int irc::parsingPwd(const std::string& str) 
 {
     if(str.size() == 0)
         return (1);
