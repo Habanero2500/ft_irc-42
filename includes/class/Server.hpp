@@ -63,7 +63,6 @@ class	Server
 		//Setters and Getters
 		void	setNewClient(void);
 		Client*	getClientByNick(const std::string& nick);
-		const Client* getClientByNick(const std::string& nick) const;
 
 		//***** Helper Functions for Commands *****//
 		std::vector<std::string>	splitComma(const std::string &s) const;

@@ -48,14 +48,6 @@ Client*	Server::getClientByNick(const std::string& nick) {
 	return (NULL);
 }
 
-const Client*	Server::getClientByNick(const std::string& nick) const {
-	for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); ++it) {
-		if (it->second.getNickname() == nick)
-			return (&(it->second));
-	}
-	return (NULL);
-}
-
 const std::string	Server::getPrefixForCommand(Client& client) const {
 	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
 	return (prefix);

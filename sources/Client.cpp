@@ -52,12 +52,12 @@ Client::~Client()
 
 //********** SETTERS AND GETTERS ************
 
-void Client::setNickname(std::string& name){ _nickname = name;}
-void Client::setUsername(std::string& name){ _username = name;}
-void Client::setHostname(std::string& name){ _hostname = name;}
-void Client::setServername(std::string& name){ _servername = name;}
+void Client::setNickname(const std::string& name){ _nickname = name;}
+void Client::setUsername(const std::string& name){ _username = name;}
+void Client::setHostname(const std::string& name){ _hostname = name;}
+void Client::setServername(const std::string& name){ _servername = name;}
 void Client::setRealName(const std::string& name){ _realname = name;}
-void Client::setID(std::string& ID){_ID = ID;}
+void Client::setID(const std::string& ID){_ID = ID;}
 void Client::setFd(int i){_fd = i;}
 
 void Client::setPollFd()

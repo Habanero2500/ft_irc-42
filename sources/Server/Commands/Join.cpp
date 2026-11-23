@@ -22,7 +22,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	if(!client.isRegistered())
 		return(saveOrSend(client, ERR_NOTREGISTERED(client)));
 	Parser	line = msg.getParser();
-	if (line.params.size() == 0)
+	if (!line.params.size())
 		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, line.command)));
 
 	const std::vector<std::string>&	channels = splitComma(line.params[0]);

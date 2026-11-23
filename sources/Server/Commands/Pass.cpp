@@ -18,7 +18,7 @@
 
 void	Server::handlePass(Client &client, const Message& msg)
 {
-	Parser pars = msg.getParser();
+	const Parser& pars = msg.getParser();
   
 	if(client.getAttempt() > 2)
 	{
@@ -34,14 +34,14 @@ void	Server::handlePass(Client &client, const Message& msg)
   	{
 		if(DEBUG)
 			std::cout << "Already registered" << std::endl;
-    	return(saveOrSend(client, ERR_ALREADYREGISTRED(client)));
+    	return (saveOrSend(client, ERR_ALREADYREGISTRED(client)));
     }
 	if(pars.params[0] != _pwd)
 	{
 		if(DEBUG)
 			std::cout << "Wrong password" << std::endl;
 		client.increaseAttempt();
-		return(saveOrSend(client, ERR_PASSWDMISMATCH(client)));	
+		return (saveOrSend(client, ERR_PASSWDMISMATCH(client)));	
 	}
 	if(pars.params.size() < 1) // pas d'arg
 	{

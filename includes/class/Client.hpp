@@ -33,18 +33,18 @@ class Client{
 	void	initClientAdress(int port);
 
     //**** SETTERS AND GETTERS ****
-	void 		setNickname(std::string& name);
-	void 		setUsername(std::string& name);
-	void 		setHostname(std::string& name);
+	void 		setNickname(const std::string& name);
+	void 		setUsername(const std::string& name);
+	void 		setHostname(const std::string& name);
 	void 		setRealName(const std::string& name);
-	void 		setID(std::string& ID);
+	void 		setID(const std::string& ID);
 	void 		setFd(int i);
 	void 		setPollFd(void);
 	void		setPass(void);
 	void		setNick(void);
 	void		setUser(void);
 	void    	setBuffer(std::string& Newbuffer);
-	void    	setServername(std::string& name);
+	void    	setServername(const std::string& name);
 	void 		addBuffer(char buffer[1024]);
 	std::string 	getServername(void) const;
 	std::string 	getName(void) const;

@@ -23,8 +23,8 @@
 //QUIT [<Quit message>]
 void	Server::handleQuit(Client& client, const Message& msg) {
 	const std::vector<std::string> &params = msg.getParser().params;
-
-	std::string	quitMsg;
+	
+	std::string quitMsg;
 	if (!params.empty() && !params[0].empty())
 		quitMsg = params[0];
 	else {
@@ -34,7 +34,7 @@ void	Server::handleQuit(Client& client, const Message& msg) {
 			quitMsg = "Client Quit";
 	}
 	if (client.isRegistered()) {
-		std::string quitLine = ":" + getPrefixForCommand(client) + " QUIT :" + quitMsg + "\r\n";
+		const std::string quitLine = ":" + getPrefixForCommand(client) + " QUIT :" + quitMsg + "\r\n";
 		quitHelper(client, quitLine);
 		}
 	std::string host = client.getHostname().empty() ? "hostname" : client.getHostname();//Case where no hostname
