@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 16:14:58 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/18 20:03:57 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/19 17:40:26 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	Server::partChannel(Client &client, const std::string &name, const std::str
 
 	channel.broadcast(*this, line);
 	channel.removeClientFromChannel(client); //A tester
+	client.decreaseNumberChannels();
 	if (channel.isEmpty())
 		_channels.erase(it);
 }

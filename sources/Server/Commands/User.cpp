@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:55 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:28:25 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/19 16:40:36 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static bool isValidRealname(const std::string &s)
 
 void	Server::handleUser(Client &client, const Message& msg)
 {
-	if(client.getPass() != true) 
-	{
-		if(DEBUG)
-			std::cout << "Password has to be set before anything" << std::endl;
-		return;
-	}
-	
+	// if(client.getPass() != true) 
+	// {
+	// 	if(DEBUG)
+	// 		std::cout << "Password has to be set before anything" << std::endl;
+	// 	return;
+	// }
+
 	Parser pars = msg.getParser();
 	
 	if (client.getUser() == true) 

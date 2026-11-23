@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   InitServerandPollLoop.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 16:01:07 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/23 14:46:29 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void	Server::initCommands(void) {
 	_commandMap["CAP"] = &Server::handleCap;
 	_commandMap["MODE"] = &Server::handleMode;
 	_commandMap["TOPIC"] = &Server::handleTopic;
+	_commandMap["INVITE"] = &Server::handleInvite;
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }

@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:33:18 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/12 22:18:13 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/19 16:49:36 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	Server::handlePass(Client &client, const Message& msg)
 		if(DEBUG)
 			std::cout << "PWD OK" << std::endl;
 		client.setPass();
+		isRegistered(client);
 		return;	
 	}
 }
