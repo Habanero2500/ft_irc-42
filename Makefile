@@ -33,12 +33,17 @@ OBJ_DEBUG = $(patsubst ./sources/%.cpp, $(OBJ_DIR_DEBUG)/%.o, $(SRCS))
 
 NAME = ircserv
 NAME_DEBUG = ircserv_debug
+NAME_BOT = ircbot
 
 all : $(NAME)
 
 $(NAME)	: $(OBJ)
 	$(CC) $(FLAGS) $^ -o $(NAME)
 	@echo '$(NAME) compiled!'
+
+$(NAME_BOT)	: $(OBJ)
+	$(CC) $(FLAGS) $^ -o $(NAME)
+	@echo '$(NAME_BOT) compiled!'
 
 $(OBJ_DIR)/%.o : ./sources/%.cpp
 	@mkdir -p $(dir $@)
@@ -53,6 +58,8 @@ $(NAME_DEBUG) : $(OBJ_DEBUG)
 $(OBJ_DIR_DEBUG)/%.o : sources/%.cpp
 	@mkdir -p $(dir $@)
 	$(CC) $(FLAGS) -D DEBUG_MODE=1 -c $< -o $@
+
+bonus : $(NAME_BOT)
 
 clean :
 	@$(RM) $(OBJ_DIR) $(OBJ_DIR) $(OBJ_DIR_DEBUG)
