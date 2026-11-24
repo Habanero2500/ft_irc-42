@@ -26,6 +26,54 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
 
 ## Instructions 
 
+## Instructions
+
+### Compilation & Execution
+
+Compile the project from the root directory using `make`:
+
+```bash
+make
+```
+
+Start the server by providing a listening port and a connection password:
+
+```bash
+./ircserv <port> <password>
+```
+
+---
+
+### Connecting with a Client
+
+#### Using `irssi` (Recommended)
+
+Connect directly from your terminal:
+
+```bash
+irssi -c 127.0.0.1 -p 6667 -w mypassword
+```
+
+Or from within an active `irssi` session:
+
+```text
+/connect 127.0.0.1 6667 mypassword
+```
+
+#### Using `nc` (Raw Protocol Testing)
+
+Connect with Netcat (the `-C` flag ensures `\r\n` line endings) and send the registration commands:
+
+```bash
+nc -C 127.0.0.1 6667
+```
+
+```text
+PASS mypassword
+NICK alice
+USER alice 0 * :Alice Smith
+```
+
 ### Commands
 
 #### `PASS`
@@ -90,7 +138,7 @@ Forcefully removes a user from a channel with an optional reason. Requires chann
 
 #### `MODE`
 **Syntax:** `MODE <channel> [<modes> [<mode params>]]`
-Displays the active modes of a channel, or updates channel settings (`+i` invite-only, `+t` topic protection, `+k` channel key, `+o` operator privilege, `+l` user limit) using `+` or `-` flags. Modifying modes requires channel operator privileges.
+Displays the active modes of a channel, or updates channel settings. Modifying modes requires channel operator privileges.
 `ft_irc` supports the following channel modes:
 * **`i` (Invite-only):** Restricts access to the channel so that only users invited via `INVITE` can join.
 * **`t` (Topic protection):** Restricts the `TOPIC` command so that only channel operators can change the channel topic.
