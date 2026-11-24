@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 12:06:25 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 12:12:41 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	Server::receiveCommunication(int fd)
 	char	buffer[1024] = { 0 };
     
 	bits = recv(fd, buffer, sizeof(buffer) - 1, 0);
-	if (bits > 0)
+	if (bits > 0)//Il faut ajouter le cas ou (bits <=0) pour eviter les leaks
 	{
 		_clients[fd].addBuffer(buffer);
 		if (DEBUG)

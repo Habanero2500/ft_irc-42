@@ -13,7 +13,6 @@
 #include "../../includes/class/Server.hpp"
 #include "../../includes/class/Client.hpp"
 #include "../../includes/class/Channel.hpp"
-#include <sstream>
 
 const std::string	Server::getPrefixForCommand(Client& client) const {
 	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
@@ -46,4 +45,8 @@ std::string    Server::getArgument(std::vector<std::string> array, size_t index)
 	if (index < array.size())
 		return (array[index]);
 	return ("");
+}
+
+KickUtil::KickUtil(const std::string& chan, const std::string& user, const std::string& comment) : channel(chan), user(user), comment(comment) {
+	return ;
 }

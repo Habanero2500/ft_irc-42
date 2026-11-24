@@ -13,10 +13,10 @@
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
 #include "../includes/utils/Colors.hpp"
-#include <algorithm>
 #include <iostream>
 #include <climits>
 #include <sstream>
+#include <cstdlib>
 
 Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
@@ -230,11 +230,6 @@ void	Channel::broadcast(Server& server, const std::string& msg) const {
 
 void	Channel::removeClientFromChannel(Client& client) {
 	_members.erase(client.getFd());
-	// for (std::vector<int>::iterator it = _chouffins.begin(); it != _chouffins.end(); ++it)
-	// 	if (*it == client.getFd()) {
-	// 		_chouffins.erase(it);
-	// 		return ;//Voir si il faut modifier plus de trucs
-	// 	}
 }
 
 bool	Channel::isEmpty(void)

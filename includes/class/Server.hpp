@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 12:07:47 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 12:13:00 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@ typedef	void	(Server::*CommandHandler)(Client &client, const Message &msg);
 struct Parser;
 
 extern bool DEBUG;
+
+
+struct	KickUtil {//Helpful for the kickClient
+	const std::string	channel;
+	const std::string	user;
+	const std::string	comment;
+
+	KickUtil(const std::string& chan, const std::string& user, const std::string& comment);
+};
 
 #define NUMBERS "0123456789"
 #define LETTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -56,6 +65,7 @@ class	Server
 		Client*	getClientByNick(const std::string& nick);
 
 		//***** Helper Functions for Commands *****//
+		std::vector<std::string>	splitComma(const std::string &s) const;
 		const std::string			getPrefixForCommand(Client& client) const;
 		Channel* 					getChannelByNick(const std::string& name);
 		std::vector<std::string>    splitComma(const std::string &s);
@@ -108,9 +118,9 @@ class	Server
 		void 		addMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
 		void 		removeMode(Client &client, Channel &channel, char mode, std::vector<std::string>::const_iterator &it, const std::vector<std::string>::const_iterator &end);
 		
-		//Operator Commands	
+		//Operator Commands
 		void		kickClient(Client& client, const Message& msg);
-		bool		kickValidation(Client& client, const Message& msg);
+		void		singleKick(Client& client, const KickUtil& util);
 		void		partChannel(Client &client, const std::string &name, const std::string &reason);
 		void		handleTopic(Client& client, const Message& msg);
 		bool		topicValidation(Client& client, const Message& msg);
