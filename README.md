@@ -31,9 +31,7 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
 #### Join :
 
 #### ***Mode :***
-Syntaxe : `MODE <channel> [<modes> [<mode params>]]`
-
-Used to query or modify a channel's settings. When called with only a `<channel>` name, it displays the channel's currently active modes. To modify modes, the user must be a channel operator, using `+` to enable flags and `-` to disable them. Multiple flags can be chained in a single command (e.g., `+lk-i`), with arguments supplied in the exact order of the flags that require them.
+Syntaxe : `MODE <channel> [<modes> [<mode params>]]`. Used to query or modify a channel's settings. When called with only a `<channel>` name, it displays the channel's currently active modes. To modify modes, the user must be a channel operator, using `+` to enable flags and `-` to disable them. Multiple flags can be chained in a single command (e.g., `+lk-i`), with arguments supplied in the exact order of the flags that require them.
 `ft_irc` supports the following channel modes:
 * **`i` (Invite-only):** Restricts access to the channel so that only users invited via `INVITE` can join.
 * **`t` (Topic protection):** Restricts the `TOPIC` command so that only channel operators can change the channel topic.
