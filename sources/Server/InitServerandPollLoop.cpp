@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   InitServerandPollLoop.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 12:12:41 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 18:01:27 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	Server::pollLoop()
 	{
 		if (poll(&_listFd[0], _listFd.size(), -1) == -1)
 		{	
-			if (errno == EINTR)
+			if (interruptFlag)
 				continue ;
 			else
 				throw std::runtime_error("SERVER: Poll failure");

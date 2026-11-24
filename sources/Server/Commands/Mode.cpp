@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 13:26:39 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/24 16:55:51 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 void	Server::handleMode(Client &client, const Message& msg)
 {
+	if (!client.isRegistered())
+        return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 	Parser	line = msg.getParser();
 
 	if (line.params.size() == 0)
