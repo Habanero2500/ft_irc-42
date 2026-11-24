@@ -146,7 +146,9 @@ Displays the active modes of a channel, or updates channel settings. Modifying m
 * **`o` (Operator privilege):** Grants (`+o <nickname>`) or revokes (`-o <nickname>`) channel operator privileges for a member.
 * **`l` (User limit):** Sets (`+l <limit>`) or removes (`-l`) the maximum number of members allowed in the channel.
 
+### Stopping ft_irc
 
+Press `Ctrl + C` to stop the server and exit cleanly.
 
 ## Ressources
 - The bible : https://www.rfc-editor.org/info/rfc1459/
