@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/16 17:27:50 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/24 13:32:00 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	Server::parsingNick(Client &client, const Parser &line)
 	std::string	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
-		|| NicknameGiven.size() > 9 || isdigit(NicknameGiven[0]) || NicknameGiven[0] == '-')
+		|| NicknameGiven.size() > 9 || NicknameGiven.size() < 1 || !isalpha(NicknameGiven[0]))
 		return (2);
 
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)

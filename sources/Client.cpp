@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/18 16:42:58 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/24 13:23:56 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,21 @@
 
 // **** ORTHODOX CANONICAL FORM ****
 
-Client::Client(void) : _fd(-1), _adress(), _pollFd() , _pass(false), _nick(false), _user(false), _attempt(0), _registered(false), _toDisconnect(false), _channelsJoined(0){}
+Client::Client(void) : _fd(-1), _adress(), _pollFd() , _pass(false), _nick(false), _user(false), _attempt(0), _registered(false), _toDisconnect(false), _channelsJoined(0)
+{
+	if (DEBUG)
+	{
+		std::cout << GREEN "client : " << _fd << " : " << getNickname() << " constructor called" RESET << std::endl;
+	}
+}
 
-Client::Client(const Client& copy) : _nickname(copy._nickname), _username(copy._username), _hostname(copy._hostname), _servername(copy._servername), _realname(copy._realname), _ID(copy._ID), _fd(copy._fd), _adress(copy._adress), _pollFd(copy._pollFd), _buffer(copy._buffer), _pass(false), _nick(false), _user(false), _attempt(0), _registered(false), _toDisconnect(copy._toDisconnect), _channelsJoined(copy._channelsJoined), _sendBuffer(copy._sendBuffer) {}
+Client::Client(const Client& copy) : _nickname(copy._nickname), _username(copy._username), _hostname(copy._hostname), _servername(copy._servername), _realname(copy._realname), _ID(copy._ID), _fd(copy._fd), _adress(copy._adress), _pollFd(copy._pollFd), _buffer(copy._buffer), _pass(copy._pass), _nick(copy._nick), _user(copy._user), _attempt(0), _registered(copy._registered), _toDisconnect(copy._toDisconnect), _channelsJoined(copy._channelsJoined), _sendBuffer(copy._sendBuffer) 
+{
+	if (DEBUG)
+	{
+		std::cout << GREEN "client : " << _fd << " : " << getNickname() << " copy constructor called" RESET << std::endl;
+	}
+}
 //plutot copier _pass _nick _user au lieu de les mettre a false ?
 Client& Client::operator=(const Client& copy)
 {
@@ -46,7 +58,7 @@ Client::~Client()
 {
 	if (DEBUG)
 	{
-		std::cout << PINK "client : " << _fd << " : " << getNick() << " destructor called" RESET << std::endl;
+		std::cout << PINK "client : " << _fd << " : " << getNickname() << " destructor called" RESET << std::endl;
 	}
 }
 
