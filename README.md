@@ -28,7 +28,65 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
 
 ### Commands
 
-#### Join :
+#### `PASS`
+
+**Syntax:** `PASS <password>`
+
+Sets the connection password. Must be sent before `NICK` and `USER` during registration and match the server's password.
+
+#### `NICK`
+
+**Syntax:** `NICK <nickname>`
+
+Sets a nickname during registration or updates the client's current nickname. Fails if the format is invalid or the nickname is already in use.
+
+#### `USER`
+
+**Syntax:** `USER <username> <hostname> <servername> :<realname>`
+
+Specifies the username and real name of a new user to complete client registration once `PASS` and `NICK` are validated.
+
+#### `QUIT`
+
+**Syntax:** `QUIT [:<reason>]`
+
+Disconnects the client from the server, broadcasting an optional quit message to all channels the user was a member of.
+
+#### `PART`
+
+**Syntax:** `PART <channel>{,<channel>} [:<reason>]`
+
+Removes the client from one or more active channels, optionally broadcasting a departure reason to remaining members.
+
+#### `PRIVMSG`
+
+**Syntax:** `PRIVMSG <target>{,<target>} :<message>`
+
+Sends a private message to a specific user (by nickname) or broadcasts it to all members of a channel.
+
+#### `JOIN`
+
+**Syntax:** `JOIN <channel>{,<channel>} [<key>{,<key>}]`
+
+Joins one or more channels (creating them if they do not exist, making the creator an operator). Enforces channel restrictions such as invite-only (`+i`), user limit (`+l`), and channel keys (`+k`).
+
+#### `TOPIC`
+
+**Syntax:** `TOPIC <channel> [:<topic>]`
+
+Displays the current channel topic, or updates it when a new topic is provided (restricted to channel operators if mode `+t` is active).
+
+#### `INVITE`
+
+**Syntax:** `INVITE <nickname> <channel>`
+
+Invites a user to a channel, allowing them to bypass invite-only (`+i`) restrictions (requires channel operator privileges when `+i` is active).
+
+#### `KICK`
+
+**Syntax:** `KICK <channel> <user> [:<comment>]`
+
+Forcefully removes a user from a channel with an optional reason. Requires channel operator privileges.
 
 #### ***Mode :***
 Syntaxe : `MODE <channel> [<modes> [<mode params>]]`. Used to query or modify a channel's settings. When called with only a `<channel>` name, it displays the channel's currently active modes. To modify modes, the user must be a channel operator, using `+` to enable flags and `-` to disable them. Multiple flags can be chained in a single command (e.g., `+lk-i`), with arguments supplied in the exact order of the flags that require them.
