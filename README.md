@@ -23,9 +23,6 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
    * **Client Socket (`POLLOUT`):** The socket is ready for writing, allowing the server to flush queued replies without blocking.
    * **Disconnection or Error (`POLLHUP` / `POLLERR` / `POLLNVAL`):** The client closed the connection or encountered a socket error; the server closes the file descriptor and removes it from the array.
 
-
-## Instructions 
-
 ## Instructions
 
 ### Compilation & Execution
