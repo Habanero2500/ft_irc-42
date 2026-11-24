@@ -31,6 +31,8 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
 #### Join :
 
 #### Mode :
+*MODE <channel> <modes> <params>
+This command is used to change the behavior of a channel with "+" to activate a mode and "-" to desactivate a mode. When used without any arguments, this command allow a member of a channel to view its modes in a form of <modes> <params>. the params argument is optionnal and is needed only with a handful of modes. The modes argument will be presented in the form "sign*any number of modes". For example "+lk-il". 
 
 
 
