@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/23 14:46:29 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 12:06:25 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,9 @@ void	Server::initCommands(void) {
 	_commandMap["MODE"] = &Server::handleMode;
 	_commandMap["TOPIC"] = &Server::handleTopic;
 	_commandMap["INVITE"] = &Server::handleInvite;
+	_commandMap["KICK"] = &Server::kickClient;
+	_commandMap["WHO"] = &Server::handleWho;
+
 	if(DEBUG)
 		_commandMap["DISPLAY"] = &Server::handleDisplay;
 }

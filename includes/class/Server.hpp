@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:56:56 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 20:03:32 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 12:07:47 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ class	Server
 		void 		handleInvite(Client& client, const Message& message);
 		void		handlePing(Client &client, const Message &msg);
 		void		handlePong(Client &client, const Message &msg);
-		// void	handlePart(Client &client, const Message& msg);
+		// void		kickClient(Client& client, const Message& msg);
+		void		handleWho(Client &client, const Message &msg);
 
-		
 		//Command helpers
 		void		quitHelper(Client& client, const std::string& quitLine);
 
