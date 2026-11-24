@@ -26,6 +26,11 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
 
 ## Instructions 
 
+### Commands
+
+#### Join :
+
+#### Mode :
 
 
 
