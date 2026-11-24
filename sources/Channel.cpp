@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:10:47 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 18:59:18 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 20:05:05 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/class/Channel.hpp"
 #include "../includes/class/Server.hpp"
 #include "../includes/utils/Colors.hpp"
-#include <algorithm>
 #include <iostream>
 #include <climits>
 #include <sstream>
+#include <cstdlib>
 
 Channel::Channel() : _name(""), _maxMembers(1000), _pwd("")
 {
@@ -163,6 +163,7 @@ void		Channel::addMember(Client &member)
 {
 	_members[member.getFd()].client = &member;
 	_members[member.getFd()].op = false;
+	member.increaseNumberChannels();
 }
 
 bool		Channel::setOperator(Client &member)
@@ -229,11 +230,6 @@ void	Channel::broadcast(Server& server, const std::string& msg) const {
 
 void	Channel::removeClientFromChannel(Client& client) {
 	_members.erase(client.getFd());
-	// for (std::vector<int>::iterator it = _chouffins.begin(); it != _chouffins.end(); ++it)
-	// 	if (*it == client.getFd()) {
-	// 		_chouffins.erase(it);
-	// 		return ;//Voir si il faut modifier plus de trucs
-	// 	}
 }
 
 bool	Channel::isEmpty(void)
@@ -258,6 +254,19 @@ void	Channel::broadcastPrivmsg(Server& server, Client& client, const std::string
 	}
 }
 
+std::string	Channel::getNamesList() const
+{
+	std::string	names;
+	for (std::map<int, Member>::const_iterator it = _members.begin(); it != _members.end(); ++it)
+	{
+		if (!names.empty())
+			names += " ";
+		if (it->second.op)
+			names += "@";
+		names += it->second.client->getNickname();
+	}
+	return names;
+}
 
 /********* UTILS **********/
 

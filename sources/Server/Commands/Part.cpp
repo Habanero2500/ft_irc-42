@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 16:14:58 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/18 14:37:56 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/24 12:13:09 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,6 @@
 #include "../../../includes/utils/Replies.hpp"
 #include "../../../includes/class/Message.hpp"
 #include "../../../includes/class/Client.hpp"
-
-
-
-// static std::vector<std::string>	splitComma(const std::string &s)
-// {
-// 	std::vector<std::string>	res;
-// 	size_t						start = 0, pos;
-
-// 	while ((pos = s.find(',', start)) != std::string::npos)
-// 	{
-// 		res.push_back(s.substr(start, pos - start));
-// 		start = pos + 1;
-// 	}
-// 	res.push_back(s.substr(start));
-// 	return res;
-// }
 
 // PART <channel>{,<channel>} [:<reason>]
 void	Server::handlePart(Client &client, const Message &msg)
@@ -67,6 +51,7 @@ void	Server::partChannel(Client &client, const std::string &name, const std::str
 
 	channel.broadcast(*this, line);
 	channel.removeClientFromChannel(client); //A tester
+	client.decreaseNumberChannels();
 	if (channel.isEmpty())
 		_channels.erase(it);
 }

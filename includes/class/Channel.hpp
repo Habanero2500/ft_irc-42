@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 15:08:39 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 18:58:44 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 20:03:18 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include "Client.hpp"
 #include <map>
 #include <bitset>
-#include <vector>
 #include <set>
 
 //Forwards declarations
@@ -50,6 +49,7 @@ class Channel
 		std::string	getModes() const;
 		size_t		getMaxMember() const;
 		std::string	getPwd() const;
+		std::string	getNamesList() const;
 		std::string getModesArg() const;
 
 		void		setName(std::string &name);

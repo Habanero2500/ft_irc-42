@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 13:32:00 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/24 14:30:01 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	Server::handleNick(Client &client, const Message& msg)
 
 	client.setNickname(*(line.params.begin()));
 	client.setNick();
+	// client.setNickname(*(line.params.begin()));
 	if (DEBUG)
 		std::cout << "Nick ok" << std::endl;
 	isRegistered(client);

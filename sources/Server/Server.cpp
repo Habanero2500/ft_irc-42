@@ -6,11 +6,12 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 14:04:44 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/24 14:29:11 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
+#include "../../includes/utils/Replies.hpp"
 #include "../../includes/utils/Colors.hpp"
 
 #include <iostream>
@@ -45,4 +46,3 @@ Server::~Server()
 		deleteClient(_clients.begin()->second.getFd());
 	close(_fd);
 }
-

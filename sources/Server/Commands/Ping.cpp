@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 14:22:22 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/16 14:28:21 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 12:10:26 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,10 @@ void	Server::handlePong(Client &client, const Message &msg)
 {
 	(void)client;
 	(void)msg;
+}
+void	Server::handleWho(Client &client, const Message &msg)
+{
+	(void)client;
+	(void)msg;	
+	return;
 }

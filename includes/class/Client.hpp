@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/18 16:38:18 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/18 20:03:26 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,14 @@ class Client{
 
     //**** OTHERS ****
     
-    void	increaseAttempt(void);
-    bool	isRegistered(void);
-    void	setRegistered(void);
-    bool	shouldDisconnect(void);
-    void	setToDisconnect(void);
-    void	displayClient(void);
-    bool	isIncluded(std::set<int>& notifiedFds) const;
+    void		increaseAttempt(void);
+    bool		isRegistered(void);
+    void		setRegistered(void);
+    bool		shouldDisconnect(void);
+    void		setToDisconnect(void);
+    void		displayClient(void);
+    bool		isIncluded(std::set<int>& notifiedFds) const;
+	std::string	getPrefix(void);
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);
