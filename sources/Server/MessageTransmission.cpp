@@ -15,20 +15,20 @@
 #include "../../includes/utils/Colors.hpp"
 #include <iostream>
 
-void Server::isRegistered(Client &client) const
+void Server::isRegistered(Client &client)
 {
 	if(client.isRegistered()) // Do not re announce after each call
 		return;
 	if(client.getNick() && client.getUser() && client.getPass())
 	{
 		client.setRegistered();
-		/*if(DEBUG)
+		if(DEBUG)
 			std::cout << BLUE "A new client just registered !" RESET << std::endl;
 		saveOrSend(client, ":localhost 001 " + client.getNickname() + " :Welcome to the IRC Network, "
 			+ client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname() + "\r\n");
 		saveOrSend(client, ":localhost 002 " + client.getNickname() + " :Your host is localhost, running version 1.0\r\n");
 		saveOrSend(client, ":localhost 003 " + client.getNickname() + " :This server was created today\r\n");
-		saveOrSend(client, ":localhost 004 " + client.getNickname() + " localhost 1.0 o itkol\r\n");*/
+		saveOrSend(client, ":localhost 004 " + client.getNickname() + " localhost 1.0 o itkol\r\n");
 	}
 }
 

@@ -79,7 +79,7 @@ class	Server
 		void	enablePollout(int clientFd);
 		void	disablePollout(int clientFd);
 		void	sendPendingData(int fd);
-		void	isRegistered(Client &client) const;
+		void	isRegistered(Client &client);
 
 
 		//Command Handlers
