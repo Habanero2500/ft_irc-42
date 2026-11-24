@@ -31,8 +31,14 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
 #### Join :
 
 #### Mode :
-*MODE \<channel\> \<modes\> \<params\>
-This command is used to change the behavior of a channel with "+" to activate a mode and "-" to desactivate a mode. When used without any arguments, this command allow a member of a channel to view its modes in a form of <modes> <params>. the params argument is optionnal and is needed only with a handful of modes. The modes argument will be presented in the form "sign*any number of modes". For example "+lk-il". 
+**Syntax:** `MODE <channel> [<modes> [<mode params>]]`
+Used to query or modify a channel's settings. When called with only a `<channel>` name, it displays the channel's currently active modes. To modify modes, the user must be a channel operator, using `+` to enable flags and `-` to disable them. Multiple flags can be chained in a single command (e.g., `+lk-i`), with arguments supplied in the exact order of the flags that require them.
+`ft_irc` supports the following channel modes:
+* **`i` (Invite-only):** Restricts access to the channel so that only users invited via `INVITE` can join.
+* **`t` (Topic protection):** Restricts the `TOPIC` command so that only channel operators can change the channel topic.
+* **`k` (Channel key):** Sets (`+k <password>`) or removes (`-k <password>`) a password required to join the channel.
+* **`o` (Operator privilege):** Grants (`+o <nickname>`) or revokes (`-o <nickname>`) channel operator privileges for a member.
+* **`l` (User limit):** Sets (`+l <limit>`) or removes (`-l`) the maximum number of members allowed in the channel.
 
 
 
