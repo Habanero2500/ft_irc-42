@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:37:38 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 19:51:36 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 14:29:49 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,10 @@ void	Server::joinChannel(Client &client, Channel &channel, std::string pwd)
 
 void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
 {
+	if (DEBUG)
+	{
+		std::cout << RED "channel : " << channel.getName() << " k is : " << channel.isModeActive(K) << " pwd = " << channel.getPwd() << " entered pwd = " << pwd << RESET << std::endl;
+	}
 	if (channel.isMember(client))
 		throw -1;
 	if (channel.isModeActive(I)) // check if channel is in invite only

@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 14:56:46 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 15:31:29 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 /******* COMMANDS MESSAGE ********/
 
 #define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
-
-#define MODESMODIFICATIONMESSAGE(client, channel, modes, arg) (client.nick() + "!" + client.getUsername() + "@" + client.getHostname() + " MODE " + channel + " " + modes + " " + arg + "\r\n" )
 
 // 324 RPL_CHANNELMODEIS
 #define RPL_CHANNELMODEIS(client, channel, mode, modeParams) (":localhost 324 " + client.nick() + " " + channel + " " + mode + " " + modeParams + "\r\n")

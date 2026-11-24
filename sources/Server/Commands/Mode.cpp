@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:38:10 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 19:09:05 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/24 13:26:39 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &
 		else
 			removeMode(client, channel, line.params[1][i], it, end);
 	}
-	// channel.broadcast(*this, MODESMODIFICATIONMESSAGE(client, line.params[0], channel.getModes(), channel.getModesArg()));
 }
 
 

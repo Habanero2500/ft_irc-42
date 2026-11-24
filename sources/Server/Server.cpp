@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 13:53:59 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 20:04:25 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 14:29:11 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ Server::~Server()
 	{
 		std::cout << GREEN "\nServer destructor called" RESET << std::endl;
 	}
+	while (!_clients.empty())
+		deleteClient(_clients.begin()->second.getFd());
 	close(_fd);
 }
