@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:52:43 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/06 15:54:17 by opapouts         ###   ########.fr       */
+/*   Updated: 2026/11/24 14:29:43 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,21 @@ class irc {
 		public	: 
 			virtual const char *what() const throw();
     };
+	
 	class	valueException : public std::exception {
 		public : 
 			virtual const char *what() const throw();
     };
-
+	
 	class	notANumberException : public std::exception {
 		public : 
 			virtual const char *what() const throw();
     };
 
+	class	spaceCharacterException : public std::exception {
+		public : 
+			virtual const char *what() const throw();
+    };
     private	: 
     
 	int _port;

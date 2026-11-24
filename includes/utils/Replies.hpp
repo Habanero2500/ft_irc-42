@@ -6,7 +6,7 @@
 /*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/18 20:03:39 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/24 14:56:46 by jmetayer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,13 +131,13 @@
 # define ERR_NEEDMOREPARAMS(client, command) (":localhost 461  " + client.nick() + " " + command + " :Not enough parameters\r\n")
 
 // 462     ERR_ALREADYREGISTRED
-# define ERR_ALREADYREGISTRED(client) (":localhost 462 " + client.nick() + "  You may not reregister\r\n")
+# define ERR_ALREADYREGISTRED(client) (":localhost 462 " + client.nick() + " :You may not reregister\r\n")
 
 // 463     ERR_NOPERMFORHOST
 # define ERR_NOPERMFORHOST() (":localhost 463 Your host isn't among the privileged\r\n")
 
 // 464     ERR_PASSWDMISMATCH
-# define ERR_PASSWDMISMATCH(client) (":localhost 464 " + client.nick() + "  Password incorrect\r\n")
+# define ERR_PASSWDMISMATCH(client) (":localhost 464 " + client.nick() + " :Password incorrect\r\n")
 
 // 465     ERR_YOUREBANNEDCREEP
 # define ERR_YOUREBANNEDCREEP() (":localhost 465 You are banned from this server\r\n")
