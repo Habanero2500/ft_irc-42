@@ -97,16 +97,7 @@ void	Server::joinChannel(Client &client, Channel &channel, const std::string& pw
 	}
 }
 
-<<<<<<< HEAD
-void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
-{
-	if (DEBUG)
-	{
-		std::cout << RED "channel : " << channel.getName() << " k is : " << channel.isModeActive(K) << " pwd = " << channel.getPwd() << " entered pwd = " << pwd << RESET << std::endl;
-	}
-=======
 void	Server::joinVerification(Client &client, Channel &channel, const std::string& pwd) {
->>>>>>> quesadillas
 	if (channel.isMember(client))
 		throw -1;
 	if (channel.isModeActive(I)) // check if channel is in invite only
