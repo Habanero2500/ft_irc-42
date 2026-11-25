@@ -19,7 +19,7 @@ void	Server::handlePing(Client &client, const Message &msg)
 
 	if (params.empty())
 		return (saveOrSend(client, ":localhost 409 " + client.getNickname() + " :No origin specified\r\n"));
-	saveOrSend(client, ":localhost PONG localhost :" + params[0] + "\r\n");
+	saveOrSend(client, ":localhost PONG localhost :" + params[0] + "\r\n");//peut etre ajouter un retour dans replies.hpp
 }
 
 void	Server::handlePong(Client &client, const Message &msg)

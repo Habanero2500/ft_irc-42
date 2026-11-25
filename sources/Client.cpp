@@ -64,12 +64,12 @@ Client::~Client()
 
 //********** SETTERS AND GETTERS ************
 
-void Client::setNickname(std::string& name){ _nickname = name;}
-void Client::setUsername(std::string& name){ _username = name;}
-void Client::setHostname(std::string& name){ _hostname = name;}
-void Client::setServername(std::string& name){ _servername = name;}
+void Client::setNickname(const std::string& name){ _nickname = name;}
+void Client::setUsername(const std::string& name){ _username = name;}
+void Client::setHostname(const std::string& name){ _hostname = name;}
+void Client::setServername(const std::string& name){ _servername = name;}
 void Client::setRealName(const std::string& name){ _realname = name;}
-void Client::setID(std::string& ID){_ID = ID;}
+void Client::setID(const std::string& ID){_ID = ID;}
 void Client::setFd(int i){_fd = i;}
 
 void Client::setPollFd()
@@ -116,8 +116,8 @@ int             Client::getNumberChannels(void)const{return _channelsJoined;}
 // **** OTHERS ****
 
 void    Client::increaseAttempt(void){_attempt++;}
-bool	Client::isRegistered(void)		{return _registered;}
-void	Client::setRegistered(void)		{_registered = true;}
+bool	Client::isRegistered(void) const{return _registered;}
+void	Client::setRegistered(void)	{_registered = true;}
 bool	Client::shouldDisconnect(void)	{return _toDisconnect;}
 void	Client::setToDisconnect(void)	{_toDisconnect = true;}
 
@@ -139,7 +139,7 @@ void    Client::displayClient(void)
     std::cout << "Channels joined : " << _channelsJoined << std::endl;
 }
 
-bool	Client::isIncluded(std::set<int>& notifiedFds) const {
+bool	Client::isIncluded(const std::set<int>& notifiedFds) const {
 	for (std::set<int>::const_iterator it = notifiedFds.begin(); it != notifiedFds.end(); ++it) {
 		if (*it == getFd())
 			return (true);

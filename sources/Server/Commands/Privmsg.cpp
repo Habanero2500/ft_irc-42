@@ -38,7 +38,7 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	if (getClientByNick(target))//Privmsg to a client
 		return (saveOrSend(*getClientByNick(target), line));
 	
-	else if( getChannelByNick(target)!= NULL)//PRIVMSG to a channel
+	else if (getChannelByNick(target))//PRIVMSG to a channel
 	{
 		Channel *chan = getChannelByNick(target);
 		if(!chan->isMember(client))

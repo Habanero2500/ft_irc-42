@@ -13,8 +13,6 @@
 #include "../../../includes/class/Server.hpp"
 #include "../../../includes/class/Message.hpp"
 #include "../../../includes/utils/Replies.hpp"
-#include "../../../includes/utils/Colors.hpp"
-#include <iostream>
 
 void	Server::handleMode(Client &client, const Message& msg)
 {
@@ -22,12 +20,8 @@ void	Server::handleMode(Client &client, const Message& msg)
         return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 	Parser	line = msg.getParser();
 
-	if (line.params.size() == 0)
-	{
-		std::string command = "MODE";
-		saveOrSend(client, ERR_NEEDMOREPARAMS(client, command));
-		return ;
-	}
+	if (!line.params.size())
+		return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, std::string("MODE"))));
 	if ((line.params[0][0] == '&' || line.params[0][0] == '#'))
 		channelMode(client, line);
 	else if (client.getNickname().compare(line.params[0]))
@@ -62,7 +56,7 @@ void	Server::printChannelModes(Client &client, Channel &channel, const std::stri
 void	Server::manageChannelModes(Client &client, Channel &channel, const Parser &line)
 {
 	std::string allowedcharacters = "+-itkol";
-	std::vector<std::string>::const_iterator	it = line.params.begin() + 2;
+	std::vector<std::string>::const_iterator	it = line.params.begin() + 2;//peut segfault?
 	std::vector<std::string>::const_iterator	end = line.params.end();
 	bool	add = true;
 

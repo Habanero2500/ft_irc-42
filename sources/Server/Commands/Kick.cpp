@@ -44,7 +44,6 @@ void	Server::kickClient(Client& client, const Message& msg) {
 }
 
 //KICK #42,#35 bob,John One-to-One Pairing
-//Il nous faut une fonction pour singleKick, une pour valider le single kick et le maestro apres(kickClient)
 void	Server::singleKick(Client& client, const KickUtil& util) {
 	std::map<std::string, Channel>::iterator it = _channels.find(util.channel);
 	if (it == _channels.end())

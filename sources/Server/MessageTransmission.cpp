@@ -19,7 +19,7 @@ void Server::isRegistered(Client &client)
 {
 	if(client.isRegistered()) // Do not re announce after each call
 		return;
-	if(client.getNick() == true && client.getUser() == true && client.getPass() == true)
+	if(client.getNick() && client.getUser() && client.getPass())
 	{
 		client.setRegistered();
 		if(DEBUG)

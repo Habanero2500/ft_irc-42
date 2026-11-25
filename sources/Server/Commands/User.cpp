@@ -58,8 +58,8 @@ void	Server::handleUser(Client &client, const Message& msg)
 	if (pars.params.size() < 4) 
 		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
 	
-	std::string			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
-	const std::string	&realname = pars.params[3];              
+	const std::string&			username = pars.params[0];    // USER <username> <mode> <unused> :<realname>
+	const std::string&	realname = pars.params[3];              
 	
 	if (!isValidUsername(username) || !isValidRealname(realname))
 	{

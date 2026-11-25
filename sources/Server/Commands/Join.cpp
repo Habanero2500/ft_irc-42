@@ -15,7 +15,6 @@
 #include "../../../includes/class/Client.hpp"
 #include "../../../includes/class/Channel.hpp"
 #include "../../../includes/utils/Replies.hpp"
-#include "../../../includes/utils/Colors.hpp"
 #include <iostream>
 
 void	Server::handleJoin(Client &client, const Message& msg)
@@ -23,10 +22,10 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	if(!client.isRegistered())
 		return(saveOrSend(client, ERR_NOTREGISTERED(client)));
 	Parser	line = msg.getParser();
-	if (line.params.size() == 0)
+	if (!line.params.size())
 		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, line.command)));
 
-	std::vector<std::string>	channels = splitComma(line.params[0]);
+	const std::vector<std::string>&	channels = splitComma(line.params[0]);
 	std::vector<std::string>	pwd;
 	
 	if (line.params.size() > 1)
@@ -54,7 +53,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 	}
 }
 
-void	Server::parsingChannelName(Client &client, std::string channelName)
+void	Server::parsingChannelName(Client &client, const std::string& channelName)
 {
 	if ((channelName[0] != '&' && channelName[0] != '#') || channelName.size() > 200
 		|| channelName.size() < 2 || channelName.find_first_of("\a, ") != std::string::npos)
@@ -64,7 +63,7 @@ void	Server::parsingChannelName(Client &client, std::string channelName)
 	}
 }
 
-void	Server::createChannel(Client &client, std::string channelName)
+void	Server::createChannel(Client &client, const std::string& channelName)
 {
 	Channel	newChannel(channelName);
 
@@ -81,7 +80,7 @@ void	Server::createChannel(Client &client, std::string channelName)
 	}
 }
 
-void	Server::joinChannel(Client &client, Channel &channel, std::string pwd)
+void	Server::joinChannel(Client &client, Channel &channel, const std::string& pwd)
 {
 	try
 	{
@@ -98,12 +97,7 @@ void	Server::joinChannel(Client &client, Channel &channel, std::string pwd)
 	}
 }
 
-void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
-{
-	if (DEBUG)
-	{
-		std::cout << RED "channel : " << channel.getName() << " k is : " << channel.isModeActive(K) << " pwd = " << channel.getPwd() << " entered pwd = " << pwd << RESET << std::endl;
-	}
+void	Server::joinVerification(Client &client, Channel &channel, const std::string& pwd) {
 	if (channel.isMember(client))
 		throw -1;
 	if (channel.isModeActive(I)) // check if channel is in invite only
@@ -123,8 +117,7 @@ void	Server::joinVerification(Client &client, Channel &channel, std::string pwd)
 	}
 }
 
-void	Server::announceJoin(Client &client, Channel &channel)
-{
+void	Server::announceJoin(Client &client, Channel &channel) {
 	std::string	name = channel.getName();
 	channel.broadcast(*this, ":" + client.getPrefix() + " JOIN " + name + "\r\n"); // All the present member on the channel receuve this
 	if (channel.getTopic().empty())// Topic is displayed, only for the new member

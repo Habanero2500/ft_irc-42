@@ -39,9 +39,8 @@ void	Server::handleTopic(Client& client, const Message& msg) {
 		return (channel.broadcast(*this, line));//332
 	}
 }
-//We need to be careful when params[1] == ""
-//When we change the topic we broadcast it on everyone in the channel
 
+//When we change the topic we broadcast it on everyone in the channel
 bool	Server::topicValidation(Client& client, const Message& msg) {
 	if (!client.isRegistered())//451
 		return (saveOrSend(client, ERR_NOTREGISTERED(client)), false);
