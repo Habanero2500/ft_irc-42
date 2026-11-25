@@ -39,7 +39,7 @@ int	Server::parsingNick(Client &client, const Parser &line)
 
 void	Server::handleNick(Client &client, const Message& msg)
 {
-	Parser	line = msg.getParser();
+	const Parser&	line = msg.getParser();
 
 	switch(parsingNick(client, line))
 	{

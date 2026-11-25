@@ -13,7 +13,7 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
-#define START 0//Pas sur de ces defines
+#define START 0
 #define	CRLF 2
 #define	OFFSET 2
 #include <string>
@@ -36,8 +36,6 @@ class	Message {
 		Message& operator = (const Message& other);
 		~Message(void);
 
-		//Exception Classes
-	
 		//Helper Functions
 		void		deleteSpaces(std::string& input) const;
 		//Parsing Functions
@@ -47,7 +45,7 @@ class	Message {
 		void		parseCommand(std::string& input);
 		void		parseParams(std::string& input);
 		//Getter and setters
-		Parser		getParser(void) const;
+		const Parser&		getParser(void) const;
 
 	private	:
 		Parser	_parser;

@@ -51,7 +51,7 @@ void	Server::handleUser(Client &client, const Message& msg)
 	// 	return;
 	// }
 
-	Parser pars = msg.getParser();
+	const Parser& pars = msg.getParser();
 	
 	if (client.getUser() == true) 
 		return(saveOrSend(client, ERR_ALREADYREGISTRED(client)));

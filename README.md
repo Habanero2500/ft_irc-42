@@ -5,11 +5,11 @@ Development of an IRC server to understand standardized protocols used by intern
 
 ## Description : 
 
-The ft_irc project aims to build an Internet Relay Chat which was at the origin of all the app for messaging service using internet. It works using a server and on which the clients (the users) plug themselves to connect with others. The protocol used to deliver the messages from a client is TCP with IPV4.
+The ft_irc project aims to build an Internet Relay Chat which was at the origin of today's messaging apps using internet. It works using a server and on which the clients (the users) plug themselves to connect with others. The protocol used to deliver the messages from a client is TCP with IPV4.
 
-TCP stands for Transmission Control Protocol and is the forth layer of the OSI model which is the model used for any transmission on internet. TCP can be compared to another protocol called User Datagram Protocol. The main difference between them is the reliability and the speed. TCP is way longer because of all the checks realized but the data will be received well sorted and the delivery is insured.  
+TCP stands for Transmission Control Protocol and is the fourth layer of the OSI model which is the model used for any transmission on internet. TCP can be compared to another protocol called User Datagram Protocol. The main difference between them is the reliability and the speed. TCP is slower because of all the checks realized but the data will be received well sorted and the delivery is ensured.  
 
-IPv4 was learnt firstly to realize the netpractice project. It stands for Internet Protocol version 4. The adresses are computed on 32 bits separated in four 8 bits adresses. 
+IPv4 was learnt firstly to realize the netpractice project. It stands for Internet Protocol version 4. The addresses are computed on 32 bits separated in four 8 bits adresses. 
 
 ### The `poll()` Event Loop
 
@@ -22,6 +22,10 @@ At the core of the server lies a single-threaded **I/O multiplexing** loop power
    * **Client Socket (`POLLIN`):** An existing client has sent data. The server reads the incoming bytes into the client's buffer and executes any complete IRC commands.
    * **Client Socket (`POLLOUT`):** The socket is ready for writing, allowing the server to flush queued replies without blocking.
    * **Disconnection or Error (`POLLHUP` / `POLLERR` / `POLLNVAL`):** The client closed the connection or encountered a socket error; the server closes the file descriptor and removes it from the array.
+
+
+### Command Parsing  
+Each raw line received from a client is handed to the `Message` class, which strips the trailing `\r\n` and then splits it following the IRC grammar `[:prefix] <command> <params> [:trailing]` into a `Parser` struct. The command is converted to uppercase so it is case-insensitive, parameters are split on spaces, and a parameter starting with `:` is treated as the trailing part, so it keeps its spaces (e.g. `PRIVMSG bob :hello world` gives the params `bob` and `hello world`).
 
 ## Instructions
 
@@ -134,6 +138,7 @@ Invites a user to a channel, allowing them to bypass invite-only (`+i`) restrict
 Forcefully removes a user from a channel with an optional reason. Requires channel operator privileges.
 
 #### `MODE`
+
 **Syntax:** `MODE <channel> [<modes> [<mode params>]]`
 Displays the active modes of a channel, or updates channel settings. Modifying modes requires channel operator privileges.
 `ft_irc` supports the following channel modes:
@@ -141,13 +146,33 @@ Displays the active modes of a channel, or updates channel settings. Modifying m
 * **`t` (Topic protection):** Restricts the `TOPIC` command so that only channel operators can change the channel topic.
 * **`k` (Channel key):** Sets (`+k <password>`) or removes (`-k <password>`) a password required to join the channel.
 * **`o` (Operator privilege):** Grants (`+o <nickname>`) or revokes (`-o <nickname>`) channel operator privileges for a member.
-* **`l` (User limit):** Sets (`+l <limit>`) or removes (`-l`) the maximum number of members allowed in the channel.
+* **`l` (User limit):** Sets (`+l <limit>`) or removes (`-l`) the maximum number of members allowed in the channel.  
 
 ### Stopping ft_irc
 
 Press `Ctrl + C` to stop the server and exit cleanly.
 
-## Ressources
+## Bonus: IRC Bot
+
+Build it with `make bonus`, then run it against a running server:
+
+​```bash
+./ircbot <nickname>                      # uses default 127.0.0.1:6667, password "code"
+./ircbot <port> <password> <nickname>
+​```  
+The bot registers with `PASS`/`NICK`/`USER`, answers `PING` with `PONG`, and
+forwards anything typed on its standard input to the server as a raw IRC command.
+
+## Coding Practices  
+Throughout this project we tried to write code that is safe, efficient and economical with memory. Every member function that doesn't modify the object is declared **const**, which lets the compiler enforce that getters and helpers can't change state by accident. Function parameters are passed by reference (and by const reference when they are only read) instead of by value, which avoids copying strings, vectors and objects every time a function is called. We also followed the **Orthodox Canonical Form** for our classes and stayed strictly within **C++98** with **-Wall -Wextra -Werror**.
+
+## Resources
 - The bible : https://www.rfc-editor.org/info/rfc1459/
 - The importance of IRC : https://www.youtube.com/watch?v=6UbKenFipjo&t=509s
 - Explanation of sockets : https://www.geeksforgeeks.org/cpp/socket-programming-in-cpp/
+
+### AI Usage
+Throughout this project, AI was used as a learning and support tool, not to write the project for us. We used it to:
+- Debug and fix leaks
+- Understand the functioning of the `poll()` function and the `pollfd` structure
+- Comprehend the error replies the server sends to the client when a command is not formatted correctly

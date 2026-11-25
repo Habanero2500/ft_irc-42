@@ -21,19 +21,19 @@ void	Server::handlePrivmsg(Client &client, const Message& msg) {
 	if (!client.isRegistered())
 		return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 
-	const	std::vector<std::string>& params = msg.getParser().params;
-	if (params.empty() || params[0].empty())//411
-		return (saveOrSend(client, ERR_NORECIPIENT(client, msg.getParser().command)));
-	if (params.size() < 2 || params[1].empty())//412
+	const	Parser& parser = msg.getParser();
+	if (parser.params.empty() || parser.params[0].empty())//411
+		return (saveOrSend(client, ERR_NORECIPIENT(client, parser.command)));
+	if (parser.params.size() < 2 || parser.params[1].empty())//412
 		return (saveOrSend(client, ERR_NOTEXTTOSEND(client)));
 	
-	const std::string& target = params[0];
-	const std::string& textToSend = params[1];
+	const std::string& target = parser.params[0];
+	const std::string& textToSend = parser.params[1];
 	if (!getClientByNick(target) && !getChannelByNick(target))//401
 		return (saveOrSend(client, ERR_NOSUCHNICK(client, target)));
 
 	//:<sender_nick>!<sender_user>@<sender_host>: PRIVMSG :<msg>\r\n 
-	const std::string prefix = getPrefixForCommand(client);
+	const std::string& prefix = getPrefixForCommand(client);
 	const std::string line = ":" + prefix + " PRIVMSG " + target + " :" + textToSend + "\r\n";
 	if (getClientByNick(target))//Privmsg to a client
 		return (saveOrSend(*getClientByNick(target), line));

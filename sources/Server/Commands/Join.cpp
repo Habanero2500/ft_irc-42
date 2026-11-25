@@ -21,7 +21,7 @@ void	Server::handleJoin(Client &client, const Message& msg)
 {
 	if(!client.isRegistered())
 		return(saveOrSend(client, ERR_NOTREGISTERED(client)));
-	Parser	line = msg.getParser();
+	const Parser&	line = msg.getParser();
 	if (!line.params.size())
 		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, line.command)));
 

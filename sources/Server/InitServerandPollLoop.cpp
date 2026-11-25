@@ -170,7 +170,7 @@ void	Server::executeCommand(Client& client, const std::string& rawline) {
 	std::string	input = rawline;
 	msg.parsing(input);
 
-	std::string	command = msg.getParser().command;
+	const std::string&	command = msg.getParser().command;
 	if (command.empty())
 		return ;
 

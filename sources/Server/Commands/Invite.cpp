@@ -21,12 +21,12 @@ void Server::handleInvite(Client &client, const Message &msg)
     if (!client.isRegistered())
         return (saveOrSend(client, ERR_NOTREGISTERED(client)));
 
-    const std::vector<std::string> &params = msg.getParser().params;
-    if (params.size() < 2)
-        return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, msg.getParser().command)));
+    const Parser& parser = msg.getParser();
+    if (parser.params.size() < 2)
+        return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, parser.command)));
 
-    const std::string& targetNick = params[0];
-    const std::string& channelName = params[1];
+    const std::string& targetNick = parser.params[0];
+    const std::string& channelName = parser.params[1];
     const std::string& me = client.getNickname();
 
     std::map<std::string, Channel>::iterator chanIt = _channels.find(channelName);

@@ -123,6 +123,6 @@ void	Message::parsing(std::string& input) {
 }
 
 //Getters and setters
-Parser	Message::getParser(void) const {
+const Parser&	Message::getParser(void) const {
 	return (_parser);
 }
