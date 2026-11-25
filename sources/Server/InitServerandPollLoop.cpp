@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:18:09 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/25 11:25:57 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/25 12:58:21 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,6 @@ void	Server::receiveCommunication(int fd)
 	if (bits > 0)//Il faut ajouter le cas ou (bits <=0) pour eviter les leaks
 	{
 		_clients[fd].addBuffer(buffer);
-		if (DEBUG)
-		{
-			std::cout << "Message from client: " << fd  << " " << _clients[fd].getBuffer();
-			if (_clients[fd].getBuffer() == "EXIT\n")
-			{
-				deleteClient(fd);
-				close(_fd);
-				exit (1);//A voir pour le leaks etc
-			}
-		}
 		parsingBuffer(fd);
 		if (_clients.find(fd) != _clients.end() && _clients[fd].shouldDisconnect())
 			deleteClient(fd);

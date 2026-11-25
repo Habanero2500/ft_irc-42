@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:11:33 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/25 11:41:21 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/25 13:23:27 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ class Client{
     void		displayClient(void);
     bool		isIncluded(const std::set<int>& notifiedFds) const;
 	std::string	getPrefix(void);
+	std::string	changeNickname(const std::string& name);
 
 	/****** CHANNELS *********/
 	void 			increaseNumberChannels(void);

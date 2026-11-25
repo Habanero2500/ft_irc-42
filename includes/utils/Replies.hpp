@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Replies.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/30 14:21:19 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 15:31:29 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/25 13:22:05 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 /******* COMMANDS MESSAGE ********/
 
 #define NEWMEMBERMESSAGE(nickName) ("User " + nickName + " joined the server\r\n")
+
+#define NEWNICKMESSAGE(prefix, client) (":" + prefix + " NICK :" + client.nick() + "\r\n")
 
 // 324 RPL_CHANNELMODEIS
 #define RPL_CHANNELMODEIS(client, channel, mode, modeParams) (":localhost 324 " + client.nick() + " " + channel + " " + mode + " " + modeParams + "\r\n")

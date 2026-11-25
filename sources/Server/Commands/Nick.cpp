@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/25 11:35:18 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/25 13:26:14 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 int	Server::parsingNick(Client &client, const Parser &line)
 {
 	if (!client.getPass())
+	{
+		if (DEBUG)
+			std::cout << RED "no password" RESET << std::endl;
 		return (4);
+	}
 	if (!line.params.size())
 		return (1);
 	
@@ -60,7 +64,13 @@ void	Server::handleNick(Client &client, const Message& msg)
 	if ((line.params[0].empty()))
 		return;
 
-	client.setNickname(*(line.params.begin()));
+	if (!client.isRegistered())
+		client.setNickname(*(line.params.begin()));
+	else
+	{
+		std::string prefix = client.changeNickname(*(line.params.begin()));
+		saveOrSend(client, NEWNICKMESSAGE(prefix, client));
+	}
 	client.setNick();
 	// client.setNickname(*(line.params.begin()));
 	if (DEBUG)

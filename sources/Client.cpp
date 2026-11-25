@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 14:28:02 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/24 14:29:15 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/25 13:23:59 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,13 @@ bool	Client::isSendBufferEmpty(void) const {
 std::string	Client::getPrefix(void)
 { 
     return _nickname + "!" + _username + "@" + _hostname; 
+}
+
+std::string	Client::changeNickname(const std::string& name)
+{
+	std::string prefix = getPrefix();
+	_nickname = name;
+	return prefix;
 }
 
 
