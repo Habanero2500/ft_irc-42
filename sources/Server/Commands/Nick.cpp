@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:34:01 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/24 14:30:01 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/25 11:35:18 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 int	Server::parsingNick(Client &client, const Parser &line)
 {
+	if (!client.getPass())
+		return (4);
 	if (!line.params.size())
 		return (1);
 	
@@ -51,6 +53,8 @@ void	Server::handleNick(Client &client, const Message& msg)
 			return(saveOrSend(client, ERR_ERRONEUSNICKNAME(client, *(line.params.begin()))));
 		case 3 :
 			return(saveOrSend(client, ERR_NICKNAMEINUSE(client, line.params[0])));
+		case 4 :
+			return;
 	}
 
 	if ((line.params[0].empty()))
