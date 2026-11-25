@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:33:18 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/19 16:49:36 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/25 11:41:12 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,6 @@ void	Server::handlePass(Client &client, const Message& msg)
 {
 	const Parser& pars = msg.getParser();
   
-	if(client.getAttempt() > 2)
-	{
-		if(DEBUG)
-			std::cout << "Too much attempts" << std::endl;
-		deleteClient(client.getFd());
-		return;
-	}
 	if (pars.params.empty())
         return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
 
@@ -40,7 +33,7 @@ void	Server::handlePass(Client &client, const Message& msg)
 	{
 		if(DEBUG)
 			std::cout << "Wrong password" << std::endl;
-		client.increaseAttempt();
+		client.setToDisconnect();
 		return (saveOrSend(client, ERR_PASSWDMISMATCH(client)));	
 	}
 	if(pars.params.size() < 1) // pas d'arg
