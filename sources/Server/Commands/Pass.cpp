@@ -6,7 +6,7 @@
 /*   By: malaimo <malaimo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 18:33:18 by malaimo           #+#    #+#             */
-/*   Updated: 2026/11/25 11:41:12 by malaimo          ###   ########.fr       */
+/*   Updated: 2026/11/25 11:50:46 by malaimo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	Server::handlePass(Client &client, const Message& msg)
 		client.setToDisconnect();
 		return (saveOrSend(client, ERR_PASSWDMISMATCH(client)));	
 	}
-	if(pars.params.size() < 1) // pas d'arg
-	{
-		if(DEBUG)
-			std::cout << "Argument missing" << std::endl; 
-		return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
-	}
+	// if(pars.params.size() < 1) // pas d'arg
+	// {
+	// 	if(DEBUG)
+	// 		std::cout << "Argument missing" << std::endl; 
+	// 	return(saveOrSend(client, ERR_NEEDMOREPARAMS(client, pars.command)));
+	// }
 	else if(pars.params[0] == _pwd)
 	{
 		if(DEBUG)
