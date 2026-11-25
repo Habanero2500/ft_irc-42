@@ -11,20 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
-#include "../../includes/class/Client.hpp"
 #include "../../includes/class/Channel.hpp"
 
-const std::string	Server::getPrefixForCommand(Client& client) const {
-	const std::string prefix = client.getNickname() + "!" + client.getUsername() + "@" + client.getHostname();
-	return (prefix);
-}
-
-Channel*	Server::getChannelByNick(const std::string& name) {
-	std::map<std::string, Channel>::iterator it = _channels.find(name);
-	if (it == _channels.end())
-		return (NULL);
-	return (&(it->second));
-}
 
 std::vector<std::string>    Server::splitComma(const std::string &s)
 {
@@ -38,13 +26,6 @@ std::vector<std::string>    Server::splitComma(const std::string &s)
     }
     res.push_back(s.substr(start));
     return res;
-}
-
-std::string    Server::getArgument(std::vector<std::string> array, size_t index)
-{
-	if (index < array.size())
-		return (array[index]);
-	return ("");
 }
 
 KickUtil::KickUtil(const std::string& chan, const std::string& user, const std::string& comment) : channel(chan), user(user), comment(comment) {

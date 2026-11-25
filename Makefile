@@ -23,22 +23,30 @@ SRCS = ./sources/main.cpp ./sources/IRC.cpp ./sources/Server/Server.cpp ./source
 		./sources/Server/Commands/Display.cpp ./sources/Server/Commands/Pass.cpp ./sources/Server/Commands/Nick.cpp \
 		./sources/Server/Commands/Join.cpp ./sources/Server/Commands/Kick.cpp ./sources/Server/Commands/Mode.cpp ./sources/Server/Commands/Quit.cpp ./sources/Server/Commands/Topic.cpp \
 		./sources/Server/Commands/Privmsg.cpp ./sources/Server/Commands/User.cpp ./sources/Server/Commands/Ping.cpp \
-		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Cap.cpp \
-		 ./sources/Server/Commands/Part.cpp 
+		./sources/Server/Commands/Invite.cpp ./sources/Server/Commands/Cap.cpp ./sources/Server/Commands/Part.cpp 
+
+BOT_SRCS = ./sources/Bot/Bot.cpp ./sources/Bot/main.cpp ./sources/Message.cpp 
 
 OBJ = $(patsubst ./sources/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+OBJ_BOT = $(patsubst ./sources/%.cpp, $(OBJ_DIR)/%.o, $(BOT_SRCS))
 DEPS = $(OBJ:.o=.d)
 DEPS_DEBUG = $(OBJ_DEBUG:.o=.d)
+DEPS_BOT = $(OBJ_BOT:.o=.d)
 OBJ_DEBUG = $(patsubst ./sources/%.cpp, $(OBJ_DIR_DEBUG)/%.o, $(SRCS))
 
 NAME = ircserv
 NAME_DEBUG = ircserv_debug
+NAME_BOT = ircbot
 
 all : $(NAME)
 
 $(NAME)	: $(OBJ)
 	$(CC) $(FLAGS) $^ -o $(NAME)
 	@echo '$(NAME) compiled!'
+
+$(NAME_BOT)	: $(OBJ_BOT)
+	$(CC) $(FLAGS) $^ -o $(NAME_BOT)
+	@echo '$(NAME_BOT) compiled!'
 
 $(OBJ_DIR)/%.o : ./sources/%.cpp
 	@mkdir -p $(dir $@)
@@ -54,14 +62,16 @@ $(OBJ_DIR_DEBUG)/%.o : sources/%.cpp
 	@mkdir -p $(dir $@)
 	$(CC) $(FLAGS) -D DEBUG_MODE=1 -c $< -o $@
 
+bonus : $(NAME) $(NAME_BOT)
+
 clean :
-	@$(RM) $(OBJ_DIR) $(OBJ_DIR) $(OBJ_DIR_DEBUG)
+	@$(RM) $(OBJ_DIR) $(OBJ_DIR_DEBUG)
 
 fclean : clean
-	@$(RM) $(NAME) $(NAME_DEBUG)
+	@$(RM) $(NAME) $(NAME_DEBUG) $(NAME_BOT)
 
 re : fclean all
 
--include $(DEPS) $(DEPS_DEBUG)
+-include $(DEPS) $(DEPS_DEBUG) $(DEPS_BOT)
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean bonus debug re

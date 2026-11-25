@@ -148,7 +148,7 @@ void		Channel::removemode(const int &mode)
 	_modes.reset(mode);
 }
 
-void		Channel::setMaxMembers(std::string max)
+void		Channel::setMaxMembers(const std::string& max)
 {
 	long long temp = std::atoll(max.c_str());
 	if (max.find_first_not_of("0123456789") != std::string::npos || temp > INT_MAX || temp < INT_MIN)

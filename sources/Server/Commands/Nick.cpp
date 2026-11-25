@@ -18,10 +18,10 @@
 
 int	Server::parsingNick(Client &client, const Parser &line)
 {
-	if (line.params.size() == 0)
+	if (!line.params.size())
 		return (1);
 	
-	std::string	NicknameGiven = *(line.params.begin());
+	const std::string&	NicknameGiven = *(line.params.begin());
 
 	if (NicknameGiven.find_first_not_of(std::string(LETTERS) + NUMBERS + SPECIAL_IRC) != std::string::npos 
 		|| NicknameGiven.size() > 9 || NicknameGiven.size() < 1 || !isalpha(NicknameGiven[0]))

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/class/Server.hpp"
-#include "../../includes/utils/Replies.hpp"
 #include "../../includes/utils/Colors.hpp"
 
 #include <iostream>

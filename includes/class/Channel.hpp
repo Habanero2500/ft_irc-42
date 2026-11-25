@@ -57,7 +57,7 @@ class Channel
 		void		setPwd(const std::string &pwd);
 		void		setmode(const int &mode);
 		void		removemode(const int &mode);
-		void		setMaxMembers(std::string max);
+		void		setMaxMembers(const std::string& max);
 
 		void		addMember(Client &member);
 		bool		setOperator(Client &member);

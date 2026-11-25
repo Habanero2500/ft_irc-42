@@ -52,7 +52,7 @@ class	Server
 		Server	&operator=(const Server &copy);
 		~Server();
 
-		void	initServerAdress(int port, std::string pwd);//a voir
+		void	initServerAdress(int port, const std::string& pwd);
 		void	pollLoop();
 		void	checkEvents(void);
 		void	receiveCommunication(int fd);
@@ -69,7 +69,7 @@ class	Server
 		const std::string			getPrefixForCommand(Client& client) const;
 		Channel* 					getChannelByNick(const std::string& name);
 		std::vector<std::string>    splitComma(const std::string &s);
-		std::string					getArgument(std::vector<std::string> array, size_t index);
+		std::string					getArgument(std::vector<std::string>& array, size_t& index);
 
 		//Command Map Functions
 		void	initCommands(void);
@@ -85,10 +85,9 @@ class	Server
 		//Command Handlers
 		void		handlePass(Client &client, const Message& msg);
 		void		handleNick(Client &client, const Message& msg);
-		int			parsingNick(Client &client, const Parser &line);
+		int		parsingNick(Client &client, const Parser &line);
 		void		handleCap(Client &client, const Message &msg);
 		void		handleUser(Client &client, const Message& msg);
-		// void	handleQuit(Client &client, const Message& msg);
 		void		handlePart(Client &client, const Message& msg);
 		void		handleQuit(Client &client, const Message& msg);
 		void		handlePrivmsg(Client &client, const Message& msg);
@@ -96,7 +95,6 @@ class	Server
 		void 		handleInvite(Client& client, const Message& message);
 		void		handlePing(Client &client, const Message &msg);
 		void		handlePong(Client &client, const Message &msg);
-		// void		kickClient(Client& client, const Message& msg);
 		void		handleWho(Client &client, const Message &msg);
 
 		//Command helpers
@@ -104,10 +102,10 @@ class	Server
 
 		/******** JOIN AND CHANNELS ********/
 		void		handleJoin(Client &client, const Message& msg);
-		void		parsingChannelName(Client &client, std::string channelName);
-		void		createChannel(Client &client, std::string channelName);
-		void		joinChannel(Client &client, Channel &channel, std::string pwd);
-		void		joinVerification(Client &client, Channel &channel, std::string pwd);
+		void		parsingChannelName(Client &client, const std::string& channelName);
+		void		createChannel(Client &client, const std::string& channelName);
+		void		joinChannel(Client &client, Channel &channel, const std::string& pwd);
+		void		joinVerification(Client &client, Channel &channel, const std::string& pwd);
 		void		announceJoin(Client &client, Channel &channel);
 
 		/******* MODE *******/

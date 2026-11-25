@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmetayer <jmetayer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opapouts <opapouts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 18:45:05 by jmetayer          #+#    #+#             */
-/*   Updated: 2026/11/17 19:41:26 by jmetayer         ###   ########.fr       */
+/*   Updated: 2026/11/20 20:22:13 by opapouts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void Server::handleInvite(Client &client, const Message &msg)
     if (params.size() < 2)
         return (saveOrSend(client, ERR_NEEDMOREPARAMS(client, msg.getParser().command)));
 
-    const std::string targetNick = params[0];
-    const std::string channelName = params[1];
-    const std::string me = client.getNickname();
+    const std::string& targetNick = params[0];
+    const std::string& channelName = params[1];
+    const std::string& me = client.getNickname();
 
     std::map<std::string, Channel>::iterator chanIt = _channels.find(channelName);
     if (chanIt == _channels.end())
